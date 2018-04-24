@@ -4,12 +4,24 @@ MathBot
 Learn counting to calculus by programming a robot!
 
 ### Prerequisites
-  - NodeJS v- 7.10.1
+  - Java -v 1.8
+    - [Java](https://java.com/en/download/)
+  - Scala -v 2.11.11
+    - [Scala](https://www.scala-lang.org/download/)
+  - NodeJS -v 7.10.1
     - Use [N](https://github.com/tj/n)
   - WebPack installed globally
     - ```npm install webpack -g```
   - MongoDB install globally
     - Goto [MongoDb](https://docs.mongodb.com/manual/installation/)
+    
+### Suggested IDE
+The project has been built thus far with Intellij
+   - [Intellij](https://www.jetbrains.com/idea/) 
+     - Plugins
+        - Scala Plugin
+        - VueJs Plugin
+        - ScalaFmt Plugin 
 
 ### Getting started
 
