@@ -1,0 +1,34 @@
+.robot-carrying {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  bottom: 10px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.robot-carrying > img {
+  height: 1em;
+}
+
+.problem {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.problem > button {
+  width: 3em;
+  width: 5em;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.expression {
+  color: white;
+  font-size: 2.2em;
+  white-space: nowrap;
+  z-index: 1011;
+}

@@ -1,0 +1,135 @@
+.control-panel {
+  display: flex;
+  flex-direction: row;
+  align-content: flex-end;
+}
+
+.instructions {
+  display: flex;
+  height: 130px;
+  width: 100%;
+}
+
+.instructions-robot {
+  height: 100%;
+  cursor: pointer;
+}
+
+.speech-container {
+  position: relative;
+  display: flex;
+  flex-grow: 2;
+  color: black;
+}
+
+.speech-bubble {
+  width: 500px;
+  height: 100%;
+  opacity: 0.5;
+}
+
+.speech {
+  width: 500px;
+  padding: 10px 10px 10px 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(0, 0);
+  color: black;
+  font-size: 22px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.instructions-filler-left {
+  flex-grow: 1.5;
+}
+
+.instructions-filler-right {
+  flex-grow: 2;
+}
+
+.return-to-profile {
+  position: fixed;
+  left: 0;
+  top: 0;
+  cursor: pointer;
+}
+
+.fade-in-speech {
+  opacity: 1;
+  transition: all 0.4s ease-out;
+}
+
+.fade-out-speech {
+  opacity: 0;
+  transition: all 0.4s ease-in;
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+  .instructions {
+    height: 50px;
+  }
+
+  .return-to-profile {
+    height: 50px;
+  }
+
+  .speech-bubble {
+    width: 175px;
+  }
+
+  .instructions-filler-left {
+    flex-grow: 2.75;
+  }
+
+  .speech {
+    font-size: 10px;
+    font-weight: 200;
+    padding: 1px 10px 1px 2px;
+    width: 175px;
+    left: 5px;
+    transform: translate(5px, 0);
+  }
+}
+
+/* Small Devices */
+@media only screen and (max-width : 667px) {
+  .instructions {
+    height: 50px;
+  }
+
+  .return-to-profile {
+    height: 50px;
+  }
+
+  .speech-bubble {
+    width: 175px;
+  }
+
+  .instructions-filler-left {
+    flex-grow: 2;
+  }
+
+  .speech {
+    font-size: 10px;
+    font-weight: 200;
+    padding: 1px 10px 1px 2px;
+    width: 175px;
+    left: 5px;
+    transform: translate(5px, 0);
+  }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+  .instructions-filler-left {
+    flex-grow: 4;
+  }
+}
+
+/* Custom, iPhone 5 Retina */
+@media only screen and (max-width : 320px) {
+
+}

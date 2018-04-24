@@ -1,0 +1,49 @@
+.message-template {
+  display: flex;
+  vertical-align: middle;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 auto;
+  height: 500px;
+  width: 1000px;
+  font-size: 10vh;
+  font-weight: bold;
+  color: white;
+  z-index: 10012;
+}
+
+.congrats {
+  background: rgba(66, 142, 56, 0.2);
+}
+
+.star {
+  height: 10vh;
+  z-index: 10012;
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+
+}
+
+/* Small Devices*/
+@media only screen and (max-width : 667px) {
+  .message-template {
+    height: 200px;
+    width: 400px;
+  }
+}
+
+/* Extra Small Devices*/
+@media only screen and (max-width : 480px) {
+  .message-template {
+    height: 150px;
+    width: 300px;
+  }
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px) {
+
+}

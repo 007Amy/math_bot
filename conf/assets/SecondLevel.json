@@ -1,0 +1,95 @@
+{
+  "level": "SecondLevel",
+  "prevLevel": "BasicProgramming",
+  "nextLevel": "ThirdLevel",
+  "show": true,
+  "steps": {
+    "One": {
+      "level": "SecondLevel",
+      "step": "One",
+      "gridMap": [
+        "[1] |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "[10] |E| |E| |E| |E| |W| |W| |W| |W| |W|",
+        "[100] ($) (R) |E| |E| |W| |E| |E| |E| |E|",
+        "[1g] |E| |E| |E| |E| |W| |E| |E| |E| |E|",
+        "[10g] |E| |E| |E| |E| |W| |E| |E| |E| |E|"
+      ],
+      "description": "The problem is !!P!!\n !!L!!\n !!S!!",
+      "mainMax": -1,
+      "robotOrientation": 0,
+      "stagedEnabled": true,
+      "activeEnabled": true,
+      "stagedQty": -1,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot",
+        "changeRobotDirection",
+        "pickUpItem",
+        "setItemDown"
+      ],
+      "specialParameters": [],
+      "problem": "50 + 50",
+      "clearMain": false,
+      "prevStep": "None",
+      "nextStep": "Two"
+    },
+    "Two": {
+      "level": "SecondLevel",
+      "step": "Two",
+      "gridMap": [
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| [TS] |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| (R) |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
+      ],
+      "description": "Get to the portal!",
+      "mainMax": 3,
+      "robotOrientation": 0,
+      "stagedEnabled": false,
+      "activeEnabled": true,
+      "stagedQty": 0,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot"
+      ],
+      "specialParameters": [],
+      "problem": "0",
+      "clearMain": false,
+      "prevStep": "One",
+      "nextStep": "Three"
+    },
+    "Three": {
+      "level": "SecondLevel",
+      "step": "Three",
+      "gridMap": [
+        "|E| |E| |E| |W| (R) |E| |E| |E| ($) |E|",
+        "|E| |E| |E| |W| |E| |W| |W| |W| |W| |W|",
+        "|E| |E| |E| |W| |E| |W| |E| |E| |E| |E|",
+        "|E| |E| |E| |W| |E| |W| |E| |E| |E| |E|",
+        "|E| |E| |E| |W| |E| |W| |E| |E| |E| |E|"
+      ],
+      "description": "Get to the portal!",
+      "mainMax": 4,
+      "robotOrientation": 90,
+      "stagedEnabled": false,
+      "activeEnabled": true,
+      "stagedQty": 0,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot"
+      ],
+      "specialParameters": [],
+      "problem": "0",
+      "clearMain": false,
+      "prevStep": "Two",
+      "nextStep": "None"
+    }
+  }
+}

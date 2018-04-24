@@ -1,0 +1,49 @@
+.function-drop {
+  width: 100%;
+  z-index: 1000;
+  margin: 0 auto;
+  background: no-repeat center;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.function-drop-drop-zone {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: visible;
+  height: 100px;
+  width: 100%;
+}
+
+.ghost {
+  box-shadow: 0 10px 2px #B8E986;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+  .function-drop-drop-zone {
+    height: 50px;
+  }
+}
+
+/* Small Devices */
+@media only screen and (max-width : 667px) {
+
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+
+}
+
+/* Custom, iPhone 5 Retina */
+@media only screen and (max-width : 320px) {
+
+}

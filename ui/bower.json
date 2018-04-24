@@ -1,0 +1,32 @@
+{
+  "name": "math_academy",
+  "description": "Math learning app",
+  "main": "",
+  "authors": [
+    "Richard Portsmith <gifted.primate@protonmail.com>",
+    "Mr T <iammistert@protonmail.com>",
+    "Console Rastling <console.rastling@protonmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://mathbot.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "html5shiv": "3.7.3",
+    "respond": "1.4.2"
+  },
+  "dependencies": {
+    "jquery": "3.1.1",
+    "velocity": "1.5",
+    "jquery-ui": "jqueryui#1.12.1",
+    "bootstrap": "3.3.7",
+    "animate.css": "3.5.2"
+  }
+}

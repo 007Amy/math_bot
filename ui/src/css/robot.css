@@ -1,0 +1,92 @@
+.background-container {
+  max-width: 1366px;
+  margin: 0 auto;
+  background-size: 120% 120%;
+  height: 100vh;
+}
+
+#robot {
+  background-size: 120% 120%;
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  max-width: 1366px;
+  overflow: hidden;
+  margin: 0 auto;
+  padding: 1vh 20px 0 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+#control-panel-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+#grid-box {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#edit-main-box {
+  display: flex;
+}
+
+#commands-box {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.filler-box {
+  display: flex;
+  flex-grow: 1;
+}
+
+.grow {
+  height: 40%;
+  -webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
+  transition: height 1s;
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+  #robot {
+    width: 80vw;
+  }
+}
+
+/* Small Devices */
+@media only screen and (max-width : 667px) {
+  #control-panel-box {
+    flex-grow: 1;
+  }
+
+  #grid-box {
+    justify-content: flex-start;
+    flex-grow: 1;
+  }
+
+  #edit-main-box {
+    flex-grow: 1;
+  }
+
+  #robot {
+    flex-grow: 1;
+    width: 100vw;
+  }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px) {
+
+}

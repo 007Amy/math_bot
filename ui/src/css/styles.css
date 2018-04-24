@@ -1,0 +1,93 @@
+ body {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #FFFFFF;
+    height: 100vh;
+    width: 100vw;
+    background-color: #321528;
+    position: relative;
+    display: flex;
+    z-index: 200;
+  }
+
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    padding: 0;
+    transition: background 0s linear;
+    background-size: 100vw 130vh;
+    background-position: left top;
+    overflow: hidden;
+  }
+
+  .handle {
+    cursor: move;
+    cursor: -webkit-grabbing;
+  }
+
+  .dialog-button {
+    height: 40px;
+    width: 40px;
+  }
+
+  /*This is where v-html styles must go*/
+  .speechImage {
+    height: 20px !important;
+    width: 20px !important;
+  }
+
+ .dragging > .command-name, .function-drop > .sortable-chosen > .command-name {
+   display: none;
+ }
+
+ /* Medium Devices, Desktops */
+ @media only screen and (max-width : 992px) {
+   .dialog-button {
+     height: 20px;
+     width: 20px;
+   }
+ }
+
+ /* Small Devices */
+ @media only screen and (max-width : 667px) {
+   .dialog-button {
+     height: 20px;
+     width: 20px;
+   }
+ }
+
+ /* Extra Small Devices, Phones */
+ @media only screen and (max-width : 480px) {
+
+ }
+
+ /* Custom, iPhone Retina */
+ @media only screen and (max-width : 320px) {
+
+ }
+
+ ::-webkit-scrollbar {
+   width: 20px;
+   z-index: 1002;
+ }
+
+ ::-webkit-scrollbar-track {
+   border-radius: 10px;
+   background-clip: padding-box;
+   background-color: rgba(0, 0, 0, 0);
+ }
+
+ ::-webkit-scrollbar-thumb {
+   border-radius: 10px;
+   background-clip: padding-box;
+   border: 1px solid rgba(0, 0, 0, 0);
+   -webkit-box-shadow: inset 0px 11px 0px rgba(0,0,0,1);
+   background-color: rgba(255,255,255,0.4);
+ }
