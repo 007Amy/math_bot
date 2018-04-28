@@ -47,7 +47,7 @@
       </draggable>
     </div>
 
-    <img class="open-staged dialog-button" v-if="this.currentStepData.stagedEnabled" :class="functionAreaShowing === 'addFunction' ? 'rotate-to-x' : 'rotate-to-plus'" @click="[toggleFunctionAdd(), updatePopOverBucketPointerPosition($event)]" :src="permanentImages.buttons.plusButton" />
+    <img class="open-staged dialog-button" v-if="this.currentStepData.stagedEnabled" :class="functionAreaShowing === 'addFunction' ? 'rotate-to-x' : 'rotate-to-plus'" @click="toggleFunctionAdd" :src="permanentImages.buttons.plusButton" />
 
   </div>
 </template>
@@ -55,8 +55,7 @@
 <script>
   import draggable from 'vuedraggable';
   import api from '../services/api';
-  import buildUtils from '../services/build_function_utils';
-  import renderUtils from '../services/render_utils';
+  import utils from '../services/utils';
   import FunctionBox from './Function_box';
   import PopoverBucket from './Popover_bucket';
 
@@ -154,13 +153,14 @@
         const color = this.findColor();
         this.$store.dispatch('colorSelected', color);
       },
-      appendBuildFunction(command) {
-        buildUtils.updateFunctionsOnChange({context: this, currentFunction: buildUtils.currentFunc(this), addedFunction: command, newIndex: 'length'});
+      toggleFunctionEdit(_1, _2, ind) {
+        utils.toggleFunctionEdit({context: this, ind: ind, show: 'editFunction'});
       },
-      toggleFunctionEdit(evt, func, ind) {
-        // Updates pointer position
-        this.updatePopOverBucketPointerPosition(evt);
-        renderUtils.toggleFunctionEdit(this, func, ind, 'editMain');
+      toggleFunctionAdd() {
+        utils.toggleFunctionEdit({context: this, show: this.functionAreaShowing === 'addFunction' ? 'editMain' : 'addFunction'});
+      },
+      closeFunctionBox() {
+        utils.toggleFunctionEdit({context: this, show: 'editMain'})
       },
       start() {
         if (this.functionAreaShowing === 'editMain') {
@@ -178,30 +178,11 @@
         api.activateFunction({ tokenId: this.token.token_id, stagedIndex: index, activeIndex: evt.newIndex}, lambdas => {
           // console.log('NEW LAMBDAS ~ ', lambdas)
           this.$store.dispatch('updateLambdas', {lambdas: lambdas})
-          this.toggleFunctionEdit(evt, lambdas.activeFuncs[evt.newIndex], evt.newIndex)
+          this.toggleFunctionEdit(evt, null, evt.newIndex)
         })
       },
-      updatePopOverBucketPointerPosition(evt) {
-        // updates location of popover-bucket pointer
-        this.$store.dispatch('updatePointerPosition', {evt: evt});
-      },
-      toggleFunctionAdd() {
-        const showing = this.functionAreaShowing
-
-        if (showing === 'editMain' || showing === 'editFunction') {
-          this.$store.dispatch('updateFunctionAreaShowing', 'addFunction');
-          this.$store.dispatch('updateEditingIndex', null);
-        } else {
-          this.$store.dispatch('updateFunctionAreaShowing', 'editMain');
-          this.$store.dispatch('updateEditingIndex', null);
-        }
-      },
-      closeEditFunction() {
-        this.$store.dispatch('updateFunctionAreaShowing', 'editMain');
-        this.$store.dispatch('updateEditingIndex', null);
-      },
       moveSwiper(direction) {
-        this.closeEditFunction();
+        this.closeFunctionBox();
         (function (windowWidth, dis) {
           const $functions = $('.functions');
           const functionsWidth = $functions.width();

@@ -25,7 +25,6 @@
   import uid from 'uid';
   import utils from '../services/utils';
   import buildUtils from '../services/build_function_utils';
-  import renderUtils from "../services/render_utils";
   import draggable from 'vuedraggable';
   import api from '../services/api';
   import RunCompiled from '../services/RunCompiled';
@@ -119,7 +118,6 @@
             next: 800
           },
         },
-        transformationSizes: renderUtils.transformationSizes,
         currentSpeed: this.$store.getters.getRobotSpeed,
       }
     },
@@ -158,7 +156,7 @@
       },
       toggleFunctionEdit(func, ind) {
         if (func.name) {
-          renderUtils.toggleFunctionEdit(this, func, ind, "editMain");
+          utils.toggleFunctionEdit(this, func, ind, "editMain");
         }
       },
       goFast() {

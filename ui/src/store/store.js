@@ -124,21 +124,11 @@ export default new Vuex.Store({
     messageList: [],
     auth: null,
     showMesh: false,
-    pointerPosition: 0,
     splashScreenShowing: false
   },
   mutations: {
     UPDATE_SPLASH_SCREEN_SHOWING(state, bool) {
       state.splashScreenShowing = bool;
-    },
-    UPDATE_POINTER_POSITION(state, {evt, setSpot}) {
-      if (setSpot) {
-        state.pointerPosition = setSpot;
-      } else {
-        const $ele = $(evt.target);
-        const positionLeft = $ele.position().left;
-        state.pointerPosition = positionLeft ;
-      }
     },
     TOGGLE_SHOW_MESH(state, bool) {
       state.showMesh = bool;
@@ -354,11 +344,7 @@ export default new Vuex.Store({
       state.robot.paused = bool;
     },
     UPDATE_FUNCTION_AREA_SHOWING(state, show) {
-      if (show === 'addFunction' && state.functionAreaShowing === 'addFunction') {
-        state.functionAreaShowing = "buildFunction";
-      } else {
-        state.functionAreaShowing = show;
-      }
+      state.functionAreaShowing = show;
     },
     UPDATE_EDITING_INDEX(state, index) {
       state.editingIndex = index;
@@ -403,9 +389,6 @@ export default new Vuex.Store({
   actions: {
     updateSplashScreenShowing({commit}, bool) {
       commit('UPDATE_SPLASH_SCREEN_SHOWING', bool);
-    },
-    updatePointerPosition({commit}, {evt, setSpot}) {
-      commit('UPDATE_POINTER_POSITION', {evt, setSpot});
     },
     toggleShowMesh({commit}, bool) {
       commit('TOGGLE_SHOW_MESH', bool);

@@ -1,7 +1,5 @@
 import api from './api'
 import { _ } from 'underscore'
-import uid from 'uid'
-import renderUtils from './render_utils'
 
 export default {
   currentFunc(context) {
