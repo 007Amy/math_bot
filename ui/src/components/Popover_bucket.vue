@@ -6,8 +6,8 @@
         <edit-function v-else></edit-function>
       </div>
       <div class="pointer-slider">
-        <div class="pointer-border" :style="{'margin-left': pointerPosition + 'px'}"></div>
-        <div class="pointer" :style="{'margin-left': pointerPosition + 'px'}"></div>
+        <div class="pointer-border" :style="popoverBucket.style"></div>
+        <div class="pointer" :style="popoverBucket.style"></div>
       </div>
     </div>
   </div>
@@ -16,31 +16,23 @@
 <script>
   import StagedFunctions from './Staged_functions';
   import EditFunction from './Edit_function'
+  import PopoverBucket from '../services/PopoverBucket';
 
   export default {
-    mounted() {
-      this.ensurePointerInBounds();
-    },
-    updated() {
-      this.$nextTick(this.ensurePointerInBounds);
+    data () {
+      return {
+        popoverBucket: new PopoverBucket(this)
+      }
     },
     computed: {
-      pointerPosition() {
-        return this.$store.getters.getPointerPosition;
+      editingIndex() {
+        return this.$store.getters.getEditingIndex;
       },
       functionAreaShowing() {
-        return this.$store.getters.getFunctionAreaShowing;
+        const f = this.$store.getters.getFunctionAreaShowing;
+        this.popoverBucket.updatePointerPosition()
+        return f
       },
-    },
-    methods: {
-      ensurePointerInBounds() {
-        const $pointerSlider = $('.pointer-slider');
-        const pointSliderWidth = Math.floor($pointerSlider.width());
-
-        if (pointSliderWidth <= this.pointerPosition + 38) {
-          this.$store.dispatch('updatePointerPosition', {setSpot: pointSliderWidth - 16});
-        }
-      }
     },
     components: {
       StagedFunctions,

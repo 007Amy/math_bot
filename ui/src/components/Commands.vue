@@ -55,7 +55,6 @@
 <script>
   import draggable from 'vuedraggable';
   import api from '../services/api';
-  import buildUtils from '../services/build_function_utils';
   import utils from '../services/utils';
   import FunctionBox from './Function_box';
   import PopoverBucket from './Popover_bucket';
@@ -154,11 +153,14 @@
         const color = this.findColor();
         this.$store.dispatch('colorSelected', color);
       },
-      toggleFunctionEdit(evt, _, ind) {
-        utils.toggleFunctionEdit({context: this, evt: evt, ind: ind, show: 'editFunction'});
+      toggleFunctionEdit(_1, _2, ind) {
+        utils.toggleFunctionEdit({context: this, ind: ind, show: 'editFunction'});
       },
-      toggleFunctionAdd(evt) {
-        utils.toggleFunctionEdit({context: this, evt: evt, show: this.functionAreaShowing === 'addFunction' ? 'editMain' : 'addFunction'});
+      toggleFunctionAdd() {
+        utils.toggleFunctionEdit({context: this, show: this.functionAreaShowing === 'addFunction' ? 'editMain' : 'addFunction'});
+      },
+      closeFunctionBox() {
+        utils.toggleFunctionEdit({context: this, show: 'editMain'})
       },
       start() {
         if (this.functionAreaShowing === 'editMain') {
@@ -176,11 +178,11 @@
         api.activateFunction({ tokenId: this.token.token_id, stagedIndex: index, activeIndex: evt.newIndex}, lambdas => {
           // console.log('NEW LAMBDAS ~ ', lambdas)
           this.$store.dispatch('updateLambdas', {lambdas: lambdas})
-          this.toggleFunctionEdit(evt, lambdas.activeFuncs[evt.newIndex], evt.newIndex)
+          this.toggleFunctionEdit(evt, null, evt.newIndex)
         })
       },
       moveSwiper(direction) {
-        this.closeEditFunction();
+        this.closeFunctionBox();
         (function (windowWidth, dis) {
           const $functions = $('.functions');
           const functionsWidth = $functions.width();
