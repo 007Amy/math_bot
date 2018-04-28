@@ -14,7 +14,7 @@
         "|E| |E| |E| |E| |E| ($) |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| (R) |E| |E| |E| |E|"
       ],
-      "description": "Drag the !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345224/robotCommands/walk.png'!!! onto the green line. Then click !!![img]src=https://res.cloudinary.com/deqjemwcu/image/upload/v1522342823/buttons/Play_Button.png!!! Only one command is allowed for this level.",
+      "description": "Drag the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345224/robotCommands/walk.png'!! onto the green line. Then click !![img]src=https://res.cloudinary.com/deqjemwcu/image/upload/v1522342823/buttons/Play_Button.png!! Only one command is allowed for this level.",
       "mainMax": 1,
       "robotOrientation": 0,
       "stagedEnabled": false,
@@ -42,7 +42,7 @@
         "|E| |E| |E| |E| |E| (R) |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "Add !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345224/robotCommands/walk.png'!!! enough times to get to the !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!!. You can use 3 commands on this level. Don't forget to click !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522342823/buttons/Play_Button.png'!!!",
+      "description": "Add !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345224/robotCommands/walk.png'!! enough times to get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!. You can use 3 commands on this level. Don't forget to click !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522342823/buttons/Play_Button.png'!!",
       "mainMax": 3,
       "robotOrientation": 0,
       "stagedEnabled": false,
@@ -70,7 +70,7 @@
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "Add !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345224/robotCommands/walk.png'!!! enough times to get to the !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!!. You can use 4 commands on this level.",
+      "description": "Add !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345224/robotCommands/walk.png'!! enough times to get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!. You can use 4 commands on this level.",
       "mainMax": 4,
       "robotOrientation": 90,
       "stagedEnabled": false,
@@ -98,7 +98,7 @@
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "We created the !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345324/functionIcons/rocket2.png'!!! function for you.Click on it to see inside. Use it to get to the !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!!",
+      "description": "We created the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345324/functionIcons/rocket2.png'!! function for you.Click on it to see inside. Use it to get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!",
       "mainMax": 1,
       "robotOrientation": 90,
       "stagedEnabled": false,
@@ -135,7 +135,7 @@
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "Open !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345324/functionIcons/rocket2.png'!!! and drag in 1 more !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345224/robotCommands/walk.png'!!!. Click the !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522342824/buttons/xButton.png'!!! to close the function. Now use !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345324/functionIcons/rocket2.png'!!! to get to !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!!.",
+      "description": "Open !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345324/functionIcons/rocket2.png'!! and drag in 1 more !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345224/robotCommands/walk.png'!!. Click the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522342824/buttons/xButton.png'!! to close the function. Now use !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345324/functionIcons/rocket2.png'!! to get to !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!.",
       "mainMax": 1,
       "robotOrientation": 90,
       "stagedEnabled": false,
@@ -165,7 +165,7 @@
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "Turn right and move to the portal. You can only use 2 commands so use !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345324/functionIcons/rocket2.png'!!!",
+      "description": "Turn right and move to the portal. You can only use 2 commands so use !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345324/functionIcons/rocket2.png'!!",
       "mainMax": 2,
       "robotOrientation": 0,
       "stagedEnabled": false,
@@ -194,7 +194,7 @@
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "Click !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343465/buttons/plusButton.png'!!! and drag !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522349067/functionIcons/noun_923693_cc_afcgbm.png'!!! next to !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345224/robotCommands/walk.png'!!!. Place 2 !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345219/robotCommands/rightArrow.png'!!! in commands in this function. Use !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522349067/functionIcons/noun_923693_cc_afcgbm.png'!!! and !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345324/functionIcons/rocket2.png'!!! to get to the !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!!",
+      "description": "Click !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343465/buttons/plusButton.png'!! and drag !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522349067/functionIcons/noun_923693_cc_afcgbm.png'!! next to !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345224/robotCommands/walk.png'!!. Place 2 !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345219/robotCommands/rightArrow.png'!! in commands in this function. Use !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522349067/functionIcons/noun_923693_cc_afcgbm.png'!! and !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522345324/functionIcons/rocket2.png'!! to get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!",
       "mainMax": 2,
       "robotOrientation": 90,
       "stagedEnabled": true,
@@ -227,7 +227,7 @@
         "|E| |E| |E| |E| ($) |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "Create a function to turn left. Use it to get to the !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!! You can only use 2 commands on this level.",
+      "description": "Create a function to turn left. Use it to get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!! You can only use 2 commands on this level.",
       "mainMax": 2,
       "robotOrientation": 270,
       "stagedEnabled": true,
@@ -260,7 +260,7 @@
         "|E| |E| |E| |E| (R) |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "Ok, now it's time to test out your new skills. Get to the !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!! using as many commands as you want.",
+      "description": "Ok, now it's time to test out your new skills. Get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!! using as many commands as you want.",
       "mainMax": -1,
       "robotOrientation": 0,
       "stagedEnabled": true,
@@ -289,7 +289,7 @@
         "|E| |E| |E| |E| (R) |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "This one is a little more tricky. Get to the !!![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!! using only 3 commands. You will probably need a function.",
+      "description": "This one is a little more tricky. Get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!! using only 3 commands. You will probably need a function.",
       "mainMax": 3,
       "robotOrientation": 0,
       "stagedEnabled": true,

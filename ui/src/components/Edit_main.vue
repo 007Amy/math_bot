@@ -139,7 +139,7 @@
               this.runCompiled = new RunCompiled({context: this, frames: compiled.frames})
             })
           } else {
-            this.$store.dispatch('addNewMessage', 'emptyMain');
+            this.$store.dispatch('addMessage', 'emptyMain');
           }
         } else {
           this.robot.state = 'running';
@@ -148,7 +148,7 @@
       },
       copyCommand(evt) {
         if (evt.hasOwnProperty('added') && this.stepData.mainMax !== -1 && this.functions.length > this.stepData.mainMax) {
-          this.$store.dispatch('addNewMessage', 'mainMax')
+          this.$store.dispatch('addMessage', 'mainMax')
         }
         if (!evt.hasOwnProperty('removed')) {
           const command = evt.hasOwnProperty('added') ? evt.added.element : evt.moved.element;

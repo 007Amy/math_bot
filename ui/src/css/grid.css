@@ -154,12 +154,9 @@ img {
   left: -38% !important;
   right: 0 !important;
 }
+
 .drop-point {
   top: 0;
-}
-.force-field-laser {
-  animation: bounce 5s infinite alternate;
-  -webkit-animation: bounce 5s infinite alternate;
 }
 
 /* Large Phones, landscape*/

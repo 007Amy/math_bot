@@ -14,7 +14,7 @@
         "[1g] |E| |E| |E| |E| |W| |E| |E| |E| |E|",
         "[10g] |E| |E| |E| |E| |W| |E| |E| |E| |E|"
       ],
-      "description": "The problem is !!P!!\n !!L!!\n !!S!!",
+      "description": "The problem is !![P]!!\n !![L]!!\n !![S]!! !![img]src='someimgsomewhere'!!",
       "mainMax": -1,
       "robotOrientation": 0,
       "stagedEnabled": true,
