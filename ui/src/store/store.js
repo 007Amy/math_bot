@@ -2,13 +2,12 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import {_} from 'underscore';
 import utils from '../services/utils';
-import renderUtils from '../services/render_utils';
 import api from '../services/api';
 import VueDefaultValue from 'vue-default-value/dist/vue-default-value';
 
 import permanentImages from "../assets/assets";
 import FunctionGroupsCalc from "../services/FunctionGroupsCalc";
-import uid from "uid";
+import Message from '../services/Message';
 
 Vue.use(Vuex);
 Vue.use(VueDefaultValue);
@@ -123,7 +122,6 @@ export default new Vuex.Store({
     activeFunctionGroups: null,
     swiperSlide: 0,
     messageList: [],
-    messageFader: null,
     auth: null,
     showMesh: false,
     pointerPosition: 0,
@@ -393,14 +391,9 @@ export default new Vuex.Store({
     UPDATE_SWIPER_SLIDE(state, slide) {
       state.swiperSlide = slide;
     },
-    ADD_NEW_MESSAGE(state, message) {
-      renderUtils.cancelMessageFades();
-      clearInterval(state.messageFader);
-      state.messageFader = renderUtils.fadeOutMessages(state.messageList, () => state.messageList.pop());
-      state.messageList.unshift(message);
-      if (state.messageList.length === 7) {
-        state.messageList.pop();
-      }
+    ADD_MESSAGE(state, message) {
+      state.messageList.unshift(new Message({msg: message, state: state}));
+      state.messageList = state.messageList.slice(0, 5);
     }
   },
   actions: {
@@ -553,10 +546,7 @@ export default new Vuex.Store({
       commit('UPDATE_SWIPER_SLIDE', slide);
     },
     addNewMessage({commit}, message) {
-      commit("ADD_NEW_MESSAGE", message);
-    },
-    removeMessage({commit}) {
-      commit("REMOVE_MESSAGE");
+      commit("ADD_MESSAGE", message);
     }
   },
   getters: {
