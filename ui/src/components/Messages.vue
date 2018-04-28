@@ -1,14 +1,12 @@
 <template>
-  <div class="messageContainer">
-    <transition-group
-      name="message-leave"
-      leave-active-class="animated fadeOut"
-    >
-      <div v-for="(message, ind) in messageList" class="message" :id="'message' + ind" :key="'message/' + (ind + 1)">
-        {{ message }}
+  <transition-group class="message-container" name="messages" tag="div" leave-active-class="animated zoomOut">
+    <div v-for="(message, ind) in messageList" class="message" :id="'message-' + ind" :key="'message/' + (ind + 1)">
+      <p>{{ message.msg }}</p>
+      <div>
+        <img @click="removeMessage(ind)" :src="permanentImages.buttons.xButton" alt="x button">
       </div>
-    </transition-group>
-  </div>
+    </div>
+  </transition-group>
 </template>
 
 <script>
@@ -18,14 +16,16 @@
     },
     computed: {
       messageList() {
-        const m = this.$store.getters.getMessageList.map(m => m.msg);
-        return m;
+        return this.$store.getters.getMessageList
+      },
+      permanentImages () {
+        return this.$store.getters.getPermanentImages;
       }
     },
     methods: {
-      uID() {
-        return uid(7);
-      },
+      removeMessage (message) {
+        this.$store.dispatch('removeMessage', message);
+      }
     }
   }
 </script>

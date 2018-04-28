@@ -391,9 +391,13 @@ export default new Vuex.Store({
     UPDATE_SWIPER_SLIDE(state, slide) {
       state.swiperSlide = slide;
     },
-    ADD_MESSAGE(state, message) {
-      state.messageList.unshift(new Message({msg: message, state: state}));
-      state.messageList = state.messageList.slice(0, 5);
+    ADD_MESSAGE(state, msg) {
+      const message = new Message({msg: msg, state: state});
+      message.add();
+    },
+    REMOVE_MESSAGE(state, ind) {
+      const message = new Message({ind: ind, state: state});
+      message.delete();
     }
   },
   actions: {
@@ -545,8 +549,11 @@ export default new Vuex.Store({
     updateSwiperSlide({commit}, slide) {
       commit('UPDATE_SWIPER_SLIDE', slide);
     },
-    addNewMessage({commit}, message) {
-      commit("ADD_MESSAGE", message);
+    addMessage({commit}, msg) {
+      commit("ADD_MESSAGE", msg);
+    },
+    removeMessage({commit}, ind) {
+      commit('REMOVE_MESSAGE', ind);
     }
   },
   getters: {

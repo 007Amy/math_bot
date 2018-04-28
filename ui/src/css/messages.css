@@ -1,17 +1,65 @@
-.messageContainer {
+.message-container {
   position: absolute;
-  right: 0px;
+  right: 5px;
   top: 10px;
-  width: 178px;
+  width: 350px;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
 }
 
 .message {
+  display: flex;
   width: 99%;
-  padding: 10px 2px;
+  margin-top: 8px;
+  height: 50px;
   border: 1px solid #B8E986;
   border-radius: 2px;
-  margin-top: 8px;
-  line-height: 16px;
-  font-size: 13.8px;
-  background-color: rgba(184,233,134,0.2);
+  background-color: rgba(184, 233, 134, 0.2);
+}
+
+.message p {
+  vertical-align: middle;
+  font-size: 22px;
+  text-align: left;
+  flex-grow: 3;
+}
+
+.message img {
+  flex-grow: 1;
+  height: 20px;
+  width: 20px;
+  margin: -15px -10px 0 10px;
+}
+
+/* Large Phones, landscape*/
+@media only screen and (max-width : 992px) {
+  .message-container {
+    width: 200px;
+    right: 10px;
+  }
+
+  .message {
+    background-color: rgba(184, 233, 134, 0.8);
+    height: 30px;
+  }
+
+  .message p {
+    font-size: 12px;
+  }
+}
+
+/* Small Devices */
+@media only screen and (max-width : 667px) {
+
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+
+}
+
+/* Custom, iPhone 5 Retina */
+@media only screen and (max-width : 320px) {
+
 }
