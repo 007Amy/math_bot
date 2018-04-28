@@ -29,7 +29,7 @@
         return this.$store.getters.getPermanentImages;
       },
       description() {
-        return this.parseDescription(this.currentStepData.description);
+        return this.currentStepData.description;
       },
     },
     data() {
@@ -38,9 +38,6 @@
       }
     },
     methods: {
-      parseDescription(str) {
-        if (str) return '<p>' + str + '</p>';
-      },
       toggleSpeechBubble() {
         this.speechBubbleShowing = !this.speechBubbleShowing;
       },
