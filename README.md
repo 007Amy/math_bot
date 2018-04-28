@@ -196,7 +196,7 @@ Implementing New Levels
 !!P!! - includes built problem in description
 !!L!! - includes level name in description
 !!S!! - includes step name in description
-!!![img]src='<IMG SRC (Must be in single quotes)>'!!! - include an image in description, will be same size as font
+!![img]src='<IMG SRC (Must be in single quotes)>'!! - include an image in description, will be same size as font
 ```
 
 #### Adding Assigned Staged

@@ -39,20 +39,7 @@
     },
     methods: {
       parseDescription(str) {
-        if (str) {
-          // Convert \n to <br />
-          const makeBr = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
-          // Convert !!![img]src=whatever!!! to <img class="description-image" src='whatever' />
-          const makeImg = makeBr.split('!!!').map(s => {
-            if (s.indexOf('[img]') !== -1) {
-              return `<img class="description-image" ${s.split('[img]').pop()} />`;
-            } else {
-              return s;
-            }
-          }).join(' ');
-
-          return '<p>' + makeImg + '</p>';
-        }
+        if (str) return '<p>' + str + '</p>';
       },
       toggleSpeechBubble() {
         this.speechBubbleShowing = !this.speechBubbleShowing;
