@@ -15,37 +15,6 @@ export default {
   parseCamelCase: str => str.split('')
     .map(l => l === l.toUpperCase() ? ` ${l}` : l).join(''),
 
-  stringifyRecur(scripts) {
-    let seen = [];
-
-    const stringEm = JSON.stringify(scripts, (key, value) => {
-      if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
-        if (seen.indexOf(value) >= 0) {
-          return {
-            created_id: value.created_id,
-            color: value.color,
-            func: [],
-            set: value.set,
-            image: value.image,
-            index: value.index,
-            type: value.type,
-            commandId: value.commandId
-          }
-        }
-        seen.push(value);
-      }
-      return value;
-    });
-
-    return stringEm;
-  },
-  /*
-    testIsImage will check if a passed in string is base 64 or a URL.
-  **/
-  testIsImage(string) {
-    const getId = string.split(':');
-    return getId[0] === 'https' || getId[0] === 'data';
-  },
   /*
     watcher is a watcher function that uses trampolining to watch a value in the store to change. example use case is to watch for an item to be added to a function in order to trigger the next step of the tutorial.
 
