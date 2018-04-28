@@ -24,7 +24,6 @@
 
 <script>
   import { _ } from 'underscore'
-  import renderUtils from '../services/render_utils'
 
   export default {
     name: 'function_box',

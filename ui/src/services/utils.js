@@ -1,6 +1,12 @@
 import elementResizeEvent from 'element-resize-event';
 
 export default {
+  toggleFunctionEdit({context, evt, ind, show}) {
+    evt ? context.$store.dispatch('updatePointerPosition', {evt: evt}) : '';
+    context.$store.dispatch('updateEditingIndex', ind);
+    context.$store.dispatch('updateFunctionAreaShowing', context.functionAreaShowing === show ? 'editMain' : show);
+  },
+
   parseCamelCase: str => str.split('')
     .map(l => l === l.toUpperCase() ? ` ${l}` : l).join(''),
 
