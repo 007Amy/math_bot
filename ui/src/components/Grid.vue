@@ -27,14 +27,13 @@
               class="drop-point glyphicon"
               :src="permanentImages.blackHole">
             <img
-              class="tool animated"
-              :class="space.name !== 'trash-can' ? 'bounceInDown' : ''"
+              class="tool animated zoomIn"
               v-for="(tool, tInd) in space.tools"
               :key="'tool:' + tInd + ':' + rInd + ':' + sInd"
               :src="toolImages[tool.image]"
             >
             <img
-              class="robot tool animated"
+              class="robot animated"
               v-if="space.robotSpot"
               :key="'ROBOT'"
               :src="robot._robotDirections[robotOrientation]"
@@ -55,8 +54,6 @@
   import SplashScreen from './Splash_screen';
 
   export default {
-    mounted() {
-    },
     computed: {
       currentStepData() {
         return this.$store.getters.getCurrentStepData;

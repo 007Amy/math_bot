@@ -55,7 +55,7 @@
     methods: {
       adjustJustify() {
         const $dropZone = document.querySelector('.function-drop-drop-zone');
-        if (this.list.length && this.functionAreaShowing === 'editMain') {
+        if (this.list.length && this.functionAreaShowing === 'editMain' && $dropZone !== null) {
           const dropZoneWidth = $dropZone.offsetWidth;
           const $lastButton = $dropZone.lastChild;
           const lastButtonWidth = $lastButton.offsetWidth;

@@ -170,12 +170,12 @@ Implementing New Levels
 ($) - Portal
 |E|	- Robot can go
 |W|	- Robot can't go
-[1]	- Unlimited one tools
-[10] - Unlimited ten tools
-[100] - Unlimited hundred tools
-[1g] - Unlimited thousand tools
-[10g] - Unlimted ten-thousand tools
-[TS][some tools] - Place tools that can be picked up and moved around into second set of brackets. !! THIS FEATURE NOT IMPLEMENTED YET!!
+[1]	- Self replenishing - value 1
+[10] - Self replenishing - value 10
+[100] - Self replenishing - value 100
+[1g] - Self replenishing - value 1,000
+[10g] - Self replenishing - value 10,000
+[TS(<TOOL>,<TOOL>)] - None self replenishing tools (comma sperated, no spaces) - e.g [TS(1,10,100,1g,10g)]
 ```
 * Grid map creation
     * Use the above legend to fill in the grid map

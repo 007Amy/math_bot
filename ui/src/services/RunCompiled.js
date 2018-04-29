@@ -4,16 +4,18 @@ import Promise from 'bluebird';
 
 class RunCompiled {
   constructor({context, frames}) {
-    this.context = context;
-    this.frames = frames;
-    this.$store = this.context.$store;
-    this.$router = this.context.$router;
-    this.robot = this.$store.getters.getRobot;
-    this.stepData = this.$store.getters.getCurrentStepData;
-    this.toolList= this.stepData.toolList
+    if (context && frames) {
+      this.context = context;
+      this.frames = frames;
+      this.$store = this.context.$store;
+      this.$router = this.context.$router;
+      this.robot = this.$store.getters.getRobot;
+      this.stepData = this.$store.getters.getCurrentStepData;
+      this.toolList = this.stepData.toolList
 
-    if (this.frames !== undefined && this.frames.length) this.processFrames();
-    else console.log('NO FRAMES');
+      if (this.frames !== undefined && this.frames.length) this.processFrames();
+      else console.log('NO FRAMES');
+    }
   }
 
   clearRobot() {
@@ -60,7 +62,7 @@ class RunCompiled {
       if (y > 0) {
         this.stepData.gridMap[x][y].tools = _.map(cell.items, item => {
           return this.toolList[item]
-        });
+        }).reverse();
       }
     });
   }

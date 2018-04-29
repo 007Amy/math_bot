@@ -8,6 +8,7 @@ import VueDefaultValue from 'vue-default-value/dist/vue-default-value';
 import permanentImages from "../assets/assets";
 import FunctionGroupsCalc from "../services/FunctionGroupsCalc";
 import Message from '../services/Message';
+import RunCompiled from '../services/RunCompiled';
 
 Vue.use(Vuex);
 Vue.use(VueDefaultValue);
@@ -197,6 +198,17 @@ export default new Vuex.Store({
         const stepData = res.body;
         // console.log(`${level}/${step}:\n`, stepData)
 
+        // Reverses tools for rendering
+        const reverseTools = (gridMap) => {
+          return gridMap.map(row => {
+            return row.map(cell => {
+              cell.tools = cell.tools.reverse()
+              return cell
+            })
+          })
+        }
+        reverseTools(stepData.gridMap);
+
         state.currentStepData = stepData;
 
         state.showCongrats = false;
@@ -212,8 +224,8 @@ export default new Vuex.Store({
         localStorage.setItem('LEVEL_STEP', JSON.stringify({level: level, step: step}))
         context.$router.push({path: 'robot'});
 
-        $('.profile').removeClass('fadeOut');
-        $('#app').css({'transition-duration': '0s'});
+        // $('.profile').removeClass('fadeOut');
+        // $('#app').css({'transition-duration': '0s'});
       });
     },
     UPDATE_LAMBDAS(state, {lambdas}) {

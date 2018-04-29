@@ -56,12 +56,6 @@ object PreparedStepData {
   }
 
   def makeDescription(rawStepData: RawStepData): String = {
-    val taco = rawStepData.description
-      .replaceAll("!![P]!!", problemGen(rawStepData).problem)
-      .replaceAll("!![S]!!", parseCamelCase(rawStepData.step))
-      .replaceAll("!![L]!!", parseCamelCase(rawStepData.level))
-
-    val shell: String =
     "<p>" +
     s"${rawStepData.description
       .split("!!")
@@ -77,15 +71,11 @@ object PreparedStepData {
       .split("\n")
       .mkString(" <br /> ")}" +
     s"</p>"
-
-    val oval = 0
-
-    shell
   }
 
   def buildGrid(gridMap: List[String]): List[List[GridPart]] = {
     gridMap map { row =>
-      val r = row.split(" ").toList
+      val r = row.split(" ").toList.filterNot(_ == "")
       r map { key =>
         GridPart.apply(key)
       }
