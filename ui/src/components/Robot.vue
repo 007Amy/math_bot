@@ -7,7 +7,6 @@
       </div>
 
       <div id="grid-box">
-        <robotcarrying></robotcarrying>
         <grid></grid>
         <trash></trash>
       </div>
@@ -42,7 +41,6 @@
   import Grid from './Grid';
   import Commands from './Commands';
   import Editmain from './Edit_main';
-  import Robotcarrying from './Robot_carrying';
   import Editfunction from './Edit_function';
   import Trash from './Trash';
   import Messages from './Messages';
@@ -135,7 +133,6 @@
     components: {
       Grid,
       Commands,
-      Robotcarrying,
       Editfunction,
       Trash,
       Editmain,

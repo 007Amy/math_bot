@@ -1,6 +1,7 @@
 <template>
-  <div class="robot-carrying">
+  <div v-if="robotCarrying" class="robot-carrying" :style="robotCarrying.length ? {'background-color': 'rgba(0, 0, 0, 0.5)'} : ''">
     <img
+      class="animated zoomIn"
       v-for="(image, ind) in robotCarrying"
       :key="'robot-carrying' + ind"
       :src="toolImages[image]"
@@ -13,6 +14,11 @@
   import assets from '../assets/assets';
 
   export default {
+    mounted () {
+      const $grid = $('.grid');
+      const gridWidth = $grid.width()
+      $('.robot-carrying').css({width: gridWidth + 'px'})
+    },
     computed: {
       toolImages() {
         return assets.tools;
