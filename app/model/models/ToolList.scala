@@ -15,8 +15,8 @@ object ToolList {
   )(ToolList.apply _)
 }
 
-case class ToolList(kitty: Tool = Tool("1"),
-                    ten: Tool = Tool("10"),
-                    oneHundred: Tool = Tool("100"),
-                    oneThousand: Tool = Tool("1000"),
-                    tenThousand: Tool = Tool("10000"))
+case class ToolList(kitty: Tool = Tool(original = None, toolName = "1"),
+                    ten: Tool = Tool(original = None, toolName = "10"),
+                    oneHundred: Tool = Tool(original = None, toolName = "100"),
+                    oneThousand: Tool = Tool(original = None, toolName = "1000"),
+                    tenThousand: Tool = Tool(original = None, toolName = "10000"))

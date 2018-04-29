@@ -14,12 +14,12 @@ object Tool {
     (JsPath \ "color").read[String]
   )(Tool(_, _, _, _, _))
 
-  def apply(toolName: String): Tool = toolName match {
-    case "1" => Tool(original = true, "kitty", "kitty", 1, "blue")
-    case "10" => Tool(original = true, "ten", "ten", 10, "purple")
-    case "100" => Tool(original = true, "one-hundred", "oneHundred", 100, "green")
-    case "1000" => Tool(original = true, "one-thousand", "oneThousand", 1000, "pink")
-    case "10000" => Tool(original = true, "ten-thousand", "tenThousand", 10000, "red")
+  def apply(toolName: String, original: Option[Boolean]): Tool = toolName match {
+    case "1" => Tool(original = original.getOrElse(true), "kitty", "kitty", 1, "blue")
+    case "10" => Tool(original = original.getOrElse(true), "ten", "ten", 10, "purple")
+    case "100" => Tool(original = original.getOrElse(true), "one-hundred", "oneHundred", 100, "green")
+    case "1000" => Tool(original = original.getOrElse(true), "one-thousand", "oneThousand", 1000, "pink")
+    case "10000" => Tool(original = original.getOrElse(true), "ten-thousand", "tenThousand", 10000, "red")
     case _ => throw new Exception(s"$toolName is not a valid tool name.")
   }
 }

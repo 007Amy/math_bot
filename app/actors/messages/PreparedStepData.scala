@@ -75,7 +75,7 @@ object PreparedStepData {
 
   def buildGrid(gridMap: List[String]): List[List[GridPart]] = {
     gridMap map { row =>
-      val r = row.split(" ").toList
+      val r = row.split(" ").toList.filterNot(_ == "")
       r map { key =>
         GridPart.apply(key)
       }

@@ -39,6 +39,26 @@ img {
   border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.tool:nth-child(2) {
+  margin-right: -5px;
+}
+
+.tool:nth-child(3) {
+  margin-right: -10px;
+}
+
+.tool:nth-child(4) {
+  margin-right: -15px;
+}
+
+.tool:nth-child(5) {
+  margin-right: -20px;
+}
+
+.tool:nth-child(6) {
+  margin-right: -25px;
+}
+
 .grid-row:nth-child(5n+0) .grid-space {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
