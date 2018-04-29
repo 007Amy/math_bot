@@ -43,6 +43,7 @@
       </div>
       <splash-screen v-else></splash-screen>
     </transition>
+    <robotcarrying></robotcarrying>
   </div>
 </template>
 
@@ -52,6 +53,7 @@
   import Congrats from './Congrats';
   import Tryagain from './Try_again';
   import SplashScreen from './Splash_screen';
+  import Robotcarrying from './Robot_carrying';
 
   export default {
     computed: {
@@ -123,7 +125,8 @@
     components: {
       Congrats,
       Tryagain,
-      SplashScreen
+      SplashScreen,
+      Robotcarrying
     },
   };
 </script>

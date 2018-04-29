@@ -1,6 +1,8 @@
 <template>
-  <div class="robot-carrying">
+  <div v-if="robotCarrying" class="robot-carrying" :style="robotCarrying.length ? {'background-color': 'rgba(0, 0, 0, 0.5)'} : ''">
+    {{totalValueCarried ? totalValueCarried : ''}}
     <img
+      class="animated zoomIn"
       v-for="(image, ind) in robotCarrying"
       :key="'robot-carrying' + ind"
       :src="toolImages[image]"
@@ -14,6 +16,30 @@
 
   export default {
     computed: {
+      totalValueCarried() {
+        return this.robotCarrying.reduce((acc, tool) => {
+          switch (tool) {
+            case 'kitty':
+              acc += 1;
+              break;
+            case 'ten':
+              acc += 10;
+              break;
+            case 'oneHundred':
+              acc += 100;
+              break;
+            case 'oneThousand':
+              acc += 1000;
+              break;
+            case 'tenHundred':
+              acc += 10000;
+              break;
+            default:
+              acc += 0;
+          }
+          return acc
+        }, 0)
+      },
       toolImages() {
         return assets.tools;
       },
