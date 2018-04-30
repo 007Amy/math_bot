@@ -4,7 +4,7 @@
   right: 0;
   z-index: 1010;
   position: absolute;
-  top: -200px;
+  top: -185px;
 }
 
 .popover-bucket-content {
@@ -17,47 +17,57 @@
 }
 
 .pointer-slider {
-  width: 97%;
+  width: 100%;
   margin: 0 auto;
   position: relative;
 }
 
 .pointer {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  margin-right: 1px;
+  margin-top: -1px;
+}
+
+.pointer-size {
   position: absolute;
-  top: -1px;
-  width: 0;
-  height: 0;
   border-style: solid;
-  border-width: 32px 15px 0 20px;
-  border-color: #000000 transparent transparent transparent;
+  border-width: 20px 18px 0 18px;
+}
+
+.pointer-body {
+  top: -1px;
   z-index: 1001;
+  border-color: #000000 transparent transparent transparent;
 }
 
 .pointer-border {
-  position: absolute;
   top: 1px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 32px 15px 0 20px;
-  border-color: #737373 transparent transparent transparent;
   z-index: 0;
+  border-color: #737373 transparent transparent transparent;
 }
 
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
   .popover-bucket {
-    height: 120px;
-    top: -130px;
+    height: 110px;
+    top: -100px;
+  }
+
+  .pointer {
+    height: 10px;
+    width: 20px;
+  }
+
+  .pointer-size {
+    border-width: 10px 9px 0 9px;
   }
 }
 
 /* Small Devices */
 @media only screen and (max-width : 667px) {
-  .popover-bucket {
-    height: 150px;
-    top: -150px;
-  }
+
 }
 
 /* Extra Small Devices, Phones */
