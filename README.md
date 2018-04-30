@@ -159,7 +159,21 @@ open source projects in this way will work,
 but this is very experimental and likely to fail 
 (most open source project do fail).
 
+## What if someone makes a mistake updating the spreadsheet
+If you have gotten this far and you plan
+to buy mathbits for big money
+you are probably an idiot and there is nothing that can be done for you,
 
+We are using twitter and a google doc spreadsheet.
+If we fat finger something or your twitter account gets hacked
+or we just decide we don't like your face
+you could easily lose your mathbits.
+
+But keep in mind you have 100% control of all of the 
+value created by the mathbot open source project 
+(as is everyone else with access to our open access repo).
+You always have the option of taking everything of value
+and ditching all of us.
 
 ### Deployment
 
