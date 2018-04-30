@@ -97,6 +97,10 @@ img {
   width: 20px;
 }
 
+.grid-wall {
+  opacity: 0.8;
+}
+
 @keyframes activeglow{
   to{
     box-shadow:

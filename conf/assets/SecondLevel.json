@@ -2,7 +2,7 @@
   "level": "SecondLevel",
   "prevLevel": "BasicProgramming",
   "nextLevel": "ThirdLevel",
-  "show": true,
+  "show": false,
   "steps": {
     "One": {
       "level": "SecondLevel",

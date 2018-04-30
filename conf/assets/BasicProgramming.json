@@ -263,7 +263,7 @@
       "description": "Ok, now it's time to test out your new skills. Get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!! using as many commands as you want.",
       "mainMax": -1,
       "robotOrientation": 0,
-      "stagedEnabled": true,
+      "stagedEnabled": false,
       "activeEnabled": true,
       "stagedQty": 0,
       "assignedStaged": {},
@@ -292,7 +292,7 @@
       "description": "This one is a little more tricky. Get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!! using only 3 commands. You will probably need a function.",
       "mainMax": 3,
       "robotOrientation": 0,
-      "stagedEnabled": true,
+      "stagedEnabled": false,
       "activeEnabled": true,
       "stagedQty": 0,
       "assignedStaged": {},
@@ -308,6 +308,99 @@
       "problem": "0",
       "clearMain": true,
       "prevStep": "WalkAndTurn",
+      "nextStep": "Maze1"
+    },
+    "Maze1": {
+      "level": "BasicProgramming",
+      "step": "Maze1",
+      "gridMap": [
+        "|E| |E| |E| |E| |E| |W| |E| |W| |E| |E|",
+        "|E| |E| |E| |E| |E| |W| ($) |W| |E| |E|",
+        "|W| |W| |W| |W| |W| |W| |E| |W| |E| |E|",
+        "|E| |E| |E| (R) |E| |E| |E| |W| |E| |E|",
+        "|W| |W| |W| |W| |W| |W| |W| |W| |E| |E|"
+      ],
+      "description": "Wow, you sure have learned allot! Get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!",
+      "mainMax": -1,
+      "robotOrientation": 90,
+      "stagedEnabled": false,
+      "activeEnabled": true,
+      "stagedQty": 0,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot",
+        "changeRobotDirection"
+      ],
+      "specialParameters": [
+        "functionRequired"
+      ],
+      "problem": "0",
+      "clearMain": true,
+      "prevStep": "WalkAndTurnWithFunctions",
+      "nextStep": "Maze2"
+    },
+    "Maze2": {
+      "level": "BasicProgramming",
+      "step": "Maze2",
+      "gridMap": [
+        "|W| |W| |W| |W| |W| |W| |W| |W| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| (R) |W| |E| |E|",
+        "|E| |W| |W| |E| |W| |W| |W| |W| |E| |E|",
+        "|E| ($) |E| |E| |W| |E| |E| |E| |E| |E|",
+        "|W| |W| |W| |W| |W| |E| |E| |E| |E| |E|"
+      ],
+      "description": "Get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!",
+      "mainMax": -1,
+      "robotOrientation": 270,
+      "stagedEnabled": false,
+      "activeEnabled": true,
+      "stagedQty": 0,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot",
+        "changeRobotDirection"
+      ],
+      "specialParameters": [
+        "functionRequired"
+      ],
+      "problem": "0",
+      "clearMain": true,
+      "prevStep": "Maze1",
+      "nextStep": "Maze3"
+    },
+    "Maze3": {
+      "level": "BasicProgramming",
+      "step": "Maze3",
+      "gridMap": [
+        "|W| |W| |W| |W| |W| |W| |W| |W| |W| |W|",
+        "(R) |E| |W| |E| |E| |E| |E| |E| |E| |W|",
+        "|W| |E| |E| |E| |E| |E| |W| |W| |E| |W|",
+        "|W| |E| |W| |W| |W| |E| |E| |E| |E| |W|",
+        "|E| |E| |W| ($) |E| |E| |W| |W| |W| |W|"
+      ],
+      "description": "Get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!",
+      "mainMax": -1,
+      "robotOrientation": 90,
+      "stagedEnabled": false,
+      "activeEnabled": true,
+      "stagedQty": 0,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot",
+        "changeRobotDirection"
+      ],
+      "specialParameters": [
+        "functionRequired"
+      ],
+      "problem": "0",
+      "clearMain": true,
+      "prevStep": "Maze2",
       "nextStep": "None"
     }
   }
