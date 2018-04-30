@@ -6,8 +6,10 @@
         <edit-function v-else></edit-function>
       </div>
       <div class="pointer-slider">
-        <div class="pointer-border" :style="popoverBucket.style"></div>
-        <div class="pointer" :style="popoverBucket.style"></div>
+        <div class="pointer" :style="{'margin-left': this.pointerCoord + 'px'}">
+          <div class="pointer-size pointer-border"></div>
+          <div class="pointer-size pointer-body"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -16,28 +18,49 @@
 <script>
   import StagedFunctions from './Staged_functions';
   import EditFunction from './Edit_function'
-  import PopoverBucket from '../services/PopoverBucket';
 
   export default {
-    data () {
-      return {
-        popoverBucket: new PopoverBucket(this)
-      }
+    mounted() {
+      this.updatePointerPosition();
     },
     computed: {
       editingIndex() {
         return this.$store.getters.getEditingIndex;
       },
       functionAreaShowing() {
-        const f = this.$store.getters.getFunctionAreaShowing;
-        this.popoverBucket.updatePointerPosition()
-        return f
-      },
+        return this.$store.getters.getFunctionAreaShowing;
+      }
+    },
+    updated() {
+      this.updatePointerPosition();
+    },
+    watch: {
+      editingIndex () {
+        this.updatePointerPosition();
+      }
+    },
+    data() {
+      return {
+        pointerCoord: 0
+      }
+    },
+    methods: {
+      updatePointerPosition () {
+        const $ele = $(this.evt.target);
+        const pos = $ele.position();
+        let left = pos.left;
+        const pointerWidth = $('.pointer').width()
+
+        left += (($ele.width() / 2) - (pointerWidth / 2))
+
+        this.pointerCoord = left;
+      }
     },
     components: {
       StagedFunctions,
       EditFunction
-    }
+    },
+    props: ['evt']
   }
 </script>
 

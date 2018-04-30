@@ -2,7 +2,8 @@
   <div class="commands" v-if="activeFunctionGroups !== null">
 
     <popover-bucket
-      :content="functionAreaShowing"
+      v-if="commandEvt !== null"
+      :evt="commandEvt"
     ></popover-bucket>
 
     <div class="command-control-button-group">
@@ -119,6 +120,7 @@
     },
     data() {
       return {
+        commandEvt: null,
         functionsPosition: 0,
         commandOptions: {
           group: {
@@ -153,13 +155,16 @@
         const color = this.findColor();
         this.$store.dispatch('colorSelected', color);
       },
-      toggleFunctionEdit(_1, _2, ind) {
+      toggleFunctionEdit(evt, _2, ind) {
+        this.commandEvt = evt;
         utils.toggleFunctionEdit({context: this, ind: ind, show: 'editFunction'});
       },
-      toggleFunctionAdd() {
+      toggleFunctionAdd(evt) {
+        this.commandEvt = evt;
         utils.toggleFunctionEdit({context: this, show: this.functionAreaShowing === 'addFunction' ? 'editMain' : 'addFunction'});
       },
       closeFunctionBox() {
+        this.commandEvt = null;
         utils.toggleFunctionEdit({context: this, show: 'editMain'})
       },
       start() {
