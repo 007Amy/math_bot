@@ -78,7 +78,8 @@ class RunCompiled {
     api.getStats({tokenId: this.$store.getters.getTokenId}, stats => {
       const stepToken = stats.levels[stats.level][stats.step];
       setTimeout(() => {
-        if (this.stepData.name === stepToken.step) {
+        console.log(this.stepData.step, stepToken.name)
+        if (this.stepData.step === stepToken.name) {
           this.$router.push({path: 'profile'});
         } else {
           this.$store.dispatch('updateStats', {stats, cb: () => this.$store.dispatch('initNewGame', this.context)});
