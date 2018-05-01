@@ -78,7 +78,6 @@ class RunCompiled {
     api.getStats({tokenId: this.$store.getters.getTokenId}, stats => {
       const stepToken = stats.levels[stats.level][stats.step];
       setTimeout(() => {
-        console.log(this.stepData.step, stepToken.name)
         if (this.stepData.step === stepToken.name) {
           this.$router.push({path: 'profile'});
         } else {

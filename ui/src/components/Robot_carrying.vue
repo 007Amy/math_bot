@@ -1,12 +1,12 @@
 <template>
   <div v-if="robotCarrying" class="robot-carrying" :style="robotCarrying.length ? {'background-color': 'rgba(0, 0, 0, 0.5)'} : ''">
-    {{totalValueCarried ? totalValueCarried : ''}}
+    <p v-if="totalValueCarried">sum: {{totalValueCarried}}</p>
     <img
-      class="animated zoomIn"
-      v-for="(image, ind) in robotCarrying"
-      :key="'robot-carrying' + ind"
-      :src="toolImages[image]"
-    >
+        class="animated zoomIn"
+        v-for="(image, ind) in robotCarrying"
+        :key="'robot-carrying' + ind"
+        :src="toolImages[image]"
+      >
   </div>
 </template>
 

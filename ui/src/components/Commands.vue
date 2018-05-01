@@ -155,17 +155,23 @@
         const color = this.findColor();
         this.$store.dispatch('colorSelected', color);
       },
+      togglePopoverBucket({ind, show}) {
+        this.$store.dispatch('updateEditingIndex', ind);
+        this.$store.dispatch('updateFunctionAreaShowing', show);
+      },
       toggleFunctionEdit(evt, _2, ind) {
         this.commandEvt = evt;
-        utils.toggleFunctionEdit({context: this, ind: ind, show: 'editFunction'});
+        const i = ind === this.editingIndex ? null : ind;
+        const show = i === null ? 'editMain' : 'editFunction';
+        this.togglePopoverBucket({ind: i, show: show});
       },
       toggleFunctionAdd(evt) {
         this.commandEvt = evt;
-        utils.toggleFunctionEdit({context: this, show: this.functionAreaShowing === 'addFunction' ? 'editMain' : 'addFunction'});
+        this.togglePopoverBucket({show: this.functionAreaShowing === 'addFunction' ? 'editMain' : 'addFunction'});
       },
       closeFunctionBox() {
         this.commandEvt = null;
-        utils.toggleFunctionEdit({context: this, show: 'editMain'})
+        this.togglePopoverBucket({ind: null, show: 'editMain'})
       },
       start() {
         if (this.functionAreaShowing === 'editMain') {
