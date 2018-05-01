@@ -1,17 +1,6 @@
 import elementResizeEvent from 'element-resize-event';
 
 export default {
-  toggleFunctionEdit({context, ind, show}) {
-    const functionAreaShowing = context.$store.getters.getFunctionAreaShowing
-    const editingIndex = context.$store.getters.getEditingIndex
-    if (functionAreaShowing === show && editingIndex === ind) {
-      context.$store.dispatch('updateFunctionAreaShowing', 'editMain')
-    } else {
-      context.$store.dispatch('updateEditingIndex', ind);
-      context.$store.dispatch('updateFunctionAreaShowing', show);
-    }
-  },
-
   parseCamelCase: str => str.split('')
     .map(l => l === l.toUpperCase() ? ` ${l}` : l).join(''),
 

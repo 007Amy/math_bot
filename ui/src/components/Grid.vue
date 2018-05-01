@@ -17,27 +17,24 @@
           <div
             class="grid-space animated"
             v-for="(space, sInd) in row"
-            :class="isItForceField(space.name) && space.active ? 'active-force-field' : isItForceField(space.name) && !space.active ? 'inactive-force-field' : ''"
-            :level="isItForceField(space.name) ? sInd / 5 : null"
+            :class="'grid-' + space.name"
             :key="'space:' + rInd + ':' + sInd"
-            :style="space.name === 'empty space floor' ? {'background-image': 'url(' + permanentImages.floor + ')'} : space.name === 'wall' ? {'background-image': 'url(' + permanentImages.wall + ')', 'background-color': 'rgba(0, 0, 0, 0.2)'} : {'background-image': 'url(' + permanentImages.floor + ')'}"
+            :style="{'background-image': 'url(' + permanentImages[convertToImgName(space.name)] + ')'}"
           >
             <img
-              v-if="space.name === 'final answer' || space.name === 'hold button' "
+              v-if="space.name === 'final answer'"
               class="drop-point glyphicon"
-              :src="permanentImages.blackHole">
+              :src="permanentImages.blackHole" />
             <img
               class="tool animated zoomIn"
               v-for="(tool, tInd) in space.tools"
               :key="'tool:' + tInd + ':' + rInd + ':' + sInd"
-              :src="toolImages[tool.image]"
-            >
+              :src="toolImages[tool.image]" />
             <img
               class="robot animated"
               v-if="space.robotSpot"
               :key="'ROBOT'"
-              :src="robot._robotDirections[robotOrientation]"
-            >
+              :src="robot._robotDirections[robotOrientation]" />
           </div>
         </div>
       </div>
@@ -112,14 +109,13 @@
       pause() {
         this.robot.state = 'paused';
       },
-      isItForceField(name) {
-        return name === 'force field';
-      },
-      isItExpression(name) {
-        return name === 'full expression';
-      },
-      beforeEnter: function (el) {
-        el.style.opacity = 0;
+      convertToImgName(spaceName) {
+        switch (spaceName) {
+          case 'wall':
+            return spaceName;
+          default:
+            return 'floor'
+        }
       }
     },
     components: {
