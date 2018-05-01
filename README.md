@@ -175,10 +175,9 @@ value created by the mathbot open source project
 You always have the option of taking everything of value
 and ditching all of us.
 
-### Deployment
+## Running The App
 
-Prerequisites
----
+### Prerequisites
 
   - Java -v 1.8
     - [Java](https://java.com/en/download/)
@@ -191,8 +190,7 @@ Prerequisites
   - MongoDB install globally
     - Goto [MongoDb](https://docs.mongodb.com/manual/installation/)
     
-Suggested IDE
----
+### Suggested IDE
 
 The project has been built thus far with Intellij
    - [Intellij](https://www.jetbrains.com/idea/) 
@@ -201,8 +199,7 @@ The project has been built thus far with Intellij
         - VueJs Plugin
         - ScalaFmt Plugin 
 
-Getting started
----
+### Getting started
 
 #### Setting up front end keys
 
@@ -266,16 +263,16 @@ Getting started
        # Open app (From terminal only)
        heroku open
     ```
-Game Rules to Pass A Step
----
+### Game Rules to Pass A Step
+
 1) Program must be completely finished running
 2) Robot must not be carrying anything
 3) Robot must be standing on the portal
 4) Correct amount of items must be placed on portal (if problem exists)
 5) Special parameters must be met (if any)
 
-Implementing New Levels
----
+### Implementing New Levels
+
 * Rules
     * Levels are located in `conf/assets`
     * Levels and steps are a bi-direction linked list data structure
