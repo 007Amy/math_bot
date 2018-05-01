@@ -397,4 +397,23 @@ Current Special Parameters
 "{1} + {2} * ({6} - {4}) - 55" == "4 + 65 * (123456 - 4513) - 55"
 ```
 
+#### Adding Pre-built Actives;
+* Active functions already built for the user
+```$xslt
+{
+    <{string}NAME OF FUNCTION>: [
+        <{string}COMMAND NAME (see COMMAND NAMES section),          
+        "moveRobotForwardOneSpot",
+        "moveRobotForwardOneSpot",
+        "moveRobotForwardOneSpot"
+    ],
+    "rocket": [
+        "moveRobotForwardOneSpot",
+        "moveRobotForwardOneSpot",
+        "moveRobotForwardOneSpot",
+        "moveRobotForwardOneSpot"
+    ]
+}
+```
+
 
