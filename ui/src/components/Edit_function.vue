@@ -126,7 +126,7 @@
           animation: 100,
           ghostClass: 'ghost',
           chosenClass: 'chosen',
-          filter: '.noDrag',
+          filter: '.noDrag'
         },
       }
     },

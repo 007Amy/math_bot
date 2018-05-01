@@ -1,5 +1,5 @@
 <template>
-    <button
+    <div
       :id="func.created_id"
       class="function-box-button"
       :class="origin + '-box-button'"
@@ -18,8 +18,8 @@
       >
         <div class="funcText" :id="'funcText' + func.created_id"> <p v-if="func.name">{{ func.name }}</p> <p v-else style="opacity: 0">"-"</p> </div>
       </div>
-      <img v-else-if="origin === 'editMain'" class="functionImage" :src="funcAndcmdImages[func.image]">
-    </button>
+      <img v-else-if="origin === 'editMain'" class="function-image" :src="funcAndcmdImages[func.image]">
+    </div>
 </template>
 
 <script>

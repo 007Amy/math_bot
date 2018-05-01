@@ -2,7 +2,7 @@
   <div class="total-grid">
     <transition
       name="custom-classes-transition"
-      enter-active-class="animated rotateIn"
+      enter-active-class="animated zoomIn"
       leave-active-class="hidden"
     >
       <congrats v-if="congratsShowing"></congrats>
