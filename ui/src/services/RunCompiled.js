@@ -72,19 +72,22 @@ class RunCompiled {
   }
 
   win() {
-
-    this.$store.dispatch('showCongrats');
-
     api.getStats({tokenId: this.$store.getters.getTokenId}, stats => {
       const stepToken = stats.levels[stats.level][stats.step];
-      setTimeout(() => {
-        if (this.stepData.step === stepToken.name) {
-          this.$router.push({path: 'profile'});
-        } else {
-          this.$store.dispatch('updateStats', {stats, cb: () => this.$store.dispatch('initNewGame', this.context)});
+
+      this.$store.dispatch('updateStats', {stats, cb: () => {
+          this.$store.dispatch('showCongrats')
+
+          setTimeout(() => {
+            if (this.stepData.step === stepToken.name) {
+              this.$router.push({path: 'profile'});
+            } else {
+              this.$store.dispatch('initNewGame', this.context)
+            }
+            this.$store.dispatch('hideCongrats')
+          }, 4000)
         }
-        this.$store.dispatch('hideCongrats')
-      }, 4000)
+      });
     })
   }
 

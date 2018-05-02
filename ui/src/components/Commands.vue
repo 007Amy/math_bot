@@ -48,7 +48,13 @@
       </draggable>
     </div>
 
-    <img class="open-staged dialog-button" v-if="this.currentStepData.stagedEnabled" :class="functionAreaShowing === 'addFunction' ? 'rotate-to-x' : 'rotate-to-plus'" @click="toggleFunctionAdd" :src="permanentImages.buttons.plusButton" />
+    <img
+      class="open-staged dialog-button"
+      v-if="this.currentStepData.stagedEnabled"
+      :class="functionAreaShowing === 'addFunction' ? 'rotate-to-x' : 'rotate-to-plus'"
+      @click="toggleFunctionAdd"
+      :src="permanentImages.buttons.plusButton"
+      data-toggle="tooltip" :title="functionAreaShowing === 'addFunction' ? 'Close' : 'Open'" />
 
   </div>
 </template>
@@ -64,8 +70,10 @@
     name: 'FunctionDrop',
     mounted() {
       window.addEventListener('resize', () => {
-        this.functionsPosition = 0;
-        this.moveSwiper('up');
+        if (window.location.hash === '#/robot') {
+          this.functionsPosition = 0;
+          this.moveSwiper('up');
+        }
       });
     },
     computed: {

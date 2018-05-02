@@ -84,6 +84,7 @@
 .planet {
   position: absolute;
   color: white;
+  cursor: pointer;
 }
 
 .planet1 {

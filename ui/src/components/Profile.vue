@@ -1,16 +1,18 @@
 <template>
-  <div class="profile" data-aos="fade-in">
-    <div class="secretTools">
-      <button @click="unlock()">Unlock</button>
-      <button @click="reset()">Reset</button>
-    </div>
-    <splash-screen v-if="splashScreenShowing"></splash-screen>
-    <arithmetic v-else-if="!splashScreenShowing && profileView === 'Arithmetic' && stats !== undefined"></arithmetic>
-    <div class="bottomButtons">
-      <img :src="permanentImages.instructionsRobot">
-      <div class="mathbotText">MathBot</div>
-      <div @click="$router.push({path: '/marketing'})" class="text" id="about">About</div>
-      <div v-if="auth !== null" @click="auth.logout()" class="text" id="signOut">Sign Out</div>
+  <div class="profile-container">
+    <div class="profile" data-aos="fade-in">
+      <div class="secretTools">
+        <button @click="unlock()">Unlock</button>
+        <button @click="reset()">Reset</button>
+      </div>
+      <splash-screen v-if="splashScreenShowing"></splash-screen>
+      <arithmetic v-else-if="!splashScreenShowing && profileView === 'Arithmetic' && stats !== undefined"></arithmetic>
+      <div class="bottomButtons">
+        <img :src="permanentImages.instructionsRobot">
+        <div class="mathbotText">MathBot</div>
+        <div @click="$router.push({path: '/marketing'})" class="text" id="about">About</div>
+        <div v-if="auth !== null" @click="auth.logout()" class="text" id="signOut">Sign Out</div>
+      </div>
     </div>
   </div>
 </template>

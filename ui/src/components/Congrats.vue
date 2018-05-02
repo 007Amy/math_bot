@@ -2,7 +2,8 @@
   <div
     class="message-template congrats"
   >
-    <div><img class="star" id="oneStar" :src="permanentImages.stars[stats.levels[stats.level][stats.step].stars]"></div>
+    <!-- Need to come back to this when we create an actual starring system -->
+    <div><img class="star" id="oneStar" :src="permanentImages.stars[5]"></div>
     <p>NICE!!!</p>
   </div>
 </template>
