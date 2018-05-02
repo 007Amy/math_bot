@@ -85,19 +85,16 @@ class AuthService {
   }
 
   init() {
-    this.startSplashScreen();
-
     // Listening for the authenticated event
     this.lock.on("authenticated", (authResult) => {
       this.handleAuth(authResult)
+      this.stopSplashScreen();
     });
 
     if (this.context.$store.getters.getLoggedIn) {
       let token = this.context.$store.getters.getToken;
       if (token === null || token.token_id === '') {
         this.login();
-      } else {
-        this.stopSplashScreen();
       }
     }
 
