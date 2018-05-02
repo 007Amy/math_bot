@@ -1,5 +1,5 @@
 <template>
-  <div class="background-container" data-aos="fade-in">
+  <div class="robot-container" data-aos="fade-in">
     <div id="robot" class="row animated">
 
       <div id="control-panel-box">
@@ -37,7 +37,6 @@
   import {_} from 'underscore';
   import Identicon from 'identicon.js';
   import md5 from 'md5';
-  import Counter from './Counter';
   import Grid from './Grid';
   import Commands from './Commands';
   import Editmain from './Edit_main';

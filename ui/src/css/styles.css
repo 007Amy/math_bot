@@ -6,7 +6,7 @@
     color: #FFFFFF;
     height: 100vh;
     width: 100vw;
-    background-color: #321528;
+    background-color: #000000;
     position: relative;
     display: flex;
     z-index: 200;
@@ -21,9 +21,6 @@
     height: 100vh;
     width: 100vw;
     padding: 0;
-    transition: background 0s linear;
-    background-size: 100vw 130vh;
-    background-position: left top;
     overflow: hidden;
   }
 

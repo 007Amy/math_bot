@@ -35,7 +35,7 @@
     mounted() {
       this.adjustJustify();
       window.addEventListener('resize', () => {
-        this.adjustJustify();
+        if (window.location.hash === '#/robot') this.adjustJustify();
       });
     },
     updated() {

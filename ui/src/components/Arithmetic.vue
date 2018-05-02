@@ -40,8 +40,6 @@
   export default {
     mounted() {
       this.selectedLevel = this.stats.level;
-      this.fadeInPlanet(this.selectedLevel);
-
       // Anytime this component is mounted remove level and step state from local storage.
       localStorage.removeItem('LEVEL_STEP');
     },
@@ -98,21 +96,10 @@
       logout() {
         this.$store.dispatch('removeNonces');
       },
-      fadeOutPlanet(planet) {
-        $('#' + planet + '-selected').fadeTo(600, 0);
-        $('#' + planet + '-active').fadeTo(600, 1);
-      },
-      fadeInPlanet(planet) {
-        $('#' + planet + '-selected').fadeTo(600, 1);
-        $('#' + planet + '-active').fadeTo(600, 0);
-      },
       selectLevel(level, step) {
         api.switchLevel({tokenId: this.tokenId, level: level, step: step}, (res) => {
           this.$store.dispatch('updateStats', {stats: res.body});
-          this.fadeOutPlanet(this.selectedLevel);
-          this.fadeOutPlanet(this.selectedLevel);
           this.selectedLevel = level;
-          this.fadeInPlanet(this.selectedLevel);
         })
       },
       selectProfileView(loc) {
@@ -123,10 +110,6 @@
           this.$store.dispatch('updateStats', {stats: res.body, cb: () => {
             this.$store.dispatch('initNewGame', this);
           }});
-          const $app = $('#app');
-          $app.css({'transition-duration': '1s'});
-          $app.css('background-image', 'url(' + this.permanentImages.gridSpace + ')');
-          $('.profile').addClass('fadeOut');
         })
       }
     }

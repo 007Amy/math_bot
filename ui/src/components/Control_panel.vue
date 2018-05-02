@@ -4,11 +4,12 @@
     <img @click="goToProfile()"
          class="return-to-profile"
          :src="permanentImages.returnToProfile"
+         data-toggle="tooltip" title="Return to profile"
     />
 
     <div class="instructions">
       <div class="instructions-filler-left"></div>
-      <img @click="toggleSpeechBubble(this)" :src="permanentImages.instructionsRobot" class="instructions-robot">
+      <img @click="toggleSpeechBubble(this)" :src="permanentImages.instructionsRobot" class="instructions-robot" data-toggle="tooltip" title="Toggle speech bubble">
       <div class="speech-container" :class="description !== '' && speechBubbleShowing ? 'fade-in-speech' : 'fade-out-speech'">
         <img class="speech-bubble" :src="permanentImages.speechBubble" :alt="description">
         <div class="speech" v-html="description"></div>

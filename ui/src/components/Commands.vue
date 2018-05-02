@@ -64,8 +64,10 @@
     name: 'FunctionDrop',
     mounted() {
       window.addEventListener('resize', () => {
-        this.functionsPosition = 0;
-        this.moveSwiper('up');
+        if (window.location.hash === '#/robot') {
+          this.functionsPosition = 0;
+          this.moveSwiper('up');
+        }
       });
     },
     computed: {

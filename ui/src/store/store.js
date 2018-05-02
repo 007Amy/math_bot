@@ -218,14 +218,9 @@ export default new Vuex.Store({
         // update lambdas to step specific lambdas
         context.$store.dispatch('updateLambdas', {lambdas: stepData.lambdas});
 
-        utils.animateFlipInX('.grid');
-
         // Since we are going to robot, set level and step state in localstorage
         localStorage.setItem('LEVEL_STEP', JSON.stringify({level: level, step: step}))
         context.$router.push({path: 'robot'});
-
-        // $('.profile').removeClass('fadeOut');
-        // $('#app').css({'transition-duration': '0s'});
       });
     },
     UPDATE_LAMBDAS(state, {lambdas}) {
