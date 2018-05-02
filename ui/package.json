@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "aos": "^2.2.0",
-    "auth0-lock": "^10.24.3",
+    "auth0-lock": "^11.6.1",
     "bcrypt": "^1.0.2",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
