@@ -3,6 +3,7 @@ var path = require('path');
 
 module.exports = {
   build: {
+    version: '0.01-beta',
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../../public/index.html'),
     assetsRoot: path.resolve(__dirname, '../../public'),
