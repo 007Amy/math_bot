@@ -320,7 +320,7 @@
         "|E| |E| |E| (R) |E| |E| |E| |W| |E| |E|",
         "|W| |W| |W| |W| |W| |W| |W| |W| |E| |E|"
       ],
-      "description": "Wow, you sure have learned allot! Get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!",
+      "description": "Wow, you sure have learned allot! Get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!! \n I bet !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522350096/functionIcons/leftArrow_bq64oj.png'!! will come in handy!",
       "mainMax": -1,
       "robotOrientation": 90,
       "stagedEnabled": false,
@@ -351,7 +351,7 @@
         "|E| ($) |E| |E| |W| |E| |E| |E| |E| |E|",
         "|W| |W| |W| |W| |W| |E| |E| |E| |E| |E|"
       ],
-      "description": "Get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!!",
+      "description": "Get to the !![img]src='https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg'!! using the least amount of functions possible.",
       "mainMax": -1,
       "robotOrientation": 270,
       "stagedEnabled": false,
