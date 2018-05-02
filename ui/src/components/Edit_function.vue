@@ -18,7 +18,7 @@
         <input v-default-value="editingFunction.name" class="func-name" type="text" maxlength="52" placeholder="Name your function here" v-model="editingFunction.name" @change="updateName()" />
       </div>
 
-      <img class="close-edit-function dialog-button" @click="closeEditFunction" :src="permanentImages.buttons.xButton">
+      <img class="close-edit-function dialog-button" @click="closeEditFunction" :src="permanentImages.buttons.xButton" data-toggle="tooltip" title="Close">
     </div>
 
     <div class="edit-function-content">
