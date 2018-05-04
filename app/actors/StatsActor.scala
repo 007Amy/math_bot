@@ -36,7 +36,6 @@ object StatsActor {
     if (updatedCurrentStep.nextLevel == "None" && updatedCurrentStep.nextStep == "None") {
 
       stats.copy(
-        gameComplete = Some(true),
         levels = stats.levels
           .map(
             l =>
