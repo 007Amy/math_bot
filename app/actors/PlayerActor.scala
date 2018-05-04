@@ -30,6 +30,8 @@ object PlayerActor {
 
   case class AddDefaultFuncsField(playerToken: PlayerToken)
 
+  case class AddNamesToCommands(playerToken: PlayerToken)
+
   object MakeStats {
     def makeStats(levels: Map[String, RawLevelData]): Stats = {
       val firstLevel = levels.find(rld => rld._2.prevLevel == "None" || !levels.isDefinedAt(rld._2.prevLevel)) match {
@@ -209,7 +211,7 @@ class PlayerActor()(system: ActorSystem,
       updateToken(updatePlayerToken.playerToken)
         .map { pt =>
           pt.lambdas.get.defaultFuncs match {
-            case Some(_) => PreparedPlayerToken(pt)
+            case Some(_) => AddNamesToCommands(pt)
             case None => AddDefaultFuncsField(pt)
           }
         }
@@ -217,14 +219,36 @@ class PlayerActor()(system: ActorSystem,
     case AddDefaultFuncsField(playerToken) => // Polyfill to ensure field added to existing users
       playerToken.lambdas match {
         case Some(lambdas) =>
-          PreparedPlayerToken(
+          updateToken(
             playerToken
               .copy(
-                lambdas =
-                  Some(lambdas.copy(stagedFuncs = List.empty[FuncToken], defaultFuncs = Some(DefaultCommands.funcs)))
+                lambdas = Some(
+                  lambdas.copy(stagedFuncs = List.empty[FuncToken], defaultFuncs = Some(DefaultCommands.funcs))
+                )
               )
-          )
-        case None => ActorFailed("Unable to locate lambdas at AddDefaultFuncsField")
+          ).map { AddNamesToCommands.apply }
+            .pipeTo(self)(sender)
+          logger.LogInfo(className, "Adding default tokens")
+        case None =>
+          Future {}
+            .map { _ =>
+              ActorFailed("Unable to locate lambdas at AddDefaultFuncsField")
+            }
+            .pipeTo(self)(sender)
+      }
+    case AddNamesToCommands(playerToken) => // Polyfill to ensure commands include names for existing users
+      playerToken.lambdas match {
+        case Some(lambdas) =>
+          updateToken(
+            playerToken.copy(lambdas = Some(lambdas.copy(cmds = DefaultCommands.cmds)))
+          ).map { PreparedPlayerToken.apply }
+            .pipeTo(self)(sender)
+        case None =>
+          Future {}
+            .map { _ =>
+              ActorFailed("Unable to locate lambdas at AddNamesToCommands")
+            }
+            .pipeTo(self)(sender)
       }
     case EditLambdas(jsValue) =>
       jsValue.validate[PrepareLambdas].asOpt match {
