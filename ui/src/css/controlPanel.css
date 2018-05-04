@@ -66,6 +66,34 @@
   transition: all 0.4s ease-in;
 }
 
+/* 13" screen */
+@media only screen and (max-width : 1280px) {
+  .instructions {
+    height: 100px;
+  }
+
+  .return-to-profile {
+    /*height: 50px;*/
+  }
+
+  .speech-bubble {
+    width: 400px;
+  }
+
+  .instructions-filler-left {
+    flex-grow: 2.75;
+  }
+
+  .speech {
+    font-size: 14px;
+    font-weight: 200;
+    padding: 5px 10px 5px 5px;
+    width: 400px;
+    left: 5px;
+    transform: translate(5px, 0);
+  }
+}
+
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
   .instructions {

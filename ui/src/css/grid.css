@@ -163,34 +163,19 @@ img {
   top: 0;
 }
 
+/* 13" screen */
+@media only screen and (max-width : 1280px) {
+  .grid-space {
+    height: 70px;
+    width: 70px;
+  }
+}
+
 /* Large Phones, landscape*/
 @media only screen and (max-width : 992px) {
   .grid-space {
     height: 35px;
     width: 35px;
-  }
-
-  .instructions {
-    margin-top: 2px;
-    height: 40px;
-    margin-left: 140px;
-  }
-
-  .instructionsRobot {
-    width: 50px;
-  }
-
-  .speechBubble {
-    margin-bottom: 0;
-  }
-
-  .speech {
-    font-size: 10px;
-    line-height: 10px;
-  }
-
-  .returnToProfile {
-    width: 40px;
   }
 }
 
@@ -200,47 +185,10 @@ img {
     height: 35px;
     width: 35px;
   }
-
-  .instructions {
-    margin-top: 2px;
-    height: 40px;
-    margin-left: 140px;
-  }
-
-  .instructionsRobot {
-    width: 50px;
-  }
-
-  .speechBubble {
-    margin-bottom: 0;
-  }
-
-  .speech {
-    font-size: 10px;
-    line-height: 10px;
-  }
-
-  .returnToProfile {
-    width: 40px;
-  }
 }
 
 /* Extra Small Devices, Phones */
 @media only screen and (max-width : 480px) {
-  .instructions {
-    margin-top: 60px;
-    height: 40px;
-    margin-left: 20px;
-  }
-
-  .instructionsRobot {
-    width: 50px;
-  }
-
-  .speech {
-    font-size: 10px;
-    line-height: 10px;
-  }
 }
 
 /* Custom, iPhone 5 Retina */

@@ -166,140 +166,102 @@
   border: 1px solid white;
 }
 
-@media only screen
-and (min-device-width : 768px)
-and (max-device-width : 1024px)
-and (orientation : portrait) {
+/* 13" screen */
+@media only screen and (max-width : 1280px) {
   .planet1 {
-    height: 180px!important;
-    width: 180px!important;
-    top: 0!important;
-    left: 20px!important;
-  }
-  .planet2 {
-    height: 168px!important;
-    width: 168px!important;
-    top: 100px!important;
-    left: 240px!important;
-  }
-  .planet3 {
-    height: 182px!important;
-    width: 182px!important;
-    top: 320px!important;
-    left: 260px!important;
-  }
-  .planet4 {
-    height: 124px!important;
-    width: 124px!important;
-    top: 700px!important;
-    left: 50px!important;
-  }
-  .planet5 {
-    height: 206px!important;
-    width: 206px!important;
-    top: 500px!important;
-    left: 190px!important;
+    height: 380px;
+    width: 380px;
+    left: 0;
+    top: 0;
   }
 
+  .planet2 {
+    height: 216px;
+    width: 216px;
+    top: 10%;
+    left: 50%;
+  }
+
+  .planet3 {
+    height: 280px;
+    width: 280px;
+    top: 25%;
+    left: 65%;
+  }
+
+  .planet4 {
+    height: 140px;
+    width: 140px;
+    top: 60%;
+    left: 15%;
+  }
+
+  .planet5 {
+    height: 240px;
+    width: 240px;
+    top: 50%;
+    left: 45%;
+  }
+  .step-info-container {
+    margin: 0;
+  }
   .step-info {
-    font-size: 26px!important;
-    font-weight: 500!important;
-    line-height: 30px!important;
-    height: 90px!important;
-    width: 300px!important;
+    font-size: 15px;
+    line-height: 18px;
+    height: 70px;
+    width: 250px;
+  }
+  .step-text {
+    flex-grow: 3;
+    vertical-align: middle;
   }
   .step-image {
-    height: 100%!important;
-    width: 50%!important;
+    height: 100%;
+    width: 50%;
   }
   .level {
-    font-size: 30px!important;
-    font-weight: 500!important;
-    line-height: 35px!important;
+    font-size: 18px;
+    line-height: 24px;
+    max-width: 211px;
   }
 }
 
-@media only screen and (max-width : 1024px) {
-  /*.planet1 {*/
-    /*height: 180px;*/
-    /*width: 180px;*/
-    /*top: 0;*/
-    /*left: 20px;*/
-  /*}*/
-  /*.planet2 {*/
-    /*height: 168px;*/
-    /*width: 168px;*/
-    /*top: 100px;*/
-    /*left: 240px;*/
-  /*}*/
-  /*.planet3 {*/
-    /*height: 182px;*/
-    /*width: 182px;*/
-    /*top: 320px;*/
-    /*left: 260px;*/
-  /*}*/
-  /*.planet4 {*/
-    /*height: 124px;*/
-    /*width: 124px;*/
-    /*top: 700px;*/
-    /*left: 50px;*/
-  /*}*/
-  /*.planet5 {*/
-    /*height: 206px;*/
-    /*width: 206px;*/
-    /*top: 500px;*/
-    /*left: 190px;*/
-  /*}*/
-
-  /*.step-info {*/
-    /*font-size: 26px;*/
-    /*font-weight: 500;*/
-    /*line-height: 30px;*/
-    /*height: 90px;*/
-    /*width: 300px;*/
-  /*}*/
-  /*.step-image {*/
-    /*height: 100%;*/
-    /*width: 50%;*/
-  /*}*/
-  /*.level {*/
-    /*font-size: 30px;*/
-    /*font-weight: 500;*/
-    /*line-height: 35px;*/
-  /*}*/
-}
-
-@media only screen and (max-width : 812px) {
+@media only screen and (max-width : 992px) {
   .planet1 {
-    height: 180px;
-    width: 180px;
-    top: -10px;
-    left: 20px;
+    height: 380px;
+    width: 380px;
+    left: -10%;
+    top: -5%;
   }
+
   .planet2 {
-    height: 168px;
-    width: 168px;
-    top: 0;
-    left: 240px;
+    height: 216px;
+    width: 216px;
+    top: 15%;
+    left: 50%;
   }
+
   .planet3 {
-    height: 182px;
-    width: 182px;
-    top: 120px;
-    left: 360px;
+    height: 280px;
+    width: 280px;
+    top: 35%;
+    left: 50%;
   }
+
   .planet4 {
-    height: 124px;
-    width: 124px;
-    top: 190px;
-    left: 50px;
+    height: 140px;
+    width: 140px;
+    top: 75%;
+    left: 15%;
   }
+
   .planet5 {
-    height: 206px;
-    width: 206px;
-    top: 160px;
-    left: 190px;
+    height: 240px;
+    width: 240px;
+    top: 60%;
+    left: 45%;
   }
+
   .step-info-container {
     margin: 0;
   }
@@ -321,6 +283,39 @@ and (orientation : portrait) {
     font-size: 18px;
     line-height: 24px;
     max-width: 211px;
+  }
+}
+
+@media only screen and (max-height: 411px) {
+  .planet1 {
+    height: 170px;
+    width: 170px;
+    top: -10px;
+    left: 20px;
+  }
+  .planet2 {
+    height: 158px;
+    width: 158px;
+    top: 10px;
+    left: 270px;
+  }
+  .planet3 {
+    height: 172px;
+    width: 172px;
+    top: 120px;
+    left: 400px;
+  }
+  .planet4 {
+    height: 114px;
+    width: 114px;
+    top: 160px;
+    left: 50px;
+  }
+  .planet5 {
+    height: 196px;
+    width: 196px;
+    top: 170px;
+    left: 220px;
   }
 }
 
