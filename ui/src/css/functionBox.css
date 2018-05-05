@@ -61,6 +61,26 @@
   margin-left: 0;
 }
 
+/* 13" screen */
+@media only screen and (max-width : 1280px) {
+  .function-box-button {
+    height: 60px;
+    width: 60px;
+    margin: 0 5px;
+  }
+
+  .editMain-box-button {
+    height: 65px;
+    width: 65px;
+    margin: 0 0 0 -8px;
+  }
+
+  .editMain-box-button:first-child {
+    height: 57px;
+    width: 65px;
+  }
+}
+
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
   .function-box-button {
@@ -76,6 +96,7 @@
 
   .editMain-box-button:first-child {
     height: 38px;
+    width: 40px;
   }
 
   .command-name {
@@ -97,7 +118,9 @@
   }
 
   .editMain-box-button:first-child {
-    height: 30px;
+    margin-top: 1px;
+    height: 29px;
+    width: 33px;
   }
 
   .command-name {

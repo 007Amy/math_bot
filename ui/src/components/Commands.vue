@@ -1,5 +1,5 @@
 <template>
-  <div class="commands" v-if="activeFunctionGroups !== null">
+  <div class="commands" v-if="commands !== null && activeFunctions !== null">
 
     <popover-bucket
       v-if="commandEvt !== null"
@@ -41,7 +41,7 @@
           :key="func.created_id"
           :func="func"
           :ind="ind"
-          :collection="activeFunctionGroups[1]"
+          :collection="activeFunctions"
           :origin="'functions'"
           :method="toggleFunctionEdit"
         ></function-box>
@@ -115,9 +115,6 @@
       },
       funcImages() {
         return this.permanentImages.funcImages;
-      },
-      activeFunctionGroups() {
-        return this.$store.getters.getActiveFunctionGroups;
       },
       swiperSlide() {
         return this.$store.getters.getSwiperSlide;

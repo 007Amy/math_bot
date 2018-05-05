@@ -148,6 +148,35 @@
   transform:rotate(0);
 }
 
+/* 13" screen */
+@media only screen and (max-width : 1280px) {
+  .commands {
+    margin-bottom: 5px;
+    height: 75px;
+  }
+
+  .commands-slide {
+    margin: 0 auto;
+  }
+
+  .commands-slide > * {
+    /*height: 35px;*/
+  }
+
+  .methods {
+  }
+
+  .command-control-button-group {
+    height: 90%;
+    margin-right: 10px;
+  }
+
+  .command-control-button {
+    height: 20px;
+    width: 20px;
+  }
+}
+
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
   .commands {

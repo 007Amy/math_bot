@@ -10,36 +10,43 @@ import uid from 'uid'
 * @{method}_timedDelete = private method to delete method in 3 seconds
 * */
 class Message {
-  constructor ({msg, ind, state}) {
+  constructor ({type, msg, ind, state, runOnDelete}) {
+    this.type = type;
     this.msg = msg ? this._messages(msg) : null;
     this.state = state;
     this.index = ind || null;
     this.id = !ind ? uid(7) : null;
-    this.delete = this.delete.bind(this)
+    this.runOnDelete = runOnDelete || function () {}
+    this.timeOutCounter = 5000
+    this._removeSelf = this._removeSelf.bind(this)
+    this._timedDelete = this._timedDelete.bind(this)
   }
 
   _messages (msg) {
-    const messages = {
-      mainMax: "The main function is full!",
-      emptyMain: "The main function is empty!"
-    }
+    return msg
+  }
 
-    if (Object.keys(messages).includes(msg)) return messages[msg]
-    else return msg
+  _removeSelf () {
+    this.state.messageList.splice(this.index, 1);
+    this.runOnDelete();
   }
 
   _timedDelete () {
-    setTimeout(this.delete, 5000);
+    if (!this.timeOutCounter) return this._removeSelf();
+    this.timeOutCounter -= 10
+    setTimeout(this._timedDelete, 10);
   }
 
   add () {
-    this.state.messageList.unshift(this);
-    this.state.messageList = this.state.messageList.slice(0, 5);
-    this._timedDelete()
+    if (!this.state.messageList.filter(m => m.msg === this.msg).length) {
+      this.state.messageList.unshift(this);
+      this.state.messageList = this.state.messageList.slice(0, 5);
+      this._timedDelete()
+    }
   }
 
   delete () {
-    this.state.messageList.splice(this.index, 1);
+    this.timeOutCounter = 0
   }
 }
 

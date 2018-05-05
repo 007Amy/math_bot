@@ -38,7 +38,6 @@
           </div>
         </div>
       </div>
-      <splash-screen v-else></splash-screen>
     </transition>
     <robotcarrying></robotcarrying>
   </div>
@@ -49,7 +48,6 @@
   import assets from '../assets/assets';
   import Congrats from './Congrats';
   import Tryagain from './Try_again';
-  import SplashScreen from './Splash_screen';
   import Robotcarrying from './Robot_carrying';
 
   export default {
@@ -97,6 +95,9 @@
       },
       mode() {
         return this.$store.getters.getMode;
+      },
+      stepData() {
+        return this.$store.getters.getCurrentStepData;
       }
     },
     data() {
@@ -121,7 +122,6 @@
     components: {
       Congrats,
       Tryagain,
-      SplashScreen,
       Robotcarrying
     },
   };

@@ -1,3 +1,5 @@
+import AuthService from "./AuthService"
+
 const _ = require('underscore');
 import Vue from "vue";
 import vueResource from "vue-resource";

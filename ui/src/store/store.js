@@ -18,6 +18,11 @@ const robotRight = 'https://res.cloudinary.com/deqjemwcu/image/upload/v152243714
 const robotDown = 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437155/robotDirections/PlayerDown_pjawwx.png';
 const robotLeft = 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437164/robotDirections/RobotLeft_uf8xym.png';
 
+function addMessage (state, {type, msg, runOnDelete}) {
+  const message = new Message({type: type, msg: msg, state: state, runOnDelete: runOnDelete});
+  message.add();
+}
+
 function orderEm (steps) {
   const stepsInOrder = Object.keys(steps).filter(key => steps[key].prevStep === 'None').map(s => steps[s]);
 
@@ -97,7 +102,6 @@ export default new Vuex.Store({
     programPanelShowing: false,
     editFunctionShowing: false,
     speed: 300,
-    loggedIn: !!localStorage.getItem('profile'),
     currentUser: JSON.parse(localStorage.getItem('profile')),
     fullscreen: false,
     robotDeactivated: false,
@@ -112,7 +116,6 @@ export default new Vuex.Store({
     currentStepData: {},
     robot: {},
     disToken: emptyToken,
-    loggedInShowing: false,
     profileView: 'Arithmetic',
     functionGroupsCalc: null,
     functionGroups: [],
@@ -139,18 +142,6 @@ export default new Vuex.Store({
     },
     UPDATE_TRASH_VISIBLE(state, bool) {
       state.trashVisible = bool;
-    },
-    UPDATE_FUNCTION_GROUPS(state) {
-      utils.watcher(() => state.disToken.lambdas.stagedFuncs === null, () => {
-        state.functionGroupsCalc = new FunctionGroupsCalc({ functions: state.disToken.lambdas.stagedFuncs});
-        state.functionGroupsCalc.calculateFunctionGroups();
-        state.functionGroups = state.functionGroupsCalc.functionGroups;
-      });
-    },
-    REMOVE_LOOP_ROBOT_FROM_CURRENT(state) {
-      state.disToken.oldVersion.funcs[state.currentFunction].func = _.filter(state.disToken.oldVersion.funcs[state.currentFunction].func, (command) => {
-        return command !== 'loopRobot';
-      });
     },
     CLEAR_CURRENT_FUNCTION(state) {
       const currentFunction = state.currentFunction;
@@ -207,6 +198,27 @@ export default new Vuex.Store({
             })
           })
         }
+
+        // Display mainMax if not 10000
+        if (stepData.mainMax < 10000) {
+
+          const msg = `You can use ${stepData.mainMax} function${stepData.mainMax > 1 ? 's' : ''} to complete this step.`
+
+          const $placeholderContainer = $('.placeholder-container')
+
+          $placeholderContainer.addClass('placeholder-info-background')
+          $placeholderContainer.addClass('placeholder-info-border')
+
+          addMessage(state, {
+            type: 'info',
+            msg: msg,
+            runOnDelete: () => {
+              $placeholderContainer.removeClass('placeholder-info-border')
+              $placeholderContainer.removeClass('placeholder-info-background')
+            }
+          })
+        }
+
         reverseTools(stepData.gridMap);
 
         state.currentStepData = stepData;
@@ -278,26 +290,6 @@ export default new Vuex.Store({
     CONTROL_EDIT_FUNCTION_SHOWING(state, bool) {
       state.editFunctionShowing = bool;
     },
-    LOG_IN(state) {
-      state.loggedIn = true;
-    },
-    LOG_OUT(state) {
-      localStorage.removeItem('profile');
-      localStorage.removeItem('accessToken');
-      state.loggedIn = false;
-      setTimeout(function () {
-        state.loggedInShowing = false;
-        state.disToken = emptyToken;
-        location.reload();
-      }, 1500);
-    },
-    LOGGED_IN_SHOWING(state, bool) {
-      if (bool !== undefined) {
-        state.loggedInShowing = bool;
-      } else {
-        state.loggedInShowing = !state.loggedInShowing;
-      }
-    },
     ADD_CURRENT_USER(state, userData) {
       state.currentUser = userData;
       state.disToken.token_id = userData.token_id;
@@ -308,9 +300,6 @@ export default new Vuex.Store({
     },
     CHANGE_FULLSCREEN(state) {
       state.fullscreen = !state.fullscreen;
-    },
-    SET_CURRENT_USER(state) {
-      state.currentUser = JSON.parse(localStorage.getItem('profile'));
     },
     SPLICE_CURRENT(state, args) {
       const ind = args[0];
@@ -335,9 +324,6 @@ export default new Vuex.Store({
 
       funcToUpdate[state.currentFunction].splice(ind, 0, copy);
     },
-    REMOVE_NONCES() {
-      localStorage.clear();
-    },
     UPDATE_PROFILE_VIEW(state, loc) {
       state.profileView = loc;
     },
@@ -356,41 +342,15 @@ export default new Vuex.Store({
     UPDATE_EDITING_INDEX(state, index) {
       state.editingIndex = index;
     },
-    UPDATE_ACTIVE_FUNCTION_GROUPS(state) {
-     let activeFunctionGroups = {
-        1: [],
-        2: [],
-        3: [],
-        4: [],
-        5: [],
-      };
-      if (state.disToken.lambdas.activeFuncs !== undefined && state.disToken.lambdas.activeFuncs.length) {
-        state.disToken.lambdas.activeFuncs.forEach((func, ind) => {
-          if (ind < 10) {
-            activeFunctionGroups[1].push(func);
-          } else if (ind >= 10 && ind < 24) {
-            activeFunctionGroups[2].push(func);
-          } else if (ind >= 24 && ind < 38) {
-            activeFunctionGroups[3].push(func);
-          } else if (ind >= 38 && ind < 52) {
-            activeFunctionGroups[4].push(func);
-          } else if (ind >= 52 && ind < 66) {
-            activeFunctionGroups[5].push(func);
-          }
-        })
-      }
-      state.activeFunctionGroups = activeFunctionGroups;
-    },
     UPDATE_SWIPER_SLIDE(state, slide) {
       state.swiperSlide = slide;
     },
-    ADD_MESSAGE(state, msg) {
-      const message = new Message({msg: msg, state: state});
-      message.add();
-    },
+    ADD_MESSAGE: addMessage,
     REMOVE_MESSAGE(state, ind) {
-      const message = new Message({ind: ind, state: state});
-      message.delete();
+      state.messageList[ind].delete()
+    },
+    DELETE_MESSAGES(state) {
+      state.messageList.map(m => m.delete())
     }
   },
   actions: {
@@ -411,9 +371,6 @@ export default new Vuex.Store({
     },
     updateStats({commit}, {stats, cb}) {
       commit('UPDATE_STATS', {stats, cb});
-    },
-    removeLoopRobotFromCurrent({commit}) {
-      commit('REMOVE_LOOP_ROBOT_FROM_CURRENT');
     },
     clearCurrentFunction({commit}) {
       commit('CLEAR_CURRENT_FUNCTION');
@@ -444,8 +401,6 @@ export default new Vuex.Store({
     },
     initNewGame({commit}, context) {
       commit('INIT_NEW_GAME', context);
-      commit('UPDATE_FUNCTION_GROUPS');
-      commit('UPDATE_ACTIVE_FUNCTION_GROUPS');
     },
     pushRandomImage({commit}, image) {
       commit('PUSH_RANDOM_IMAGE', image);
@@ -474,12 +429,6 @@ export default new Vuex.Store({
     controlEditFunctionShowing({commit}, bool) {
       commit('CONTROL_EDIT_FUNCTION_SHOWING', bool);
     },
-    login({commit}) {
-      commit('LOG_IN');
-    },
-    loggedInShowing({commit}, bool) {
-      commit('LOGGED_IN_SHOWING', bool);
-    },
     addCurrentUser({commit}, userData) {
       commit('ADD_CURRENT_USER', userData);
     },
@@ -489,13 +438,8 @@ export default new Vuex.Store({
     changeFullscreen({commit}) {
       commit('CHANGE_FULLSCREEN');
     },
-    setCurrentUser({commit}) {
-      commit('SET_CURRENT_USER');
-    },
     updateLambdas({commit}, {lambdas}) {
       commit('UPDATE_LAMBDAS', {lambdas});
-      commit('UPDATE_FUNCTION_GROUPS');
-      commit('UPDATE_ACTIVE_FUNCTION_GROUPS');
     },
     updateToken({commit}, args) {
       commit('UPDATE_TOKEN', args);
@@ -511,9 +455,6 @@ export default new Vuex.Store({
     },
     insertCurrent({commit}, args) {
       commit('INSERT_CURRENT', args);
-    },
-    removeNonces({commit}) {
-      commit('REMOVE_NONCES');
     },
     updateProfileView({commit}, loc) {
       commit('UPDATE_PROFILE_VIEW', loc);
@@ -533,17 +474,17 @@ export default new Vuex.Store({
     updateEditingIndex({commit}, index) {
       commit('UPDATE_EDITING_INDEX', index);
     },
-    updateActiveFunctionGroups({commit}) {
-      commit('UPDATE_ACTIVE_FUNCTION_GROUPS');
-    },
     updateSwiperSlide({commit}, slide) {
       commit('UPDATE_SWIPER_SLIDE', slide);
     },
-    addMessage({commit}, msg) {
-      commit("ADD_MESSAGE", msg);
+    addMessage({commit}, {type, msg, runOnDelete}) {
+      commit("ADD_MESSAGE", {type: type, msg: msg, runOnDelete: runOnDelete});
     },
     removeMessage({commit}, ind) {
       commit('REMOVE_MESSAGE', ind);
+    },
+    deleteMessages({commit}) {
+      commit('DELETE_MESSAGES');
     }
   },
   getters: {
@@ -554,7 +495,7 @@ export default new Vuex.Store({
     getTokenId: state => state.disToken.token_id,
     getCurrentStepData: state => state.currentStepData,
     getTrashVisible: state => state.trashVisible,
-    getFunctionGroups: state => state.functionGroups,
+    // getFunctionGroups: state => state.functionGroups,
     getGrid: state => state.currentStepData.grid,
     getRobotDeactivated: state => state.robotDeactivated,
     getDebuggerCurrentCommand: state => state.debuggerCurrentCommand,
@@ -580,19 +521,12 @@ export default new Vuex.Store({
     getEditFunctionShowing: state => state.editFunctionShowing,
     getAuthStatus: state => state.authStatus,
     getAuthShowing: state => state.authShowing,
-    getLoginShowing: state => state.loginShowing,
-    getCurrentUser: state => state.currentUser,
     getRememberUser: state => state.rememberUser,
     getToken: state => state.disToken,
-    getInvalidLogin: state => state.showInvalidLogin,
-    getLoggedIn: state => state.loggedIn,
-    getLoggedInShowing: state => state.loggedInShowing,
     getShowDupAlert: state => state.showDupAlert,
-    getLoginLoading: state => state.loginLoading,
     getRobotSpeed: state => state.speed,
     getFullscreen: state => state.fullscreen,
     getSignupLoading: state => state.signupLoading,
-    getSociallyLoggedIn: state => state.sociallyLoggedIn,
     getLock: state => state.lock,
     getSocket: state => state.socket,
     getLevels: state => {

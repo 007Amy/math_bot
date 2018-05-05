@@ -5,7 +5,7 @@
         <button @click="unlock()">Unlock</button>
         <button @click="reset()">Reset</button>
       </div>
-      <splash-screen v-if="stats === undefined"></splash-screen>
+      <splash-screen v-if="splashScreenShowing"></splash-screen>
       <arithmetic v-else-if="!splashScreenShowing && profileView === 'Arithmetic' && stats !== undefined"></arithmetic>
       <div class="bottomButtons">
         <img :src="permanentImages.instructionsRobot">
