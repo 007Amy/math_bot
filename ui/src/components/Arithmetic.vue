@@ -108,7 +108,7 @@
       goToRobot(level, step) {
         api.switchLevel({tokenId: this.tokenId, level: level, step: step}, (res) => {
           this.$store.dispatch('updateStats', {stats: res.body, cb: () => {
-            this.$store.dispatch('initNewGame', this);
+            this.$router.push({path: '/robot'})
           }});
         })
       }

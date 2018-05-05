@@ -42,7 +42,7 @@ export default new Router({
     },
     {
       path: '*',
-      redirect: '/about'
+      redirect: localStorage.getItem('LAST_PATH') || '/about'
     }
   ]
 });

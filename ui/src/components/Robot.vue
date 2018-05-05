@@ -1,6 +1,7 @@
 <template>
   <div class="robot-container" data-aos="fade-in">
-    <div id="robot" class="row animated">
+    <splash-screen v-if="splashScreenShowing"></splash-screen>
+    <div id="robot" class="row animated" v-else>
 
       <div id="control-panel-box">
         <control-panel></control-panel>
@@ -16,11 +17,7 @@
       <div
         id="edit-main-box">
         <trash></trash>
-        <editmain
-          :functions="mainFunctionFunc"
-        >
-        </editmain>
-
+        <editmain></editmain>
       </div>
 
       <div id="commands-box">
@@ -45,6 +42,7 @@
   import Messages from './Messages';
   import AuthService from '../services/AuthService';
   import ControlPanel from './Control_panel';
+  import SplashScreen from './Splash_screen';
 
   export default {
     mounted() {
@@ -53,6 +51,12 @@
       auth.init()
     },
     computed: {
+      splashScreenShowing() {
+        return this.$store.getters.getSplashScreenShowing;
+      },
+      gridMap() {
+        return this.currentStepData.gridMap;
+      },
       permanentImages() {
         return this.$store.getters.getPermanentImages;
       },
@@ -91,10 +95,6 @@
             return new Identicon(md5(this.$store.getters.getCurrentUser.nickname), 30).toString();
           }
         }
-      },
-      mainFunctionFunc() {
-        const mainToken = this.$store.getters.getMainFunction;
-        return mainToken === null ? [] : mainToken.func;
       },
       loggedInShowing() {
         return this.$store.getters.getLoggedInShowing;
@@ -136,7 +136,8 @@
       Trash,
       Editmain,
       Messages,
-      ControlPanel
+      ControlPanel,
+      SplashScreen
     },
   };
 </script>

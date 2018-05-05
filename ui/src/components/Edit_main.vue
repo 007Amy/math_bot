@@ -2,13 +2,15 @@
   <div class="edit-main">
 
     <function-drop
-      :list="functions"
+      :list="mainFunctionFunc"
       :options="mainDraggableOptions"
       :change="copyCommand"
       :start="moving"
       :end="end"
       :origin="'editMain'"
     ></function-drop>
+
+    <main-placeholder></main-placeholder>
 
     <div class="bar noDrag">
       <img class="x button noDrag dialog-button" :src="permanentImages.buttons.trashButton"  @click="wipeFunction" data-toggle="tooltip" title="Clear main" />
@@ -30,9 +32,14 @@
   import RunCompiled from '../services/RunCompiled';
   import FunctionBox from './Function_box';
   import FunctionDrop from './Function_drop';
+  import MainPlaceholder from './Main_placeholder';
 
   export default {
     computed: {
+      mainFunctionFunc() {
+        const mainToken = this.$store.getters.getMainFunction;
+        return mainToken === null ? [] : mainToken.func;
+      },
       showMesh() {
         return this.$store.getters.getShowMesh;
       },
@@ -70,7 +77,7 @@
         return this.$store.getters.getRobot;
       },
       stepData() {
-        return this.$store.getters.getCurrentStepData;
+        return this.$store.getters.getCurrentStepData
       },
       currentColor() {
         return this.$store.getters.getColorSelected;
@@ -128,31 +135,48 @@
       pause() {
         this.robot.state = 'paused';
       },
+      togglePut (bool) {
+        this.mainDraggableOptions.group.put = bool
+      },
       compileMain() {
         const scripts = this.$store.getters.getMainFunction.func;
         const problem = this.stepData.problem;
+
+        // Ensure draggable put is true for next level
+        this.togglePut(true);
+
         if (this.robot.state !== 'paused') {
           if (scripts.length) {
+            // Delete all existing messages
+            this.$store.dispatch('deleteMessages');
+
             api.compileWs({context: this, problem: problem}, (compiled) => {
               this.runCompiled = new RunCompiled({context: this, frames: compiled.frames})
             })
           } else {
-            this.$store.dispatch('addMessage', 'emptyMain');
+            const $bar = $('.bar')
+            $bar.addClass('red-bar')
+            this.message('warn', 'Main function cannot be empty', () => {
+              $bar.removeClass('red-bar')
+            })
           }
         } else {
           this.robot.state = 'running';
           this.runCompiled.processFrames();
         }
       },
+      message (type, msg, runOnDelete) {
+        this.$store.dispatch('addMessage', {type: type, msg: msg, runOnDelete: runOnDelete})
+      },
       copyCommand(evt) {
-        if (evt.hasOwnProperty('added') && this.stepData.mainMax !== -1 && this.functions.length > this.stepData.mainMax) {
-          this.$store.dispatch('addMessage', 'mainMax')
-        }
         if (!evt.hasOwnProperty('removed')) {
           const command = evt.hasOwnProperty('added') ? evt.added.element : evt.moved.element;
           const ind = evt.hasOwnProperty('added') ? evt.added.newIndex : evt.moved.newIndex;
           buildUtils.updateFunctionsOnChange({context: this, currentFunction: buildUtils.currentFunc(this), addedFunction: command, newIndex: ind, override: evt.hasOwnProperty('moved')});
         }
+
+        // Main func length is equal to main max, make put false (preventing unneeded api call)
+        this.togglePut(this.mainFunctionFunc.length < this.stepData.mainMax);
       },
       toggleFunctionEdit(func, ind) {
         if (func.name) {
@@ -182,11 +206,11 @@
         this.$store.dispatch('updateTrashVisible', false);
       }
     },
-    props: ['functions'],
     components: {
       draggable,
       FunctionBox,
-      FunctionDrop
+      FunctionDrop,
+      MainPlaceholder
     }
   }
 </script>

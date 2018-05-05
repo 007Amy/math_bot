@@ -17,6 +17,8 @@ export default {
    **/
   updateFunctionsOnChange({context, currentFunction, addedFunction, newIndex, newColor, override}) {
     const token = context.$store.getters.getToken;
+    const stepData = context.$store.getters.getCurrentStepData;
+
     if (addedFunction !== null) {
       const tokenizedAdded = {};
       tokenizedAdded.created_id = addedFunction.created_id;

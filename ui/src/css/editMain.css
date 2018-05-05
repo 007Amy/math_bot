@@ -1,8 +1,9 @@
 .edit-main {
-  z-index: 112 !important;
+  z-index: 112!important;
   position: relative;
   padding: 20px;
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   overflow: visible;
   width: 100%;
@@ -15,7 +16,11 @@
   top: 49.5%;
   height: 2px;
   background-color: #B8E986;
-  z-index: -1;
+  z-index: 2;
+}
+
+.red-bar {
+  background-color: #FF0000;
 }
 
 .button {
@@ -29,6 +34,10 @@
 
 .play {
   right: 0;
+}
+
+.play-border {
+  border: 3px solid rgb(184, 233, 134);
 }
 
 .stop {

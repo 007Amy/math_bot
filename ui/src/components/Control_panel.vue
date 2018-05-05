@@ -49,6 +49,7 @@
         this.speechBubbleShowing = !this.speechBubbleShowing;
       },
       goToProfile() {
+        this.$store.dispatch('deleteMessages');
         this.$router.push({path: 'profile'});
       }
     }
