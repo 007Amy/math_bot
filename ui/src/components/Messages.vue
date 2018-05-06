@@ -1,9 +1,9 @@
 <template>
-  <transition-group class="message-container" name="messages" tag="div" leave-active-class="animated zoomOut">
-    <div v-for="(message, ind) in messageList" class="message" :class="message.type" :id="'message-' + ind" :key="'message/' + (ind + 1)" @click="removeMessage(ind)">
+  <div class="message-container">
+    <div v-for="(message, ind) in messageList" class="message" :class="message.type" :id="'message-' + ind" :key="message.id" @click="removeMessage(ind)">
       {{ message.msg }}
     </div>
-  </transition-group>
+  </div>
 </template>
 
 <script>

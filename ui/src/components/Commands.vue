@@ -26,6 +26,7 @@
           :ind="ind"
           :collection="commands"
           :origin="'functions'"
+          v-on:click.native="notEditableMessage"
         ></function-box>
       </draggable>
       <draggable
@@ -153,6 +154,13 @@
       };
     },
     methods: {
+      notEditableMessage (evt) {
+        const $target = $(evt.target)
+        $target.addClass('command-border-info')
+        this.$store.dispatch('addMessage', {type: 'info', msg: 'Can\'t edit this', runOnDelete: () => {
+          $target.removeClass('command-border-info')
+        }})
+      },
       findColor() {
         return this.colors[this.colorSelected].next;
       },

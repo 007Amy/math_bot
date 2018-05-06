@@ -56,7 +56,7 @@
 
         $play.addClass('play-border')
 
-        this.message('success', 'Main is full, press play!', () => {
+        this.message('success', 'Main is full, check your program then press play', () => {
           $play.removeClass('play-border')
         })
 

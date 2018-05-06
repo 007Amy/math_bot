@@ -202,7 +202,7 @@ export default new Vuex.Store({
         // Display mainMax if not 10000
         if (stepData.mainMax < 10000) {
 
-          const msg = `You can use ${stepData.mainMax} function${stepData.mainMax > 1 ? 's' : ''} to complete this step.`
+          const msg = `You can use up to ${stepData.mainMax} function${stepData.mainMax > 1 ? 's' : ''} to complete this step.`
 
           const $placeholderContainer = $('.placeholder-container')
 
