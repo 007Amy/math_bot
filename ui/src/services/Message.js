@@ -27,7 +27,7 @@ class Message {
   }
 
   _removeSelf () {
-    this.state.messageList.splice(this.index, 1);
+    this.state.messageList = this.state.messageList.filter(m => m.id !== this.id)
     this.runOnDelete();
   }
 

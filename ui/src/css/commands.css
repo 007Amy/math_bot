@@ -27,6 +27,10 @@
   justify-content: flex-start;
 }
 
+.command-border-info {
+  border: 2px solid rgb(135, 206, 250) !important;
+}
+
 .methods {
   border-right: 2px solid #B8E986;
 }
