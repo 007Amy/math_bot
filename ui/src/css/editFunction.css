@@ -15,7 +15,6 @@
 
 .edit-function-content {
   position: relative;
-  height: 105px;
   overflow: hidden;
   padding: 10px 20px 10px 20px;
 }
@@ -110,7 +109,6 @@
   }
 
   .edit-function-content {
-    height: 80px;
     padding: 0;
   }
 
@@ -145,7 +143,6 @@
   }
 
   .edit-function-content {
-    height: 80px;
     padding: 0;
   }
 

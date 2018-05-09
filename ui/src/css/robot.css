@@ -33,6 +33,7 @@
 
 #edit-main-box {
   display: flex;
+  flex-grow: 1;
 }
 
 #commands-box {

@@ -45,6 +45,7 @@
           :collection="activeFunctions"
           :origin="'functions'"
           :method="toggleFunctionEdit"
+          v-on:click.native="editingFunctionMessage(func)"
         ></function-box>
       </draggable>
     </div>
@@ -160,6 +161,11 @@
         this.$store.dispatch('addMessage', {type: 'info', msg: 'Can\'t edit this', runOnDelete: () => {
           $target.removeClass('command-border-info')
         }})
+      },
+      editingFunctionMessage (func) {
+        if (this.editingFunction) {
+          this.$store.dispatch('addMessage', {type: 'info', msg: `Editing ${func.name}`})
+        }
       },
       findColor() {
         return this.colors[this.colorSelected].next;
