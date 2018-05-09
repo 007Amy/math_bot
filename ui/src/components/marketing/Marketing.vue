@@ -7,23 +7,23 @@
 </template>
 
 <script>
-  import TopSection from './TopSection'
-  import MiddleSection from './MiddleSection'
-  import BottomSection from './BottomSection'
+import TopSection from './TopSection'
+import MiddleSection from './MiddleSection'
+import BottomSection from './BottomSection'
 
-  export default {
-    name: 'Marketing',
-    components: {
-      TopSection,
-      MiddleSection,
-      BottomSection
-    },
-    methods: {
-      goToSite() {
-        this.$router.push('/profile')
-      }
+export default {
+  name: 'Marketing',
+  components: {
+    TopSection,
+    MiddleSection,
+    BottomSection
+  },
+  methods: {
+    goToSite () {
+      this.$router.push('/profile')
     }
   }
+}
 </script>
 
 <style>

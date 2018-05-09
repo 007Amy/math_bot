@@ -1,9 +1,9 @@
 export default {
   cmdImages: {
-   drop_item: 'https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345223/robotCommands/setDown.png',
-   pick_up: 'https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345227/robotCommands/pickup.png',
-   turn_right: 'https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345219/robotCommands/rightArrow.png',
-   move_forward: 'https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345224/robotCommands/walk.png',
+    drop_item: 'https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345223/robotCommands/setDown.png',
+    pick_up: 'https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345227/robotCommands/pickup.png',
+    turn_right: 'https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345219/robotCommands/rightArrow.png',
+    move_forward: 'https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345224/robotCommands/walk.png'
   },
   puzzlePieces: {
     start: {
@@ -32,7 +32,7 @@ export default {
       green: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522349648/puzzlePieces/puzzleEndGreen.svg',
       pink: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522349700/puzzlePieces/puzzleEndPink.svg',
       red: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522349756/puzzlePieces/puzzleEndRed.svg'
-    },
+    }
   },
   funcImages: {
     rocket: 'https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345324/functionIcons/rocket2.png',

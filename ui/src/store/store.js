@@ -1,55 +1,52 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import {_} from 'underscore';
-import utils from '../services/utils';
-import api from '../services/api';
-import VueDefaultValue from 'vue-default-value/dist/vue-default-value';
+import Vue from 'vue'
+import Vuex from 'vuex'
+import _ from 'underscore'
+import api from '../services/api'
+import VueDefaultValue from 'vue-default-value/dist/vue-default-value'
 
-import permanentImages from "../assets/assets";
-import FunctionGroupsCalc from "../services/FunctionGroupsCalc";
-import Message from '../services/Message';
-import RunCompiled from '../services/RunCompiled';
+import permanentImages from '../assets/assets'
+import Message from '../services/Message'
 
-Vue.use(Vuex);
-Vue.use(VueDefaultValue);
+Vue.use(Vuex)
+Vue.use(VueDefaultValue)
 
-const robotUp = 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437134/robotDirections/RobotUp_nbpcu2.png';
-const robotRight = 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437145/robotDirections/PlayerRight_n39yyp.png';
-const robotDown = 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437155/robotDirections/PlayerDown_pjawwx.png';
-const robotLeft = 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437164/robotDirections/RobotLeft_uf8xym.png';
+const robotUp = 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437134/robotDirections/RobotUp_nbpcu2.png'
+const robotRight = 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437145/robotDirections/PlayerRight_n39yyp.png'
+const robotDown = 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437155/robotDirections/PlayerDown_pjawwx.png'
+const robotLeft = 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437164/robotDirections/RobotLeft_uf8xym.png'
 
-function addMessage (state, {type, msg, runOnDelete}) {
-  const message = new Message({type: type, msg: msg, state: state, runOnDelete: runOnDelete});
-  message.add();
+function addMessage (state, messageBuilder) {
+  const message = new Message(state, messageBuilder)
+  message.add()
 }
 
 function orderEm (steps) {
   const stepsInOrder = Object.keys(steps).filter(key => steps[key].prevStep === 'None').map(s => steps[s]);
 
   (function ordEm () {
-    if (stepsInOrder[stepsInOrder.length - 1].nextStep === 'None') return;
+    if (stepsInOrder[stepsInOrder.length - 1].nextStep === 'None') return
 
-    stepsInOrder.push(steps[stepsInOrder[stepsInOrder.length - 1].nextStep]);
+    stepsInOrder.push(steps[stepsInOrder[stepsInOrder.length - 1].nextStep])
 
-    ordEm();
+    ordEm()
   })()
 
   return stepsInOrder
 }
 
 class NewRobot {
-  constructor({state, robotCarrying, robotFacing}) {
-    this.state = state || 'home';
-    this.robotCarrying = robotCarrying || [];
-    this.robotFacing = robotFacing || 0;
+  constructor ({state, robotCarrying, robotFacing}) {
+    this.state = state || 'home'
+    this.robotCarrying = robotCarrying || []
+    this.robotFacing = robotFacing || 0
     this._robotDirections = {
       '0': robotUp,
       '90': robotRight,
       '180': robotDown,
       '270': robotLeft
-    };
+    }
 
-    this.trash = [];
+    this.trash = []
   };
 }
 
@@ -82,7 +79,7 @@ const colors = {
     hex: '#F25C5C',
     next: 'default'
   }
-};
+}
 const emptyToken = {
   token_id: '',
   u_id: '',
@@ -93,7 +90,7 @@ const emptyToken = {
     cmds: null,
     activeFuncs: null
   }
-};
+}
 
 export default new Vuex.Store({
   state: {
@@ -119,7 +116,7 @@ export default new Vuex.Store({
     profileView: 'Arithmetic',
     functionGroupsCalc: null,
     functionGroups: [],
-    functionAreaShowing: "editMain",
+    functionAreaShowing: 'editMain',
     editingIndex: null,
     trashVisible: false,
     colors: colors,
@@ -131,62 +128,61 @@ export default new Vuex.Store({
     splashScreenShowing: false
   },
   mutations: {
-    UPDATE_SPLASH_SCREEN_SHOWING(state, bool) {
-      state.splashScreenShowing = bool;
+    UPDATE_SPLASH_SCREEN_SHOWING (state, bool) {
+      state.splashScreenShowing = bool
     },
-    TOGGLE_SHOW_MESH(state, bool) {
-      state.showMesh = bool;
+    TOGGLE_SHOW_MESH (state, bool) {
+      state.showMesh = bool
     },
-    SET_AUTH(state, auth) {
-      state.auth = auth;
+    SET_AUTH (state, auth) {
+      state.auth = auth
     },
-    UPDATE_TRASH_VISIBLE(state, bool) {
-      state.trashVisible = bool;
+    UPDATE_TRASH_VISIBLE (state, bool) {
+      state.trashVisible = bool
     },
-    CLEAR_CURRENT_FUNCTION(state) {
-      const currentFunction = state.currentFunction;
+    CLEAR_CURRENT_FUNCTION (state) {
+      const currentFunction = state.currentFunction
       if (currentFunction === 'main') {
-        state.disToken.lambdas.main.func = [];
+        state.disToken.lambdas.main.func = []
       } else {
-        state.disToken.lambdas.activeFuncs[currentFunction].func = [];
+        state.disToken.lambdas.activeFuncs[currentFunction].func = []
       }
     },
-    DEACTIVATE_ROBOT(state) {
-      state.robotDeactivated = !state.robotDeactivated;
+    DEACTIVATE_ROBOT (state) {
+      state.robotDeactivated = !state.robotDeactivated
     },
-    UPDATE_DEBUGGER_RENDER(state, func) {
-      state.debuggerRender = func;
+    UPDATE_DEBUGGER_RENDER (state, func) {
+      state.debuggerRender = func
     },
-    UPDATE_DEBUGGER_CURRENT_COMMAND(state, command) {
-      state.debuggerCurrentCommand = command;
+    UPDATE_DEBUGGER_CURRENT_COMMAND (state, command) {
+      state.debuggerCurrentCommand = command
     },
-    UPDATE_DEBUGGER_CURRENT_IND(state, ind) {
-      state.debuggerCurrentInd = ind;
+    UPDATE_DEBUGGER_CURRENT_IND (state, ind) {
+      state.debuggerCurrentInd = ind
     },
-    TOGGLE_DEBUGGER(state) {
-      state.debuggerShowing = !state.debuggerShowing;
+    TOGGLE_DEBUGGER (state) {
+      state.debuggerShowing = !state.debuggerShowing
       if (!state.debuggerShowing) {
-        state.speed = 300;
+        state.speed = 300
       }
     },
-    SHOW_CONGRATS(state) {
-      state.showCongrats = true;
+    SHOW_CONGRATS (state) {
+      state.showCongrats = true
     },
-    HIDE_CONGRATS(state) {
-      state.showCongrats = false;
+    HIDE_CONGRATS (state) {
+      state.showCongrats = false
     },
-    SHOW_TRY_AGAIN(state) {
-      state.tryAgainShowing = true;
+    SHOW_TRY_AGAIN (state) {
+      state.tryAgainShowing = true
     },
-    INIT_NEW_GAME(state, context) {
-      const tokenId = state.disToken.token_id;
-      const level = state.disToken.stats.level;
-      const step = state.disToken.stats.step;
+    INIT_NEW_GAME (state, context) {
+      const tokenId = state.disToken.token_id
+      const level = state.disToken.stats.level
+      const step = state.disToken.stats.step
 
       api.getStep({tokenId: tokenId, level: level, step: step}, res => {
-
         // All data require for this step
-        const stepData = res.body;
+        const stepData = res.body
         // console.log(`${level}/${step}:\n`, stepData)
 
         // Reverses tools for rendering
@@ -201,290 +197,288 @@ export default new Vuex.Store({
 
         // Display mainMax if not 10000
         if (stepData.mainMax < 10000) {
-
-          const msg = `You can use up to ${stepData.mainMax} function${stepData.mainMax > 1 ? 's' : ''} to complete this step.`
-
-          const $placeholderContainer = $('.placeholder-container')
-
-          $placeholderContainer.addClass('placeholder-info-background')
-          $placeholderContainer.addClass('placeholder-info-border')
-
           addMessage(state, {
             type: 'info',
-            msg: msg,
-            runOnDelete: () => {
-              $placeholderContainer.removeClass('placeholder-info-border')
-              $placeholderContainer.removeClass('placeholder-info-background')
+            msg: `Main max is ${stepData.mainMax}`,
+            handlers () {
+              const $placeholderContainer = $('.placeholder-container')
+              return {
+                runBeforeAppend: () => {
+                  $placeholderContainer.addClass('pulse')
+                },
+                runOnDelete: () => {
+                  $placeholderContainer.removeClass('pulse')
+                }
+              }
             }
           })
         }
 
-        reverseTools(stepData.gridMap);
+        reverseTools(stepData.gridMap)
 
-        state.currentStepData = stepData;
+        state.currentStepData = stepData
 
-        state.showCongrats = false;
-        state.tryAgainShowing = false;
-        state.robot = new NewRobot({robotFacing: stepData.robotOrientation});
+        state.showCongrats = false
+        state.tryAgainShowing = false
+        state.robot = new NewRobot({robotFacing: stepData.robotOrientation})
 
         // update lambdas to step specific lambdas
-        context.$store.dispatch('updateLambdas', {lambdas: stepData.lambdas});
+        context.$store.dispatch('updateLambdas', {lambdas: stepData.lambdas})
 
         // Since we are going to robot, set level and step state in localstorage
         localStorage.setItem('LEVEL_STEP', JSON.stringify({level: level, step: step}))
-        context.$router.push({path: 'robot'});
-      });
+        context.$router.push({path: 'robot'})
+      })
     },
-    UPDATE_LAMBDAS(state, {lambdas}) {
-      state.disToken.lambdas = lambdas;
+    UPDATE_LAMBDAS (state, {lambdas}) {
+      state.disToken.lambdas = lambdas
     },
-    UPDATE_TOKEN(state, args) {
-      const token = args[0];
-      const cb = args[1];
+    UPDATE_TOKEN (state, args) {
+      const token = args[0]
+      const cb = args[1]
 
-      state.disToken = token;
+      state.disToken = token
 
       // console.log('TOKEN ~>', state.disToken)
 
       if (cb !== undefined) {
-        cb(state.disToken.stats.level, state.disToken.stats.currentEquation);
+        cb(state.disToken.stats.level, state.disToken.stats.currentEquation)
       }
     },
-    UPDATE_STATS(state, {stats, cb}) {
-      state.disToken.stats = stats;
-      if (cb) cb();
+    UPDATE_STATS (state, {stats, cb}) {
+      state.disToken.stats = stats
+      if (cb) cb()
     },
-    CREATE_LOCK(state) {
+    CREATE_LOCK (state) {
 
     },
-    PUSH_RANDOM_IMAGE(state, image) {
-      state.disToken.randomImages.push(image);
+    PUSH_RANDOM_IMAGE (state, image) {
+      state.disToken.randomImages.push(image)
     },
-    CHANGE_CURRENT_FUNCTION(state, args) {
-      const type = args[0];
-      const ind = args[1];
+    CHANGE_CURRENT_FUNCTION (state, args) {
+      const type = args[0]
+      const ind = args[1]
       if (type === 'main') {
-        state.currentFunction = 'main';
+        state.currentFunction = 'main'
       } else {
-        state.currentFunction = ind;
+        state.currentFunction = ind
       }
-
     },
-    ADD_NEW_FUNCTION(state, func) {
-      state.disToken.oldVersion.funcs.push(func);
+    ADD_NEW_FUNCTION (state, func) {
+      state.disToken.oldVersion.funcs.push(func)
     },
-    DELETE_FUNCTION(state, ind, context) {
-      const currentFunction = state.currentFunction;
+    DELETE_FUNCTION (state, ind, context) {
+      const currentFunction = state.currentFunction
       if (currentFunction === 'main') {
-        state.disToken.lambdas.main.func.splice(ind, 1);
+        state.disToken.lambdas.main.func.splice(ind, 1)
       } else {
-        state.disToken.lambdas.activeFuncs[currentFunction].func.splice(ind, 1);
+        state.disToken.lambdas.activeFuncs[currentFunction].func.splice(ind, 1)
       }
     },
-    PUT_IMAGE_BACK(state, img, context) {
-      state.randomImages.unshift(img);
+    PUT_IMAGE_BACK (state, img, context) {
+      state.randomImages.unshift(img)
     },
-    CONTROL_PROGRAM_PANEL_SHOWING(state) {
-      state.programPanelShowing = !state.programPanelShowing;
+    CONTROL_PROGRAM_PANEL_SHOWING (state) {
+      state.programPanelShowing = !state.programPanelShowing
     },
-    CONTROL_EDIT_FUNCTION_SHOWING(state, bool) {
-      state.editFunctionShowing = bool;
+    CONTROL_EDIT_FUNCTION_SHOWING (state, bool) {
+      state.editFunctionShowing = bool
     },
-    ADD_CURRENT_USER(state, userData) {
-      state.currentUser = userData;
-      state.disToken.token_id = userData.token_id;
-      state.disToken.u_id = userData._id;
+    ADD_CURRENT_USER (state, userData) {
+      state.currentUser = userData
+      state.disToken.token_id = userData.token_id
+      state.disToken.u_id = userData._id
     },
-    CHANGE_ROBOT_SPEED(state, speed) {
-      state.speed = speed;
+    CHANGE_ROBOT_SPEED (state, speed) {
+      state.speed = speed
     },
-    CHANGE_FULLSCREEN(state) {
-      state.fullscreen = !state.fullscreen;
+    CHANGE_FULLSCREEN (state) {
+      state.fullscreen = !state.fullscreen
     },
-    SPLICE_CURRENT(state, args) {
-      const ind = args[0];
-      const copy = args[1];
+    SPLICE_CURRENT (state, args) {
+      const ind = args[0]
+      const copy = args[1]
       const currentFunc = state.currentFunction
-      const funcToUpdate = currentFunc === 'main' ? state.disToken.lambdas.main.func : state.disToken.lambdas.activeFuncs[currentFunc].func;
-      funcToUpdate.splice(ind, 1);
-      funcToUpdate.splice(ind, 0, copy);
+      const funcToUpdate = currentFunc === 'main' ? state.disToken.lambdas.main.func : state.disToken.lambdas.activeFuncs[currentFunc].func
+      funcToUpdate.splice(ind, 1)
+      funcToUpdate.splice(ind, 0, copy)
     },
-    PUSH_CURRENT(state, c) {
-      const copy = c;
+    PUSH_CURRENT (state, c) {
+      const copy = c
       const currentFunc = state.currentFunction
-      const funcToUpdate = currentFunc === 'main' ? state.disToken.lambdas.main.func : state.disToken.lambdas.activeFuncs[currentFunc].func;
+      const funcToUpdate = currentFunc === 'main' ? state.disToken.lambdas.main.func : state.disToken.lambdas.activeFuncs[currentFunc].func
 
-      funcToUpdate.push(copy);
+      funcToUpdate.push(copy)
     },
-    INSERT_CURRENT(state, args) {
-      const ind = args[0];
-      const copy = args[1];
+    INSERT_CURRENT (state, args) {
+      const ind = args[0]
+      const copy = args[1]
       const currentFunc = state.currentFunction
-      const funcToUpdate = currentFunc === 'main' ? state.disToken.lambdas.main.func : state.disToken.lambdas.activeFuncs[currentFunc].func;
+      const funcToUpdate = currentFunc === 'main' ? state.disToken.lambdas.main.func : state.disToken.lambdas.activeFuncs[currentFunc].func
 
-      funcToUpdate[state.currentFunction].splice(ind, 0, copy);
+      funcToUpdate[state.currentFunction].splice(ind, 0, copy)
     },
-    UPDATE_PROFILE_VIEW(state, loc) {
-      state.profileView = loc;
+    UPDATE_PROFILE_VIEW (state, loc) {
+      state.profileView = loc
     },
-    UPDATE_COURSE(state, course) {
-      state.course = course;
+    UPDATE_COURSE (state, course) {
+      state.course = course
     },
-    UPDATE_COMPILED_DONE(state, bool) {
-      state.compiledDone = bool;
+    UPDATE_COMPILED_DONE (state, bool) {
+      state.compiledDone = bool
     },
-    UPDATE_PAUSED(state, bool) {
-      state.robot.paused = bool;
+    UPDATE_PAUSED (state, bool) {
+      state.robot.paused = bool
     },
-    UPDATE_FUNCTION_AREA_SHOWING(state, show) {
-      state.functionAreaShowing = show;
+    UPDATE_FUNCTION_AREA_SHOWING (state, show) {
+      state.functionAreaShowing = show
     },
-    UPDATE_EDITING_INDEX(state, index) {
-      state.editingIndex = index;
+    UPDATE_EDITING_INDEX (state, index) {
+      state.editingIndex = index
     },
-    UPDATE_SWIPER_SLIDE(state, slide) {
-      state.swiperSlide = slide;
+    UPDATE_SWIPER_SLIDE (state, slide) {
+      state.swiperSlide = slide
     },
     ADD_MESSAGE: addMessage,
-    REMOVE_MESSAGE(state, ind) {
+    REMOVE_MESSAGE (state, ind) {
       state.messageList[ind].delete()
     },
-    DELETE_MESSAGES(state) {
+    DELETE_MESSAGES (state) {
       state.messageList.map(m => m.delete())
     }
   },
   actions: {
-    updateSplashScreenShowing({commit}, bool) {
-      commit('UPDATE_SPLASH_SCREEN_SHOWING', bool);
+    updateSplashScreenShowing ({commit}, bool) {
+      commit('UPDATE_SPLASH_SCREEN_SHOWING', bool)
     },
-    toggleShowMesh({commit}, bool) {
-      commit('TOGGLE_SHOW_MESH', bool);
+    toggleShowMesh ({commit}, bool) {
+      commit('TOGGLE_SHOW_MESH', bool)
     },
-    setAuth({commit}, auth) {
-      commit('SET_AUTH', auth);
+    setAuth ({commit}, auth) {
+      commit('SET_AUTH', auth)
     },
-    updateTrashVisible({commit}, bool) {
-      commit('UPDATE_TRASH_VISIBLE', bool);
+    updateTrashVisible ({commit}, bool) {
+      commit('UPDATE_TRASH_VISIBLE', bool)
     },
-    updateFunctionGroups({commit}) {
-      commit('UPDATE_FUNCTION_GROUPS');
+    updateFunctionGroups ({commit}) {
+      commit('UPDATE_FUNCTION_GROUPS')
     },
-    updateStats({commit}, {stats, cb}) {
-      commit('UPDATE_STATS', {stats, cb});
+    updateStats ({commit}, {stats, cb}) {
+      commit('UPDATE_STATS', {stats, cb})
     },
-    clearCurrentFunction({commit}) {
-      commit('CLEAR_CURRENT_FUNCTION');
+    clearCurrentFunction ({commit}) {
+      commit('CLEAR_CURRENT_FUNCTION')
     },
-    deactivateRobot({commit}) {
-      commit('DEACTIVATE_ROBOT');
+    deactivateRobot ({commit}) {
+      commit('DEACTIVATE_ROBOT')
     },
-    updateDebuggerRender({commit}, func) {
-      commit('UPDATE_DEBUGGER_RENDER', func);
+    updateDebuggerRender ({commit}, func) {
+      commit('UPDATE_DEBUGGER_RENDER', func)
     },
-    updateDebuggerCurrentCommand({commit}, command) {
-      commit('UPDATE_DEBUGGER_CURRENT_COMMAND', command);
+    updateDebuggerCurrentCommand ({commit}, command) {
+      commit('UPDATE_DEBUGGER_CURRENT_COMMAND', command)
     },
-    updateDebuggerCurrentInd({commit}, ind) {
-      commit('UPDATE_DEBUGGER_CURRENT_IND', ind);
+    updateDebuggerCurrentInd ({commit}, ind) {
+      commit('UPDATE_DEBUGGER_CURRENT_IND', ind)
     },
-    toggleDebugger({commit}) {
-      commit('TOGGLE_DEBUGGER');
+    toggleDebugger ({commit}) {
+      commit('TOGGLE_DEBUGGER')
     },
-    showCongrats({commit}) {
-      commit('SHOW_CONGRATS');
+    showCongrats ({commit}) {
+      commit('SHOW_CONGRATS')
     },
-    hideCongrats({commit}) {
-      commit('HIDE_CONGRATS');
+    hideCongrats ({commit}) {
+      commit('HIDE_CONGRATS')
     },
-    showTryAgain({commit}) {
-      commit('SHOW_TRY_AGAIN');
+    showTryAgain ({commit}) {
+      commit('SHOW_TRY_AGAIN')
     },
-    initNewGame({commit}, context) {
-      commit('INIT_NEW_GAME', context);
+    initNewGame ({commit}, context) {
+      commit('INIT_NEW_GAME', context)
     },
-    pushRandomImage({commit}, image) {
-      commit('PUSH_RANDOM_IMAGE', image);
+    pushRandomImage ({commit}, image) {
+      commit('PUSH_RANDOM_IMAGE', image)
     },
-    addRandomImages({commit}, images) {
-      commit('ADD_RANDOM_IMAGES', images);
+    addRandomImages ({commit}, images) {
+      commit('ADD_RANDOM_IMAGES', images)
     },
-    addFunctions({commit}) {
-      commit('ADD_FUNCTIONS');
+    addFunctions ({commit}) {
+      commit('ADD_FUNCTIONS')
     },
-    changeCurrentFunction({commit}, args) {
-      commit('CHANGE_CURRENT_FUNCTION', args);
+    changeCurrentFunction ({commit}, args) {
+      commit('CHANGE_CURRENT_FUNCTION', args)
     },
-    addNewFunction({commit}, func) {
-      commit('ADD_NEW_FUNCTION', func);
+    addNewFunction ({commit}, func) {
+      commit('ADD_NEW_FUNCTION', func)
     },
-    deleteFunction({commit}, ind) {
-      commit('DELETE_FUNCTION', ind);
+    deleteFunction ({commit}, ind) {
+      commit('DELETE_FUNCTION', ind)
     },
-    putImageBack({commit}, img) {
-      commit('PUT_IMAGE_BACK', img);
+    putImageBack ({commit}, img) {
+      commit('PUT_IMAGE_BACK', img)
     },
-    controlProgramPanelShowing({commit}) {
-      commit('CONTROL_PROGRAM_PANEL_SHOWING');
+    controlProgramPanelShowing ({commit}) {
+      commit('CONTROL_PROGRAM_PANEL_SHOWING')
     },
-    controlEditFunctionShowing({commit}, bool) {
-      commit('CONTROL_EDIT_FUNCTION_SHOWING', bool);
+    controlEditFunctionShowing ({commit}, bool) {
+      commit('CONTROL_EDIT_FUNCTION_SHOWING', bool)
     },
-    addCurrentUser({commit}, userData) {
-      commit('ADD_CURRENT_USER', userData);
+    addCurrentUser ({commit}, userData) {
+      commit('ADD_CURRENT_USER', userData)
     },
-    changeRobotSpeed({commit}, speed) {
-      commit('CHANGE_ROBOT_SPEED', speed);
+    changeRobotSpeed ({commit}, speed) {
+      commit('CHANGE_ROBOT_SPEED', speed)
     },
-    changeFullscreen({commit}) {
-      commit('CHANGE_FULLSCREEN');
+    changeFullscreen ({commit}) {
+      commit('CHANGE_FULLSCREEN')
     },
-    updateLambdas({commit}, {lambdas}) {
-      commit('UPDATE_LAMBDAS', {lambdas});
+    updateLambdas ({commit}, {lambdas}) {
+      commit('UPDATE_LAMBDAS', {lambdas})
     },
-    updateToken({commit}, args) {
-      commit('UPDATE_TOKEN', args);
+    updateToken ({commit}, args) {
+      commit('UPDATE_TOKEN', args)
     },
-    createLock({commit}) {
-      commit('CREATE_LOCK');
+    createLock ({commit}) {
+      commit('CREATE_LOCK')
     },
-    spliceCurrent({commit}, args) {
-      commit('SPLICE_CURRENT', args);
+    spliceCurrent ({commit}, args) {
+      commit('SPLICE_CURRENT', args)
     },
-    pushCurrent({commit}, copy) {
-      commit('PUSH_CURRENT', copy);
+    pushCurrent ({commit}, copy) {
+      commit('PUSH_CURRENT', copy)
     },
-    insertCurrent({commit}, args) {
-      commit('INSERT_CURRENT', args);
+    insertCurrent ({commit}, args) {
+      commit('INSERT_CURRENT', args)
     },
-    updateProfileView({commit}, loc) {
-      commit('UPDATE_PROFILE_VIEW', loc);
+    updateProfileView ({commit}, loc) {
+      commit('UPDATE_PROFILE_VIEW', loc)
     },
-    updateCourse({commit}, course) {
-      commit('UPDATE_COURSE', course);
+    updateCourse ({commit}, course) {
+      commit('UPDATE_COURSE', course)
     },
-    updateCompiledDone({commit}, bool) {
-      commit('UPDATE_COMPILED_DONE', bool);
+    updateCompiledDone ({commit}, bool) {
+      commit('UPDATE_COMPILED_DONE', bool)
     },
-    updatePaused({commit}, bool) {
-      commit('UPDATE_PAUSED', bool);
+    updatePaused ({commit}, bool) {
+      commit('UPDATE_PAUSED', bool)
     },
-    updateFunctionAreaShowing({commit}, show) {
-      commit('UPDATE_FUNCTION_AREA_SHOWING', show);
+    updateFunctionAreaShowing ({commit}, show) {
+      commit('UPDATE_FUNCTION_AREA_SHOWING', show)
     },
-    updateEditingIndex({commit}, index) {
-      commit('UPDATE_EDITING_INDEX', index);
+    updateEditingIndex ({commit}, index) {
+      commit('UPDATE_EDITING_INDEX', index)
     },
-    updateSwiperSlide({commit}, slide) {
-      commit('UPDATE_SWIPER_SLIDE', slide);
+    updateSwiperSlide ({commit}, slide) {
+      commit('UPDATE_SWIPER_SLIDE', slide)
     },
-    addMessage({commit}, {type, msg, runOnDelete}) {
-      commit("ADD_MESSAGE", {type: type, msg: msg, runOnDelete: runOnDelete});
+    addMessage ({commit}, messageBuilder) {
+      commit('ADD_MESSAGE', messageBuilder)
     },
-    removeMessage({commit}, ind) {
-      commit('REMOVE_MESSAGE', ind);
+    removeMessage ({commit}, ind) {
+      commit('REMOVE_MESSAGE', ind)
     },
-    deleteMessages({commit}) {
-      commit('DELETE_MESSAGES');
+    deleteMessages ({commit}) {
+      commit('DELETE_MESSAGES')
     }
   },
   getters: {
@@ -514,7 +508,7 @@ export default new Vuex.Store({
     getCommands: state => state.disToken.lambdas.cmds, // <-- Array
     getStagedFunctions: state => state.disToken.lambdas.stagedFuncs, // <-- Array
     getActiveFunctions: state => state.disToken.lambdas.activeFuncs, // <-- Array
-    getMainFunction: state => state.disToken.lambdas.main,// <-- Object
+    getMainFunction: state => state.disToken.lambdas.main, // <-- Object
     getLambdas: state => state.disToken.lambdas,
     getCurrentFunction: state => state.currentFunction,
     getProgramPanelShowing: state => state.programPanelShowing,
@@ -543,7 +537,7 @@ export default new Vuex.Store({
         .object()
         .value()
 
-      return orderEm(assembleLevels);
+      return orderEm(assembleLevels)
     },
     getStats: state => state.disToken.stats,
     getStep: state => state.disToken.stats.step,
@@ -560,6 +554,6 @@ export default new Vuex.Store({
     getColors: state => state.colors,
     getActiveFunctionGroups: state => state.activeFunctionGroups,
     getSwiperSlide: state => state.swiperSlide,
-    getMessageList: state => state.messageList,
+    getMessageList: state => state.messageList
   }
 })
