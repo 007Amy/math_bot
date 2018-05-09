@@ -21,32 +21,6 @@
   cursor: pointer;
 }
 
-.speech-container {
-  position: relative;
-  display: flex;
-  flex-grow: 2;
-  color: black;
-}
-
-.speech-bubble {
-  width: 500px;
-  height: 100%;
-  opacity: 0.5;
-}
-
-.speech {
-  width: 500px;
-  padding: 10px 10px 10px 20px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translate(0, 0);
-  color: black;
-  font-size: 22px;
-  font-weight: 500;
-  text-align: left;
-}
-
 .instructions-filler-left {
   flex-grow: 0.7;
 }
@@ -82,10 +56,6 @@
     /*height: 50px;*/
   }
 
-  .speech-bubble {
-    width: 400px;
-  }
-
   .instructions-filler-left {
     flex-grow: 2.75;
   }
@@ -110,21 +80,8 @@
     height: 50px;
   }
 
-  .speech-bubble {
-    width: 175px;
-  }
-
   .instructions-filler-left {
     flex-grow: 2.75;
-  }
-
-  .speech {
-    font-size: 10px;
-    font-weight: 200;
-    padding: 1px 10px 1px 2px;
-    width: 175px;
-    left: 5px;
-    transform: translate(5px, 0);
   }
 }
 
@@ -138,21 +95,8 @@
     height: 50px;
   }
 
-  .speech-bubble {
-    width: 175px;
-  }
-
   .instructions-filler-left {
     flex-grow: 2;
-  }
-
-  .speech {
-    font-size: 10px;
-    font-weight: 200;
-    padding: 1px 10px 1px 2px;
-    width: 175px;
-    left: 5px;
-    transform: translate(5px, 0);
   }
 }
 

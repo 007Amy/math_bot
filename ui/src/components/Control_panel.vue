@@ -16,7 +16,7 @@
         <!--<img class="speech-bubble" :src="permanentImages.speechBubble" :alt="description">-->
         <!--<div class="speech" v-html="description"></div>-->
       <!--</div>-->
-      <speech-bubble></speech-bubble>
+      <speech-bubble :html="description" :showing="speechBubbleShowing"></speech-bubble>
       <div class="instructions-filler-right"></div>
     </div>
   </div>
@@ -64,33 +64,3 @@ export default {
 </script>
 
 <style scoped src="../css/controlPanel.css"></style>
-<style>
-  /* None scoped styles for speech images */
-  .speech img {
-    height: 22px;
-    background-color: black;
-    border-radius: 2px;
-  }
-  /* Medium Devices, Desktops */
-  @media only screen and (max-width : 992px) {
-    .speech img {
-      height: 10px;
-    }
-  }
-
-  /* Small Devices */
-  @media only screen and (max-width : 667px) {
-
-  }
-
-  /* Extra Small Devices, Phones */
-  @media only screen and (max-width : 480px) {
-
-  }
-
-  /* Custom, iPhone 5 Retina */
-  @media only screen and (max-width : 320px) {
-
-  }
-
-</style>
