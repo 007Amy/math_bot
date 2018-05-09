@@ -6,12 +6,18 @@
 
 .instructions {
   display: flex;
-  height: 130px;
+  height: 150px;
   width: 100%;
 }
 
-.instructions-robot {
+.instructions-robot-container {
   height: 100%;
+  display: flex;
+  align-items: flex-end;
+  margin-right: 20px;
+}
+
+.instructions-robot {
   cursor: pointer;
 }
 
@@ -42,7 +48,7 @@
 }
 
 .instructions-filler-left {
-  flex-grow: 1.5;
+  flex-grow: 0.7;
 }
 
 .instructions-filler-right {
