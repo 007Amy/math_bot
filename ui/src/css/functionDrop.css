@@ -1,11 +1,13 @@
 .function-drop {
   width: 100%;
-  z-index: 1000;
-  margin: 0 auto;
+  height: 100%;
+  z-index: 2001;
   background: no-repeat center;
   display: flex;
   align-items: center;
   overflow: hidden;
+  justify-content: center;
+  margin: 0 auto;
 }
 
 .function-drop-drop-zone {
@@ -18,8 +20,13 @@
   width: 100%;
 }
 
+.mesh-background {
+  background: url("https://res.cloudinary.com/deqjemwcu/image/upload/v1522345998/misc/grid-mesh_auu3wh.svg");
+  background-position: inherit;
+}
+
 .ghost {
-  background-color: #FFFFFF;
+  /*background-color: #FFFFFF;*/
 }
 
 ::-webkit-scrollbar {

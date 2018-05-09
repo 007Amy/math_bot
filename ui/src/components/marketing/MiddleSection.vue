@@ -21,20 +21,20 @@
 </template>
 
 <script>
-  export default {
-    name: 'MiddleSection',
-    data() {
-      return {
-        imgResources : {
-          'leftArchLine': 'http://res.cloudinary.com/doohickey/image/upload/v1522023333/Path_3_i2cwxd.svg',
-          'shipAndPlanet': 'http://res.cloudinary.com/doohickey/image/upload/v1522023583/Group_3_xhgk5t.png',
-          'middleArchLine': 'http://res.cloudinary.com/doohickey/image/upload/v1522023645/Path_4_vwxssf.svg',
-          'planetCluster': 'http://res.cloudinary.com/doohickey/image/upload/v1522023702/noun_922273_cc_atgmbu.svg'
-        }
+export default {
+  name: 'MiddleSection',
+  data () {
+    return {
+      imgResources: {
+        'leftArchLine': 'http://res.cloudinary.com/doohickey/image/upload/v1522023333/Path_3_i2cwxd.svg',
+        'shipAndPlanet': 'http://res.cloudinary.com/doohickey/image/upload/v1522023583/Group_3_xhgk5t.png',
+        'middleArchLine': 'http://res.cloudinary.com/doohickey/image/upload/v1522023645/Path_4_vwxssf.svg',
+        'planetCluster': 'http://res.cloudinary.com/doohickey/image/upload/v1522023702/noun_922273_cc_atgmbu.svg'
       }
-    },
-    props: ['gotosite']
-  }
+    }
+  },
+  props: ['gotosite']
+}
 </script>
 
 <style scoped>

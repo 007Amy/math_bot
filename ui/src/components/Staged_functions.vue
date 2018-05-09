@@ -18,50 +18,48 @@
 </template>
 
 <script>
-  import {_} from 'underscore';
-  import FunctionBox from './Function_box';
-  import draggable from 'vuedraggable';
-  import api from '../services/api';
+import FunctionBox from './Function_box'
+import draggable from 'vuedraggable'
 
-  export default {
-    computed: {
-      stagedFunctions() {
-        return this.$store.getters.getStagedFunctions;
-      },
-      permanentImages() {
-        return this.$store.getters.getPermanentImages;
-      },
-      currentFunction() {
-        return this.$store.getters.getCurrentFunction;
-      },
-      editFunctionShowing() {
-        return this.$store.getters.getEditFunctionShowing;
-      },
+export default {
+  computed: {
+    stagedFunctions () {
+      return this.$store.getters.getStagedFunctions
     },
-    data() {
-      return {
-        clicks: 0,
-        timer: null,
-        draggableOptions: {
-          group: {
-            name: 'commands-staged',
-            pull: true,
-            put: false,
-            revertClone: true
-          },
-          animation: 100,
-          dragClass: 'dragging',
-          ghostClass: 'ghost',
-          chosenClass: 'chosen',
-          sort: false
-        },
-      };
+    permanentImages () {
+      return this.$store.getters.getPermanentImages
     },
-    components: {
-      draggable,
-      FunctionBox
+    currentFunction () {
+      return this.$store.getters.getCurrentFunction
+    },
+    editFunctionShowing () {
+      return this.$store.getters.getEditFunctionShowing
     }
-  };
+  },
+  data () {
+    return {
+      clicks: 0,
+      timer: null,
+      draggableOptions: {
+        group: {
+          name: 'commands-staged',
+          pull: true,
+          put: false,
+          revertClone: true
+        },
+        animation: 100,
+        dragClass: 'dragging',
+        ghostClass: 'ghost',
+        chosenClass: 'chosen',
+        sort: false
+      }
+    }
+  },
+  components: {
+    draggable,
+    FunctionBox
+  }
+}
 </script>
 
 <style scoped src="../css/stagedFunctions.css"></style>

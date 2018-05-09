@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  export default {};
+export default {}
 </script>
 
 <style scoped src="../css/congrats.css"></style>

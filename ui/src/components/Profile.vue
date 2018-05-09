@@ -18,58 +18,58 @@
 </template>
 
 <script>
-  import SplashScreen from './Splash_screen'
-  import Arithmetic from "./Arithmetic";
-  import AuthService from '../services/AuthService';
+import SplashScreen from './Splash_screen'
+import Arithmetic from './Arithmetic'
+import AuthService from '../services/AuthService'
 
-  export default {
-    mounted() {
-      this.auth = new AuthService(this)
-      this.auth.createLock()
-      this.auth.init();
-    },
-    data () {
-      return {
-        auth: null
-      }
-    },
-    computed: {
-      splashScreenShowing() {
-        return this.$store.getters.getSplashScreenShowing;
-      },
-      profileView() {
-        return this.$store.getters.getProfileView;
-      },
-      permanentImages() {
-        return this.$store.getters.getPermanentImages;
-      },
-      stats() {
-        return this.$store.getters.getStats
-      }
-    },
-    methods: {
-      unlock() {
-        const tokenId = this.$store.getters.getToken.token_id;
-        this.$http.get('/api/stats/unlock/' + tokenId)
-          .then(res => {
-            this.$store.dispatch('updateStats', {stats: res.body});
-          })
-          .catch(err => console.error(err.message));
-      },
-      reset() {
-        const tokenId = this.$store.getters.getToken.token_id;
-        this.$http.get('/api/stats/reset/' + tokenId)
-          .then(res => {
-            this.$store.dispatch('updateStats', {stats: res.body});
-          })
-          .catch(err => console.error(err.message));
-      },
-    },
-    components: {
-      Arithmetic,
-      SplashScreen
+export default {
+  mounted () {
+    this.auth = new AuthService(this)
+    this.auth.createLock()
+    this.auth.init()
+  },
+  data () {
+    return {
+      auth: null
     }
-  };
+  },
+  computed: {
+    splashScreenShowing () {
+      return this.$store.getters.getSplashScreenShowing
+    },
+    profileView () {
+      return this.$store.getters.getProfileView
+    },
+    permanentImages () {
+      return this.$store.getters.getPermanentImages
+    },
+    stats () {
+      return this.$store.getters.getStats
+    }
+  },
+  methods: {
+    unlock () {
+      const tokenId = this.$store.getters.getToken.token_id
+      this.$http.get('/api/stats/unlock/' + tokenId)
+        .then(res => {
+          this.$store.dispatch('updateStats', {stats: res.body})
+        })
+        .catch(err => console.error(err.message))
+    },
+    reset () {
+      const tokenId = this.$store.getters.getToken.token_id
+      this.$http.get('/api/stats/reset/' + tokenId)
+        .then(res => {
+          this.$store.dispatch('updateStats', {stats: res.body})
+        })
+        .catch(err => console.error(err.message))
+    }
+  },
+  components: {
+    Arithmetic,
+    SplashScreen
+  }
+}
 </script>
 
 <style scoped src="../css/profile.css">

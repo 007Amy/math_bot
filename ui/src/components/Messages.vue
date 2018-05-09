@@ -1,29 +1,29 @@
 <template>
-  <transition-group class="message-container" name="messages" tag="div" leave-active-class="animated zoomOut">
-    <div v-for="(message, ind) in messageList" class="message" :class="message.type" :id="'message-' + ind" :key="'message/' + (ind + 1)" @click="removeMessage(ind)">
+  <div class="message-container">
+    <div v-for="(message, ind) in messageList" class="message" :class="message.type" :id="'message-' + ind" :key="message.id" @click="removeMessage(ind)">
       {{ message.msg }}
     </div>
-  </transition-group>
+  </div>
 </template>
 
 <script>
-	export default {
-    mounted() {
+export default {
+  mounted () {
+  },
+  computed: {
+    messageList () {
+      return this.$store.getters.getMessageList
     },
-    computed: {
-      messageList() {
-        return this.$store.getters.getMessageList
-      },
-      permanentImages () {
-        return this.$store.getters.getPermanentImages;
-      }
-    },
-    methods: {
-      removeMessage (message) {
-        this.$store.dispatch('removeMessage', message);
-      }
+    permanentImages () {
+      return this.$store.getters.getPermanentImages
+    }
+  },
+  methods: {
+    removeMessage (message) {
+      this.$store.dispatch('removeMessage', message)
     }
   }
+}
 </script>
 
 <style scoped src="../css/messages.css"></style>

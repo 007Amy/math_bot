@@ -2,7 +2,8 @@
   position: fixed;
   right: 5px;
   top: 10px;
-  width: 350px;
+  min-height: 42px;
+  width: 181px;
   z-index: 1001;
   display: flex;
   flex-direction: column;
@@ -16,21 +17,56 @@
   border-radius: 2px;
   justify-content: center;
   align-items: center;
+  font-size: 14px;
+  line-height: 16px;
+  cursor: pointer;
+  padding: 20px;
 }
 
 .info {
-  border: 1px solid rgb(135, 206, 250);
-  background-color: rgba(135, 206, 250, 0.2);
+  border: 1px solid rgb(0, 0, 255);
+  background-color: rgba(0, 0, 255, 0.2);
 }
 
 .success {
+  background-color: rgba(184,233,134,0.2);
   border: 1px solid rgb(184, 233, 134);
-  background-color: rgba(184, 233, 134, 0.2);
 }
 
 .warn {
   border: 1px solid rgb(255, 0, 0);
   background-color: rgba(255, 0, 0, 0.2);
+}
+
+.message:nth-child(n+2) {
+  opacity: 0.5;
+}
+
+.close-message {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  border-radius: 2px;
+  float: left;
+}
+
+.close-message::after, .close-message::before{
+  position: absolute;
+  top: 9px;
+  left: 0px;
+  content: '';
+  display: block;
+  width: 20px;
+  height: 2px;
+  background-color: #FFFFFF;
+}
+
+.close-message::after {
+  transform: rotate(45deg);
+}
+
+.close-message::before {
+  transform: rotate(-45deg);
 }
 
 /* Large Phones, landscape*/
@@ -41,12 +77,8 @@
   }
 
   .message {
-    background-color: rgba(184, 233, 134, 0.8);
-    height: 30px;
-  }
-
-  .message p {
-    font-size: 12px;
+    height: 20px;
+    font-size: 10px;
   }
 }
 

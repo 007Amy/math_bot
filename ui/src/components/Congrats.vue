@@ -9,16 +9,16 @@
 </template>
 
 <script>
-  export default {
-    computed: {
-      stats() {
-        return this.$store.getters.getStats;
-      },
-      permanentImages() {
-        return this.$store.getters.getPermanentImages;
-      }
+export default {
+  computed: {
+    stats () {
+      return this.$store.getters.getStats
+    },
+    permanentImages () {
+      return this.$store.getters.getPermanentImages
     }
-  };
+  }
+}
 </script>
 
 <style scoped src="../css/congrats.css">

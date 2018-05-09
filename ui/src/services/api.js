@@ -1,33 +1,29 @@
-import AuthService from "./AuthService"
-
-const _ = require('underscore');
-import Vue from "vue";
-import vueResource from "vue-resource";
-import RunCompiled from './RunCompiled'
+import Vue from 'vue'
+import vueResource from 'vue-resource'
 import urlEncode from 'urlencode'
 
-Vue.use(vueResource);
+Vue.use(vueResource)
 
 export default {
 
   compilerWs: null,
 
-  checkWsCapable(cb) {
-    if ("WebSocket" in window) {
+  checkWsCapable (cb) {
+    if ('WebSocket' in window) {
       // console.log("WebSocket is supported by your Browser!");
       cb()
     } else {
-      console.log("WebSocket NOT supported by your Browser!");
+      console.log('WebSocket NOT supported by your Browser!')
     }
   },
 
-  getWsPath(tokenId, cb) {
+  getWsPath (tokenId, cb) {
     Vue.http.get('/api/wsPath/' + urlEncode(tokenId))
       .then(res => cb(res.data))
       .catch(console.error)
   },
 
-  openCompilerWs({tokenId}, cb) {
+  openCompilerWs ({tokenId}, cb) {
     this.checkWsCapable(() => {
       this.getWsPath(urlEncode(tokenId), path => {
         const COMPILER_SOCKET = path
@@ -38,19 +34,19 @@ export default {
           console.log('COMPILER WS OPEN')
           if (cb) cb()
         }
-        this.compilerWs.onerror = (err) => {console.error('COMPILER WS FAILED', err)}
-        this.compilerWs.onclose = () => {console.log('COMPILER WS CLOSED')}
+        this.compilerWs.onerror = (err) => { console.error('COMPILER WS FAILED', err) }
+        this.compilerWs.onclose = () => { console.log('COMPILER WS CLOSED') }
       })
     })
   },
 
-  getUserToken({tokenId}, cb) {
+  getUserToken ({tokenId}, cb) {
     Vue.http.post('/api/token', JSON.stringify({token_id: tokenId}))
       .then(res => res.body)
       .then(token => {
         // console.log('GET TOKEN ~ ', token);
-        this.openCompilerWs({tokenId: token.token_id});
-        cb(token);
+        this.openCompilerWs({tokenId: token.token_id})
+        cb(token)
       })
       .catch(console.error)
   },
@@ -62,7 +58,7 @@ export default {
   * @param activeIndex = new index of func token
   * @response.body = lambdas property of JWT
   * */
-  activateFunction({tokenId, stagedIndex, activeIndex}, cb) {
+  activateFunction ({tokenId, stagedIndex, activeIndex}, cb) {
     Vue.http.get(`/api/token/activateFunction/${urlEncode(tokenId)}/${stagedIndex}/${activeIndex}`)
       .then(res => cb(res.body))
       .catch(console.error)
@@ -73,10 +69,10 @@ export default {
   * @param token = entire JWT
   * @response.body = lambdas property of JWT
   * */
-  putToken(token, cb) {
+  putToken (token, cb) {
     Vue.http.put('/api/token', token)
       .then(res => cb(res.body))
-      .catch(console.error);
+      .catch(console.error)
   },
   /*
   * putFunc updates the current function in the database
@@ -84,10 +80,10 @@ export default {
   * @param funcToken = current token
   * @response.body = lambdas property of JWT
   * */
-  putFunc({tokenId, funcToken, override}, cb) {
+  putFunc ({tokenId, funcToken, override}, cb) {
     Vue.http.put('/api/token/editLambdas', {tokenId, funcToken, override})
       .then(res => {
-        cb(res.body);
+        cb(res.body)
       })
       .catch(console.error)
   },
@@ -96,10 +92,10 @@ export default {
   * @param tokenId = JWT token_id
   * @response.body = stats property of JWT
   * */
-  statsWin({tokenId}, cb) {
+  statsWin ({tokenId}, cb) {
     Vue.http.put('/api/stats/win/' + urlEncode(tokenId), {})
       .then(res => cb(res))
-      .catch(console.error);
+      .catch(console.error)
   },
   /*
   * switchLevel switches current level in the JWT
@@ -108,29 +104,28 @@ export default {
   * @param equation = level step to switch to
   * @response.body = state property of JWT
   * */
-  switchLevel({tokenId, level, step}, cb) {
+  switchLevel ({tokenId, level, step}, cb) {
     Vue.http.get('/api/stats/switch/' + urlEncode(tokenId) + '/' + level + '/' + step)
       .then(res => cb(res))
-      .catch(console.error);
+      .catch(console.error)
   },
 
-  getStats({tokenId}, cb) {
+  getStats ({tokenId}, cb) {
     Vue.http.get('/api/stats/' + tokenId)
       .then(res => res.body)
       .then(cb)
       .catch(console.error)
   },
 
-  wsOnMessage(cb) {
+  wsOnMessage (cb) {
     this.compilerWs.onmessage = (msg) => {
       const compiled = JSON.parse(msg.data)
       // console.log('compiled ~>', JSON.stringify(compiled, null, 4));
-      if (compiled === 'Socket connections must be of the same origin!') {console.error(compiled)}
-      else {cb(compiled)}
+      if (compiled === 'Socket connections must be of the same origin!') { console.error(compiled) } else { cb(compiled) }
     }
   },
 
-  compileWs({context, problem}, cb) {
+  compileWs ({context, problem}, cb) {
     const tokenId = context.$store.getters.getToken.token_id
     // console.log('problem ~>', problem);
     // console.log('tokenId ~>', tokenId);
@@ -145,7 +140,7 @@ export default {
     }
   },
 
-  stopProgram({context}) {
+  stopProgram ({context}) {
     this.compilerWs.send(JSON.stringify({steps: 0, program: {problem: ''}, halt: true}))
   },
 
@@ -155,9 +150,9 @@ export default {
   * @param currentEquation = step
   * @response.body = grid, problem, tool tokens
   * */
-  getStep({tokenId, level, step}, cb) {
-    Vue.http.get('/api/levels/getStep/' + level + '/' + step, {params:  {tokenId: tokenId}})
+  getStep ({tokenId, level, step}, cb) {
+    Vue.http.get('/api/levels/getStep/' + level + '/' + step, {params: {tokenId: tokenId}})
       .then(res => cb(res))
-      .catch(console.error);
+      .catch(console.error)
   }
-};
+}
