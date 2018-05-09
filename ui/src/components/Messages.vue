@@ -7,23 +7,23 @@
 </template>
 
 <script>
-	export default {
-    mounted() {
+export default {
+  mounted () {
+  },
+  computed: {
+    messageList () {
+      return this.$store.getters.getMessageList
     },
-    computed: {
-      messageList() {
-        return this.$store.getters.getMessageList
-      },
-      permanentImages () {
-        return this.$store.getters.getPermanentImages;
-      }
-    },
-    methods: {
-      removeMessage (message) {
-        this.$store.dispatch('removeMessage', message);
-      }
+    permanentImages () {
+      return this.$store.getters.getPermanentImages
+    }
+  },
+  methods: {
+    removeMessage (message) {
+      this.$store.dispatch('removeMessage', message)
     }
   }
+}
 </script>
 
 <style scoped src="../css/messages.css"></style>

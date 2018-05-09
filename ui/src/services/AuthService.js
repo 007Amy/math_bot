@@ -1,8 +1,8 @@
-import Auth0Lock from 'auth0-lock';
-import api from '../services/api';
-import images from '../assets/assets';
+import Auth0Lock from 'auth0-lock'
+import api from '../services/api'
+import images from '../assets/assets'
 
-import { AUTH0_DOMAIN, AUTH0_ID } from '../keys';
+import { AUTH0_DOMAIN, AUTH0_ID } from '../keys'
 
 class AuthService {
   constructor (context) {
@@ -10,20 +10,20 @@ class AuthService {
     this.lock = null
   }
 
-  _handleAuth(authResult) {
+  _handleAuth (authResult) {
     const dis = this
     // Use the token in authResult to getUserInfo() and save it to localStorage
     this.lock.getUserInfo(authResult.accessToken, function (error, profile) {
       if (error) {
         // Handle error
-        console.log('Error Retrieving Profile');
-        return;
+        console.log('Error Retrieving Profile')
+        return
       }
-      localStorage.setItem('accessToken', authResult.accessToken);
-      localStorage.setItem('profile', JSON.stringify(profile));
-      dis.login();
-      dis.context.$router.push({path: '/profile'});
-    });
+      localStorage.setItem('accessToken', authResult.accessToken)
+      localStorage.setItem('profile', JSON.stringify(profile))
+      dis.login()
+      dis.context.$router.push({path: '/profile'})
+    })
   }
 
   _isLoggedIn () {
@@ -31,35 +31,35 @@ class AuthService {
   }
 
   _getCurrentUser () {
-    return JSON.parse(localStorage.getItem('profile'));
+    return JSON.parse(localStorage.getItem('profile'))
   }
 
-  _startSplashScreen() {
-    this.context.$store.dispatch('updateSplashScreenShowing', true);
+  _startSplashScreen () {
+    this.context.$store.dispatch('updateSplashScreenShowing', true)
   }
 
-  _stopSplashScreen() {
-    this.context.$store.dispatch('updateSplashScreenShowing', false);
+  _stopSplashScreen () {
+    this.context.$store.dispatch('updateSplashScreenShowing', false)
   }
 
-  login() {
+  login () {
     const currentUser = this._getCurrentUser()
-    const tokenId = currentUser.user_id || currentUser.sub;
+    const tokenId = currentUser.user_id || currentUser.sub
 
     api.getUserToken({tokenId: tokenId}, token => {
       token.userInfo = this._getCurrentUser()
       this.context.$store.dispatch('updateToken', [token, () => {
         const path = this.context.$route.path
         if (path === '/robot') { // If path is robot, initialize a new game
-          this.context.$store.dispatch('initNewGame', this.context);
+          this.context.$store.dispatch('initNewGame', this.context)
         }
-        localStorage.setItem('LAST_PATH', this.context.$route.path);
-        this._stopSplashScreen();
-      }]);
+        localStorage.setItem('LAST_PATH', this.context.$route.path)
+        this._stopSplashScreen()
+      }])
     })
   }
 
-  createLock() {
+  createLock () {
     this.lock = new Auth0Lock(
       AUTH0_ID || process.env('AUTH0_ID'),
       AUTH0_DOMAIN || process.env('AUTH0_DOMAIN'),
@@ -77,35 +77,34 @@ class AuthService {
         },
         autoclose: true
       }
-    );
+    )
   }
 
-  logout() {
+  logout () {
+    localStorage.clear()
 
-    localStorage.clear();
+    this.context.$router.push({path: '/about'})
 
-    this.context.$router.push({path: '/about'});
-
-    setTimeout(_ => location.reload());
+    setTimeout(_ => location.reload())
 
     setTimeout(() => {
-      location.reload();
-    }, 1500);
+      location.reload()
+    }, 1500)
   }
 
-  init() {
+  init () {
     this._startSplashScreen()
 
     // Listening for the authenticated event
     this.lock.on('authenticated', (authResult) => {
       this._handleAuth(authResult)
-      this._stopSplashScreen();
-    });
+      this._stopSplashScreen()
+    })
 
     if (this._isLoggedIn()) {
-      this.login();
+      this.login()
     } else {
-      this.lock.show();
+      this.lock.show()
     }
   }
 }

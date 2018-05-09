@@ -20,40 +20,40 @@
 </template>
 
 <script>
-  export default {
-    name: 'control-panel',
-    computed: {
-      tryAgainShowing() {
-        return this.$store.getters.getTryAgainShowing;
-      },
-      congratsShowing() {
-        return this.$store.getters.getCongratsShowing;
-      },
-      currentStepData() {
-        return this.$store.getters.getCurrentStepData;
-      },
-      permanentImages() {
-        return this.$store.getters.getPermanentImages;
-      },
-      description() {
-        return this.currentStepData.description;
-      },
+export default {
+  name: 'control-panel',
+  computed: {
+    tryAgainShowing () {
+      return this.$store.getters.getTryAgainShowing
     },
-    data() {
-      return {
-        speechBubbleShowing: true
-      }
+    congratsShowing () {
+      return this.$store.getters.getCongratsShowing
     },
-    methods: {
-      toggleSpeechBubble() {
-        this.speechBubbleShowing = !this.speechBubbleShowing;
-      },
-      goToProfile() {
-        this.$store.dispatch('deleteMessages');
-        this.$router.push({path: 'profile'});
-      }
+    currentStepData () {
+      return this.$store.getters.getCurrentStepData
+    },
+    permanentImages () {
+      return this.$store.getters.getPermanentImages
+    },
+    description () {
+      return this.currentStepData.description
+    }
+  },
+  data () {
+    return {
+      speechBubbleShowing: true
+    }
+  },
+  methods: {
+    toggleSpeechBubble () {
+      this.speechBubbleShowing = !this.speechBubbleShowing
+    },
+    goToProfile () {
+      this.$store.dispatch('deleteMessages')
+      this.$router.push({path: 'profile'})
     }
   }
+}
 </script>
 
 <style scoped src="../css/controlPanel.css"></style>

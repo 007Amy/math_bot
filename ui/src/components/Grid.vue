@@ -44,87 +44,86 @@
 </template>
 
 <script>
-  import {_} from 'underscore';
-  import assets from '../assets/assets';
-  import Congrats from './Congrats';
-  import Tryagain from './Try_again';
-  import Robotcarrying from './Robot_carrying';
+import assets from '../assets/assets'
+import Congrats from './Congrats'
+import Tryagain from './Try_again'
+import Robotcarrying from './Robot_carrying'
 
-  export default {
-    computed: {
-      currentStepData() {
-        return this.$store.getters.getCurrentStepData;
-      },
-      level() {
-        return this.currentStepData.level;
-      },
-      step() {
-        return this.currentStepData.step;
-      },
-      gridMap() {
-        return this.currentStepData.gridMap;
-      },
-      robotOrientation() {
-        return this.robot.robotFacing;
-      },
-      toolImages() {
-        return assets.tools;
-      },
-      robotDeactivated() {
-        return this.$store.getters.getRobotDeactivated;
-      },
-      robot() {
-        return this.$store.getters.getRobot;
-      },
-      congratsShowing() {
-        return this.$store.getters.getCongratsShowing;
-      },
-      tryAgainShowing() {
-        return this.$store.getters.getTryAgainShowing;
-      },
-      permanentImages() {
-        return this.$store.getters.getPermanentImages;
-      },
-      messageShowing() {
-        if (this.congratsShowing) {
-          return true;
-        } else return !!this.tryAgainShowing;
-      },
-      currentPaused() {
-        return this.$store.getters.getPaused;
-      },
-      mode() {
-        return this.$store.getters.getMode;
-      },
-      stepData() {
-        return this.$store.getters.getCurrentStepData;
+export default {
+  computed: {
+    currentStepData () {
+      return this.$store.getters.getCurrentStepData
+    },
+    level () {
+      return this.currentStepData.level
+    },
+    step () {
+      return this.currentStepData.step
+    },
+    gridMap () {
+      return this.currentStepData.gridMap
+    },
+    robotOrientation () {
+      return this.robot.robotFacing
+    },
+    toolImages () {
+      return assets.tools
+    },
+    robotDeactivated () {
+      return this.$store.getters.getRobotDeactivated
+    },
+    robot () {
+      return this.$store.getters.getRobot
+    },
+    congratsShowing () {
+      return this.$store.getters.getCongratsShowing
+    },
+    tryAgainShowing () {
+      return this.$store.getters.getTryAgainShowing
+    },
+    permanentImages () {
+      return this.$store.getters.getPermanentImages
+    },
+    messageShowing () {
+      if (this.congratsShowing) {
+        return true
+      } else return !!this.tryAgainShowing
+    },
+    currentPaused () {
+      return this.$store.getters.getPaused
+    },
+    mode () {
+      return this.$store.getters.getMode
+    },
+    stepData () {
+      return this.$store.getters.getCurrentStepData
+    }
+  },
+  data () {
+    return {
+      runCompiled: {},
+      showSpeech: true
+    }
+  },
+  methods: {
+    pause () {
+      this.robot.state = 'paused'
+    },
+    convertToImgName (spaceName) {
+      switch (spaceName) {
+        case 'wall':
+          return spaceName
+        default:
+          return 'floor'
       }
-    },
-    data() {
-      return {
-        runCompiled: {},
-        showSpeech: true,
-      }
-    },
-    methods: {
-      pause() {
-        this.robot.state = 'paused';
-      },
-      convertToImgName(spaceName) {
-        switch (spaceName) {
-          case 'wall':
-            return spaceName;
-          default:
-            return 'floor'
-        }
-      }
-    },
-    components: {
-      Congrats,
-      Tryagain,
-      Robotcarrying
-    },
-  };
+    }
+  },
+  components: {
+    Congrats,
+    Tryagain,
+    Robotcarrying
+  }
+}
 </script>
 
 <style scoped src="../css/grid.css"></style>

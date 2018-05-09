@@ -12,66 +12,70 @@
 </template>
 
 <script>
-  import FunctionBox from './Function_box';
-  import { _ } from 'underscore';
+import FunctionBox from './Function_box'
 
-  export default {
-    name: 'main_placeholder',
-    mounted () {
-      this.placeholderContainer$ = $('.placeholder-container')
+export default {
+  name: 'main_placeholder',
+  computed: {
+    mainFunctionFunc () {
+      const mainToken = this.$store.getters.getMainFunction
+      return mainToken === null ? [] : mainToken.func
     },
-    computed: {
-      mainFunctionFunc() {
-        const mainToken = this.$store.getters.getMainFunction;
-        return mainToken === null ? [] : mainToken.func;
-      },
-      mainFull () {
-        return this.mainFunctionFunc.length === this.stepData.mainMax;
-      },
-      placeholders () {
-        return new Array(this.stepData.mainMax)
-      },
-      stepData () {
-        return this.$store.getters.getCurrentStepData
-      }
+    mainFull () {
+      return this.mainFunctionFunc.length === this.stepData.mainMax
     },
-    watch: {
-      mainFull (bool) {
-        if (bool) this.placeholderFull();
-        else this.placeholderShort();
-      }
+    placeholders () {
+      return new Array(this.stepData.mainMax)
     },
-    data () {
-      return {
-        list: [],
-        placeholderContainer$: null
-      }
-    },
-    methods: {
-      message (type, msg, runOnDelete) {
-        this.$store.dispatch('addMessage', {type: type, msg: msg, runOnDelete: runOnDelete})
-      },
-      placeholderFull () {
-        const $play = $('.play')
-
-        $play.addClass('play-border')
-
-        this.message('success', 'Main is full, check your program then press play', () => {
-          $play.removeClass('play-border')
-        })
-
-        this.placeholderContainer$
-          .addClass('placeholder-full-background')
-      },
-      placeholderShort () {
-        this.placeholderContainer$
-          .removeClass('placeholder-full-background')
-      }
-    },
-    components: {
-      FunctionBox
+    stepData () {
+      return this.$store.getters.getCurrentStepData
     }
+  },
+  watch: {
+    mainFull (bool) {
+      const $placeHolder = $('.placeholder-container')
+      if (bool) this.placeholderFull($placeHolder)
+      else this.placeholderShort($placeHolder)
+    }
+  },
+  data () {
+    return {
+      list: []
+    }
+  },
+  methods: {
+    placeholderFull ($placeholder) {
+      const messageBuilder = {
+        type: 'success',
+        msg: 'Press play',
+        handlers () {
+          const $play = $('.play')
+
+          return {
+            runBeforeAppend () {
+              $play.addClass('pulse')
+            },
+            runOnDelete () {
+              $play.removeClass('pulse')
+            }
+          }
+        }
+      }
+
+      this.$store.dispatch('addMessage', messageBuilder)
+
+      $placeholder
+        .addClass('placeholder-full-background')
+    },
+    placeholderShort ($placeholder) {
+      $placeholder
+        .removeClass('placeholder-full-background')
+    }
+  },
+  components: {
+    FunctionBox
   }
+}
 </script>
 
 <style scoped src="../css/mainPlaceholder.css"></style>

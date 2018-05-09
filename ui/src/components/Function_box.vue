@@ -23,34 +23,34 @@
 </template>
 
 <script>
-  import { _ } from 'underscore'
+import { _ } from 'underscore'
 
-  export default {
-    name: 'function_box',
-    computed: {
-      permanentImages() {
-        return this.$store.getters.getPermanentImages;
-      },
-      commandImages() {
-        return this.permanentImages.cmdImages;
-      },
-      funcImages() {
-        return this.permanentImages.funcImages;
-      },
-      funcAndcmdImages() {
-        return _.extend(this.funcImages, this.commandImages);
-      },
-      colors() {
-        return this.$store.getters.getColors;
-      }
+export default {
+  name: 'function_box',
+  computed: {
+    permanentImages () {
+      return this.$store.getters.getPermanentImages
     },
-    methods: {
-      puzzlePiece(func, ind, collection) {
-        return ind === 0 ? this.permanentImages.puzzlePieces.start[func.color] : ind === collection.length - 1 ? this.permanentImages.puzzlePieces.end[func.color] : this.permanentImages.puzzlePieces.middle[func.color]
-      }
+    commandImages () {
+      return this.permanentImages.cmdImages
     },
-    props: ['func', 'ind', 'origin', 'method', 'collection', 'otherMounted']
-  }
+    funcImages () {
+      return this.permanentImages.funcImages
+    },
+    funcAndcmdImages () {
+      return _.extend(this.funcImages, this.commandImages)
+    },
+    colors () {
+      return this.$store.getters.getColors
+    }
+  },
+  methods: {
+    puzzlePiece (func, ind, collection) {
+      return ind === 0 ? this.permanentImages.puzzlePieces.start[func.color] : ind === collection.length - 1 ? this.permanentImages.puzzlePieces.end[func.color] : this.permanentImages.puzzlePieces.middle[func.color]
+    }
+  },
+  props: ['func', 'ind', 'origin', 'method', 'collection', 'otherMounted']
+}
 </script>
 
 <style scoped src="../css/functionBox.css"></style>

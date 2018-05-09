@@ -28,7 +28,7 @@
 }
 
 .command-border-info {
-  border: 2px solid rgb(135, 206, 250) !important;
+  border: 1px solid rgb(0, 0, 255)!important;
 }
 
 .methods {

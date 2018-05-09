@@ -8,14 +8,14 @@
 </template>
 
 <script>
-  export default {
-    name: 'BottomSection',
-    data() {
-      return {
-        showBottomInfo: false
-      }
+export default {
+  name: 'BottomSection',
+  data () {
+    return {
+      showBottomInfo: false
     }
   }
+}
 </script>
 
 <style scoped>
