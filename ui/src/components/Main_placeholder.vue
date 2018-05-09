@@ -5,7 +5,7 @@
         v-for="(_, ind) in placeholders"
         :key="'placeholder/' + ind"
         class="placeholder"
-        :style="placeholders.length === 1 ? {width: '78px'} : {}"
+        :class="placeholders.length === 1 ? 'single-placeholder' : ''"
       ></div>
     </div>
   </div>
@@ -74,44 +74,4 @@
   }
 </script>
 
-<style scoped>
-  .main-placeholder {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .placeholder-container {
-    display: flex;
-    position: relative;
-    left: 0.35em;
-    border-radius: 2px;
-  }
-
-  .placeholder-short-background {
-    background-color: rgba(184, 233, 134, 0.2);
-  }
-
-  .placeholder-info-border {
-    border: 1px solid rgb(135, 206, 250);
-  }
-
-  .placeholder-info-background {
-    background-color: rgba(135, 206, 250, 0.2);
-  }
-
-  .placeholder-full-background {
-    background-color: rgba(184, 233, 134, 0.8);
-  }
-
-  .placeholder {
-    height: 78px;
-    width: 72px;
-  }
-</style>
+<style scoped src="../css/mainPlaceholder.css"></style>

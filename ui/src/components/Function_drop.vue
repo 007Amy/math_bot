@@ -1,9 +1,8 @@
 <template>
-  <div class="function-drop"
-       :style="showMesh ? {'background-image': 'url(' + permanentImages.gridMesh + ')'} : {}"
-  >
+  <div class="function-drop">
     <draggable
       class="function-drop-drop-zone"
+      :class="showMesh ? 'mesh-background' : ''"
       :list="list"
       :options="options"
       @change="change"

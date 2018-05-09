@@ -5,12 +5,12 @@
   align-items: center;
   flex-direction: column;
   margin: 0 auto;
-  height: 500px;
-  width: 1000px;
-  font-size: 10vh;
+  flex-grow: 2;
+  font-size: 40px;
   font-weight: bold;
   color: white;
   z-index: 10012;
+  height: 500px;
 }
 
 .congrats {
@@ -22,23 +22,33 @@
   z-index: 10012;
 }
 
-/* Small Devices*/
+/* 13" screen */
+@media only screen and (max-width : 1280px) {
+  .message-template {
+    height: 350px;
+  }
+}
+
+/* Large Phones, landscape*/
+@media only screen and (max-width : 992px) {
+  .message-template {
+    height: 210px;
+  }
+}
+
+/* Small Devices */
 @media only screen and (max-width : 667px) {
-  .message-template {
-    height: 200px;
-    width: 400px;
-  }
+
 }
 
-/* Extra Small Devices*/
+/* Extra Small Devices, Phones */
 @media only screen and (max-width : 480px) {
-  .message-template {
-    height: 150px;
-    width: 300px;
-  }
 }
 
-/* Custom, iPhone Retina */
+/* Custom, iPhone 5 Retina */
 @media only screen and (max-width : 320px) {
-
+  .grid-space {
+    height: 30px;
+    width: 30px;
+  }
 }

@@ -175,7 +175,6 @@ class PlayerActor()(system: ActorSystem,
     with PlayerTokenModel {
   import PlayerActor._
   import context.dispatcher
-
   val levelGenerator: LevelGenerator = new LevelGenerator(environment)
 
   private val className = "PlayerActor"
