@@ -34,7 +34,7 @@ class Message {
     this.state = state
 
     this.id = uid(7)
-    this.timeOutCounter = 5000
+    this.timeOutCounter = 3000
 
     this.type = messageBuilder.type
     this.msg = `${messageBuilder.msg}`

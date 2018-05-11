@@ -216,7 +216,7 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
           val name = s._1
           val image = s._2
           FuncToken(
-            created_id = createdIdGen("2" + name),
+            created_id = createdIdGen(name),
             func = Option(List.empty[FuncToken]),
             set = Some(false),
             name = Some(parseCamelCase(name)),
@@ -234,7 +234,7 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
             playerToken.lambdas.get.cmds.find(v => v.commandId.contains(c)).get
           }
           models.FuncToken(
-            created_id = createdIdGen("3" + name),
+            created_id = createdIdGen(name),
             func = Some(func),
             name = Some(parseCamelCase(name)),
             image = Some("rocket"),
@@ -257,15 +257,19 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
             Map("newStaged" -> newStaged, "newDefault" -> newDefault)
           }
 
-          val assignedStagedIds = assignedStaged.map(_.created_id)
+          // Swapping created_id out with commandId for cmds, can't do this in default funcs because wont work for existing users
+          val cmds = lambdas.cmds.map(c => c.copy(created_id = createdIdGen(c.commandId.get)))
 
           val preBuiltActiveIds = preBuiltActive.map(_.created_id)
+
+          val assignedStagedIds = assignedStaged.map(_.created_id)
 
           val filteredActive = playerToken.lambdas.get.activeFuncs
             .filterNot(ft => preBuiltActiveIds.contains(ft.created_id))
             .filterNot(ft => assignedStagedIds.contains(ft.created_id))
 
           val l = lambdas.copy(
+            cmds = cmds,
             stagedFuncs = newStagedAndDefault("newStaged"),
             defaultFuncs = Some(newStagedAndDefault("newDefault")),
             activeFuncs = preBuiltActive ::: filteredActive.zipWithIndex

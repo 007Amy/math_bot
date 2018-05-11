@@ -46,8 +46,8 @@
 
  .pulse {
    box-shadow: 0 0 0 rgb(184, 233, 134);
-   animation: pulse 1.3s;
-   animation-iteration-count: 3;
+   animation: pulse 1s;
+   animation-iteration-count: 2;
  }
 
  @keyframes pulse {

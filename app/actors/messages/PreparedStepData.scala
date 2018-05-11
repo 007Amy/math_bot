@@ -1,5 +1,6 @@
 package actors.messages
 
+import actors.LevelGenerationActor.createdIdGen
 import model.models.{ToolList, _}
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -22,6 +23,7 @@ case class PreparedStepData(
     nextStep: String,
     preBuiltActiveIds: Option[List[String]],
     assignedStagedIds: Option[List[String]],
+    initFocus: List[String],
     stepControl: StepControl
 )
 
@@ -50,8 +52,15 @@ object PreparedStepData {
     nextStep = rawStepData.nextStep,
     preBuiltActiveIds = preBuiltActiveIds,
     assignedStagedIds = assignedStagedIds,
+    initFocus = createInitFocus(rawStepData.initFocus),
     stepControl = new StepControl(rawStepData, prepareLambdas(playerToken, rawStepData))
   )
+
+  def createInitFocus(initFocus: List[String]): List[String] = initFocus.map {
+    case a if a == "main-placeholder" => "placeholder-container"
+    case a if a == "staged" => "open-staged"
+    case a => createdIdGen(a)
+  }
 
   def problemGen(rawStepData: RawStepData): Problem = makeProblem(rawStepData.problem)
 
@@ -130,6 +139,7 @@ object PreparedStepData {
     (JsPath \ "nextStep").write[String] and
     (JsPath \ "preBuiltActiveIds").writeNullable[List[String]] and
     (JsPath \ "assignedStagedIds").writeNullable[List[String]] and
+    (JsPath \ "initFocus").write[List[String]] and
     OWrites[StepControl](_ => Json.obj())
   )(unlift(PreparedStepData.unapply))
 

@@ -51,7 +51,8 @@
     </div>
 
     <img
-      class="open-staged dialog-button"
+      id="open-staged"
+      class="dialog-button"
       v-if="this.currentStepData.stagedEnabled"
       :class="functionAreaShowing === 'addFunction' ? 'rotate-to-x' : 'rotate-to-plus'"
       @click="toggleFunctionAdd"
