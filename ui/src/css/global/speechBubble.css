@@ -12,9 +12,60 @@
   background-color: black;
   border-radius: 2px;
 }
+
+/* 13" screen */
+@media only screen and (max-width : 1280px) {
+  .speech-bubble {
+    font-size: 18px;
+    line-height: 24px;
+    padding: 1px 1px 1px 5px;
+  }
+
+  .speech-bubble img {
+    height: 17px;
+  }
+}
+
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
+  .speech-bubble {
+    font-size: 12px;
+    line-height: 14px;
+    padding: 0 0 0 5px;
+  }
+
   .speech-bubble img {
     height: 10px;
   }
+}
+
+/* Small Devices */
+@media only screen and (max-width : 667px) {
+  .speech-bubble {
+    font-size: 12px;
+    line-height: 14px;
+    padding: 0 0 0 5px;
+  }
+
+  .speech-bubble img {
+    height: 10px;
+  }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+  .speech-bubble {
+    font-size: 12px;
+    line-height: 14px;
+    padding: 3px 3px 3px 5px;
+  }
+
+  .speech-bubble img {
+    height: 10px;
+  }
+}
+
+/* Custom, iPhone 5 Retina */
+@media only screen and (max-width : 320px) {
+
 }
