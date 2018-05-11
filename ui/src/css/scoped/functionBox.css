@@ -15,7 +15,7 @@
   background-size: 75%;
   flex: 0 0 auto;
   flex-shrink: 0;
-  cursor: grab;
+  cursor: pointer;
 }
 
 .command-name {

@@ -62,4 +62,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/stagedFunctions.css"></style>
+<style scoped src="../css/scoped/stagedFunctions.css"></style>

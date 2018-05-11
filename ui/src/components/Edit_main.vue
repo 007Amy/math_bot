@@ -222,4 +222,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/editMain.css"></style>
+<style scoped src="../css/scoped/editMain.css"></style>

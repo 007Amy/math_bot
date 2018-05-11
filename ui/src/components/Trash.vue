@@ -53,6 +53,6 @@ export default {
 }
 </script>
 
-<style scoped src="../css/trash.css">
+<style scoped src="../css/scoped/trash.css">
 
 </style>

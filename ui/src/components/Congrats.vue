@@ -21,5 +21,5 @@ export default {
 }
 </script>
 
-<style scoped src="../css/congrats.css">
+<style scoped src="../css/scoped/congrats.css">
 </style>

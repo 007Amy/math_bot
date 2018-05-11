@@ -154,18 +154,7 @@ export default {
     notEditableMessage (evt) {
       const messageBuilder = {
         type: 'info',
-        msg: 'Can\'t edit',
-        handlers () {
-          const $target = $(evt.target)
-          return {
-            runBeforeAppend () {
-              $target.addClass('command-border-info')
-            },
-            runOnDelete () {
-              $target.removeClass('command-border-info')
-            }
-          }
-        }
+        msg: 'Can\'t edit'
       }
 
       this.$store.dispatch('addMessage', messageBuilder)
@@ -176,7 +165,6 @@ export default {
           type: 'info',
           msg: `${func.name}`
         }
-
         this.$store.dispatch('addMessage', messageBuilder)
       }
     },
@@ -257,4 +245,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/commands.css"></style>
+<style scoped src="../css/scoped/commands.css"></style>

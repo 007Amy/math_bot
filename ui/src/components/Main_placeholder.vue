@@ -78,4 +78,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/mainPlaceholder.css"></style>
+<style scoped src="../css/scoped/mainPlaceholder.css"></style>

@@ -9,17 +9,22 @@
 
     <div class="instructions" :style="congratsShowing || tryAgainShowing ? {opacity: 0} : {}">
       <div class="instructions-filler-left"></div>
-      <img @click="toggleSpeechBubble(this)" :src="permanentImages.instructionsRobot" class="instructions-robot" data-toggle="tooltip" title="Toggle speech bubble">
-      <div class="speech-container" :class="description !== '' && speechBubbleShowing ? 'fade-in-speech' : 'fade-out-speech'">
-        <img class="speech-bubble" :src="permanentImages.speechBubble" :alt="description">
-        <div class="speech" v-html="description"></div>
+      <div class="instructions-robot-container">
+        <img @click="toggleSpeechBubble(this)" :src="permanentImages.instructionsRobot" class="instructions-robot" data-toggle="tooltip" title="Toggle speech bubble">
       </div>
+        <!--<div class="speech-container" :class="description !== '' && speechBubbleShowing ? 'fade-in-speech' : 'fade-out-speech'">-->
+        <!--<img class="speech-bubble" :src="permanentImages.speechBubble" :alt="description">-->
+        <!--<div class="speech" v-html="description"></div>-->
+      <!--</div>-->
+      <speech-bubble :html="description" :showing="speechBubbleShowing"></speech-bubble>
       <div class="instructions-filler-right"></div>
     </div>
   </div>
 </template>
 
 <script>
+import SpeechBubble from './Speech_bubble'
+
 export default {
   name: 'control-panel',
   computed: {
@@ -52,38 +57,11 @@ export default {
       this.$store.dispatch('deleteMessages')
       this.$router.push({path: 'profile'})
     }
+  },
+  components: {
+    SpeechBubble
   }
 }
 </script>
 
-<style scoped src="../css/controlPanel.css"></style>
-<style>
-  /* None scoped styles for speech images */
-  .speech img {
-    height: 22px;
-    background-color: black;
-    border-radius: 2px;
-  }
-  /* Medium Devices, Desktops */
-  @media only screen and (max-width : 992px) {
-    .speech img {
-      height: 10px;
-    }
-  }
-
-  /* Small Devices */
-  @media only screen and (max-width : 667px) {
-
-  }
-
-  /* Extra Small Devices, Phones */
-  @media only screen and (max-width : 480px) {
-
-  }
-
-  /* Custom, iPhone 5 Retina */
-  @media only screen and (max-width : 320px) {
-
-  }
-
-</style>
+<style scoped src="../css/scoped/controlPanel.css"></style>

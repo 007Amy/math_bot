@@ -53,4 +53,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/functionBox.css"></style>
+<style scoped src="../css/scoped/functionBox.css"></style>
