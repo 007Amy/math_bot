@@ -74,7 +74,10 @@ object LevelGenerationActor {
 
   case class UpdateDb(playerToken: PlayerToken, rawStepData: RawStepData)
 
-  case class PrepareStepData(playerToken: PlayerToken, rawStepData: RawStepData)
+  case class PrepareStepData(playerToken: PlayerToken,
+                             rawStepData: RawStepData,
+                             preBuiltActiveIds: List[String],
+                             assignedStagedIds: List[String])
 
   case class ActorFailed(msg: String = "Json did not match any type.")
 
@@ -124,7 +127,9 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
                       token,
                       rawStepData.copy(activeQty = makeQtyUnlimited(rawStepData.activeQty),
                                        stagedQty = makeQtyUnlimited(rawStepData.stagedQty),
-                                       mainMax = makeQtyUnlimited(rawStepData.mainMax))
+                                       mainMax = makeQtyUnlimited(rawStepData.mainMax)),
+                      None,
+                      None
                     )
 
                   Future { preparedStepData }
@@ -254,8 +259,10 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
 
           val assignedStagedIds = assignedStaged.map(_.created_id)
 
+          val preBuiltActiveIds = preBuiltActive.map(_.created_id)
+
           val filteredActive = playerToken.lambdas.get.activeFuncs
-            .filterNot(ft => rawStepData.preBuiltActive.isDefinedAt(ft.name.getOrElse("nothing")))
+            .filterNot(ft => preBuiltActiveIds.contains(ft.created_id))
             .filterNot(ft => assignedStagedIds.contains(ft.created_id))
 
           val l = lambdas.copy(
@@ -270,15 +277,18 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
 
           updateToken(playerToken.copy(lambdas = Some(l)))
             .map(
-              PrepareStepData(_, rawStepData)
+              PrepareStepData(_,
+                              rawStepData,
+                              preBuiltActiveIds = preBuiltActiveIds,
+                              assignedStagedIds = assignedStagedIds)
             )
             .pipeTo(self)(sender)
 
         case None => Future {}.map(_ => ActorFailed("Unable to update db.")).pipeTo(self)(sender)
       }
 
-    case PrepareStepData(playerToken, rawStepData) =>
-      val u = PreparedStepData(playerToken, rawStepData)
+    case PrepareStepData(playerToken, rawStepData, preBuiltActiveIds, assignedStagedIds) =>
+      val u = PreparedStepData(playerToken, rawStepData, Some(preBuiltActiveIds), Some(assignedStagedIds))
       Future { u }
         .map(p => p)
         .pipeTo(self)(sender)

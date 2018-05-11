@@ -20,6 +20,8 @@ case class PreparedStepData(
     problem: String,
     prevStep: String,
     nextStep: String,
+    preBuiltActiveIds: Option[List[String]],
+    assignedStagedIds: Option[List[String]],
     stepControl: StepControl
 )
 
@@ -27,7 +29,10 @@ object PreparedStepData {
 
   import model.models.Problem._
 
-  def apply(playerToken: PlayerToken, rawStepData: RawStepData): PreparedStepData = new PreparedStepData(
+  def apply(playerToken: PlayerToken,
+            rawStepData: RawStepData,
+            preBuiltActiveIds: Option[List[String]],
+            assignedStagedIds: Option[List[String]]): PreparedStepData = new PreparedStepData(
     tokenId = playerToken.token_id,
     level = rawStepData.level,
     step = rawStepData.step,
@@ -43,6 +48,8 @@ object PreparedStepData {
     problem = problemGen(rawStepData).encryptedProblem,
     prevStep = rawStepData.prevStep,
     nextStep = rawStepData.nextStep,
+    preBuiltActiveIds = preBuiltActiveIds,
+    assignedStagedIds = assignedStagedIds,
     stepControl = new StepControl(rawStepData, prepareLambdas(playerToken, rawStepData))
   )
 
@@ -100,8 +107,10 @@ object PreparedStepData {
 
   val stepDataReads: Reads[PreparedStepData] = (
     (JsPath \ "playerToken").read[PlayerToken] and
-    (JsPath \ "rawStepData").read[RawStepData]
-  )(PreparedStepData(_, _))
+    (JsPath \ "rawStepData").read[RawStepData] and
+    (JsPath \ "preBuiltActiveIds").readNullable[List[String]] and
+    (JsPath \ "assignedStagedIds").readNullable[List[String]]
+  )(PreparedStepData(_, _, _, _))
 
   val stepDataWrites: Writes[PreparedStepData] = (
     (JsPath \ "tokenId").write[String] and
@@ -119,6 +128,8 @@ object PreparedStepData {
     (JsPath \ "problem").write[String] and
     (JsPath \ "prevStep").write[String] and
     (JsPath \ "nextStep").write[String] and
+    (JsPath \ "preBuiltActiveIds").writeNullable[List[String]] and
+    (JsPath \ "assignedStagedIds").writeNullable[List[String]] and
     OWrites[StepControl](_ => Json.obj())
   )(unlift(PreparedStepData.unapply))
 
