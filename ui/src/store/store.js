@@ -20,6 +20,30 @@ function addMessage (state, messageBuilder) {
   message.add()
 }
 
+function initFocus (state, stepData) {
+  setTimeout(() => {
+    const focusEleList = stepData.initFocus.map(id => $(`#${id}`))
+
+    function iterate (list) {
+      if (!list.length) return
+      const $ele = list.shift()
+      const $parent = $ele.parent()
+      const parentId = $parent.attr('class')
+      if (parentId === 'functions') {
+        $parent.addClass('functions-show-overflow')
+      }
+      $ele.addClass('pulse')
+      setTimeout(() => {
+        $ele.removeClass('pulse')
+        $parent.removeClass('functions-show-overflow')
+        iterate(list)
+      }, 2000)
+    }
+
+    iterate(focusEleList)
+  }, 200)
+}
+
 function orderEm (steps) {
   const stepsInOrder = Object.keys(steps).filter(key => steps[key].prevStep === 'None').map(s => steps[s]);
 
@@ -195,25 +219,6 @@ export default new Vuex.Store({
           })
         }
 
-        // Display mainMax if not 10000
-        if (stepData.mainMax < 10000) {
-          addMessage(state, {
-            type: 'success',
-            msg: `Main max is ${stepData.mainMax}`,
-            handlers () {
-              const $placeholderContainer = $('.placeholder-container')
-              return {
-                runBeforeAppend: () => {
-                  $placeholderContainer.addClass('pulse')
-                },
-                runOnDelete: () => {
-                  $placeholderContainer.removeClass('pulse')
-                }
-              }
-            }
-          })
-        }
-
         reverseTools(stepData.gridMap)
 
         state.currentStepData = stepData
@@ -228,6 +233,8 @@ export default new Vuex.Store({
         // Since we are going to robot, set level and step state in localstorage
         localStorage.setItem('LEVEL_STEP', JSON.stringify({level: level, step: step}))
         context.$router.push({path: 'robot'})
+
+        initFocus(state, stepData)
       })
     },
     UPDATE_LAMBDAS (state, {lambdas}) {

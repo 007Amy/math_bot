@@ -20,6 +20,7 @@ case class RawStepData(
     specialParameters: List[String],
     problem: String,
     clearMain: Boolean,
+    initFocus: List[String],
     prevStep: String,
     nextStep: String
 )
@@ -42,6 +43,7 @@ object RawStepData {
     (JsPath \ "specialParameters").read[List[String]] and
     (JsPath \ "problem").read[String] and
     (JsPath \ "clearMain").read[Boolean] and
+    (JsPath \ "initFocus").read[List[String]] and
     (JsPath \ "prevStep").read[String] and
     (JsPath \ "nextStep").read[String]
   )(RawStepData.apply _)
@@ -63,6 +65,7 @@ object RawStepData {
     (JsPath \ "specialParameters").write[List[String]] and
     (JsPath \ "problem").write[String] and
     (JsPath \ "clearMain").write[Boolean] and
+    (JsPath \ "initFocus").write[List[String]] and
     (JsPath \ "prevStep").write[String] and
     (JsPath \ "nextStep").write[String]
   )(unlift(RawStepData.unapply))

@@ -1,5 +1,6 @@
 package actors.messages
 
+import actors.LevelGenerationActor.createdIdGen
 import model.models.{ToolList, _}
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -20,6 +21,9 @@ case class PreparedStepData(
     problem: String,
     prevStep: String,
     nextStep: String,
+    preBuiltActiveIds: Option[List[String]],
+    assignedStagedIds: Option[List[String]],
+    initFocus: List[String],
     stepControl: StepControl
 )
 
@@ -27,7 +31,10 @@ object PreparedStepData {
 
   import model.models.Problem._
 
-  def apply(playerToken: PlayerToken, rawStepData: RawStepData): PreparedStepData = new PreparedStepData(
+  def apply(playerToken: PlayerToken,
+            rawStepData: RawStepData,
+            preBuiltActiveIds: Option[List[String]],
+            assignedStagedIds: Option[List[String]]): PreparedStepData = new PreparedStepData(
     tokenId = playerToken.token_id,
     level = rawStepData.level,
     step = rawStepData.step,
@@ -43,8 +50,17 @@ object PreparedStepData {
     problem = problemGen(rawStepData).encryptedProblem,
     prevStep = rawStepData.prevStep,
     nextStep = rawStepData.nextStep,
+    preBuiltActiveIds = preBuiltActiveIds,
+    assignedStagedIds = assignedStagedIds,
+    initFocus = createInitFocus(rawStepData.initFocus),
     stepControl = new StepControl(rawStepData, prepareLambdas(playerToken, rawStepData))
   )
+
+  def createInitFocus(initFocus: List[String]): List[String] = initFocus.map {
+    case a if a == "main-placeholder" => "placeholder-container"
+    case a if a == "staged" => "open-staged"
+    case a => createdIdGen(a)
+  }
 
   def problemGen(rawStepData: RawStepData): Problem = makeProblem(rawStepData.problem)
 
@@ -100,8 +116,10 @@ object PreparedStepData {
 
   val stepDataReads: Reads[PreparedStepData] = (
     (JsPath \ "playerToken").read[PlayerToken] and
-    (JsPath \ "rawStepData").read[RawStepData]
-  )(PreparedStepData(_, _))
+    (JsPath \ "rawStepData").read[RawStepData] and
+    (JsPath \ "preBuiltActiveIds").readNullable[List[String]] and
+    (JsPath \ "assignedStagedIds").readNullable[List[String]]
+  )(PreparedStepData(_, _, _, _))
 
   val stepDataWrites: Writes[PreparedStepData] = (
     (JsPath \ "tokenId").write[String] and
@@ -119,6 +137,9 @@ object PreparedStepData {
     (JsPath \ "problem").write[String] and
     (JsPath \ "prevStep").write[String] and
     (JsPath \ "nextStep").write[String] and
+    (JsPath \ "preBuiltActiveIds").writeNullable[List[String]] and
+    (JsPath \ "assignedStagedIds").writeNullable[List[String]] and
+    (JsPath \ "initFocus").write[List[String]] and
     OWrites[StepControl](_ => Json.obj())
   )(unlift(PreparedStepData.unapply))
 

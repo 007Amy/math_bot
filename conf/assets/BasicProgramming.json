@@ -29,6 +29,7 @@
       "specialParameters": [],
       "problem": "0",
       "clearMain": true,
+      "initFocus": ["moveRobotForwardOneSpot", "main-placeholder"],
       "prevStep": "None",
       "nextStep": "WalkThree"
     },
@@ -57,6 +58,7 @@
       "specialParameters": [],
       "problem": "0",
       "clearMain": true,
+      "initFocus": ["moveRobotForwardOneSpot", "main-placeholder"],
       "prevStep": "WalkOne",
       "nextStep": "WalkFour"
     },
@@ -85,6 +87,7 @@
       "specialParameters": [],
       "problem": "0",
       "clearMain": true,
+      "initFocus": ["moveRobotForwardOneSpot", "main-placeholder"],
       "prevStep": "WalkThree",
       "nextStep": "WalkFourWithFunction"
     },
@@ -122,6 +125,7 @@
       ],
       "problem": "0",
       "clearMain": true,
+      "initFocus": ["rocket", "main-placeholder"],
       "prevStep": "WalkFour",
       "nextStep": "EditFirstFunction"
     },
@@ -152,6 +156,7 @@
       ],
       "problem": "0",
       "clearMain": true,
+      "initFocus": ["rocket"],
       "prevStep": "WalkFourWithFunction",
       "nextStep": "TurnRight"
     },
@@ -181,6 +186,7 @@
       "specialParameters": [],
       "problem": "0",
       "clearMain": true,
+      "initFocus": ["changeRobotDirection", "rocket", "main-placeholder"],
       "prevStep": "EditFirstFunction",
       "nextStep": "CreateNewFunction"
     },
@@ -214,6 +220,7 @@
       ],
       "problem": "0",
       "clearMain": true,
+      "initFocus": ["staged"],
       "prevStep": "TurnRight",
       "nextStep": "TurnLeft"
     },
@@ -247,6 +254,7 @@
       ],
       "problem": "0",
       "clearMain": true,
+      "initFocus": ["staged"],
       "prevStep": "Uturn",
       "nextStep": "WalkAndTurn"
     },
@@ -276,6 +284,7 @@
       "specialParameters": [],
       "problem": "0",
       "clearMain": true,
+      "initFocus": [],
       "prevStep": "TurnLeft",
       "nextStep": "WalkAndTurnWithFunctions"
     },
@@ -307,6 +316,7 @@
       ],
       "problem": "0",
       "clearMain": true,
+      "initFocus": ["rocket"],
       "prevStep": "WalkAndTurn",
       "nextStep": "Maze1"
     },
@@ -338,6 +348,7 @@
       ],
       "problem": "0",
       "clearMain": true,
+      "initFocus": [],
       "prevStep": "WalkAndTurnWithFunctions",
       "nextStep": "Maze2"
     },
@@ -369,6 +380,7 @@
       ],
       "problem": "0",
       "clearMain": true,
+      "initFocus": [],
       "prevStep": "Maze1",
       "nextStep": "Maze3"
     },
@@ -400,6 +412,7 @@
       ],
       "problem": "0",
       "clearMain": true,
+      "initFocus": [],
       "prevStep": "Maze2",
       "nextStep": "None"
     }

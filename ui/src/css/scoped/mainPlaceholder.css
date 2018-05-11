@@ -10,7 +10,7 @@
   align-items: center;
 }
 
-.placeholder-container {
+#placeholder-container {
   display: flex;
   position: relative;
   left: 0.35em;
@@ -45,7 +45,7 @@
 
 /* Large Phones, landscape*/
 @media only screen and (max-width : 992px) {
-  .placeholder-container {
+  #placeholder-container {
     left: 0.05em;
   }
 
@@ -61,7 +61,7 @@
 
 /* Small Devices */
 @media only screen and (max-width : 667px) {
-  .placeholder-container {
+  #placeholder-container {
     left: 0.15em;
   }
 

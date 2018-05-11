@@ -319,6 +319,7 @@ The project has been built thus far with Intellij
       "specialParameters": <{array[string]}LIST OF SPECIAL PARAMETERS, SEE `Special Parameters` SECTION FOR CURRENT SPECIAL PARAMETERS>,
       "problem": <{string}SEE `Building a Problem` SECTION FOR PROPER PROBLEM SYNTAX,
       "clearMain": <{boolean>INDICATES IF MAIN SHOULD BE EMPTY AT THE START OF THE LEVEL>,
+      "initFocus": <{array[string]}LIST OF ELEMENTS TO ADD SPECIAL EFFECT ON AT START OF STEP, SEE `Init Focus` SECTION>
       "prevStep": <{String}PREVIOUS STEP NAME (Should be "None" if first step)>,
       "nextStep": <{String}NEXT STEP NAME (Should be "None" if last step)>
     },
@@ -414,6 +415,24 @@ Current Special Parameters
         "moveRobotForwardOneSpot"
     ]
 }
+```
+
+#### Init Focus
+* Elements to alert the user of when the step loads
+* Elements will flash twice in the order they are found in the array
+* Helpful to demonstrate what order things must happen to pass the level
+* Name becomes the corresponding id on the front end either by becoming the hashed value, or literal
+```$xslt
+    # Commands - will be hashed into the corresponding id
+        > changeRobotDirection
+        > moveRobotForwardOneSpot
+        > setItemDown
+        > pickUpItem
+    # Functions - will be hashed into the corresponding id
+        > Use the functions `name`
+    # Other elements - will be converted into the correct id name
+        > main-placeholder (only visible when main max set)
+        > staged (green + that opens staged functions)
 ```
 
 

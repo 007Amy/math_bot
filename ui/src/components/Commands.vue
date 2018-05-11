@@ -51,7 +51,8 @@
     </div>
 
     <img
-      class="open-staged dialog-button"
+      id="open-staged"
+      class="dialog-button"
       v-if="this.currentStepData.stagedEnabled"
       :class="functionAreaShowing === 'addFunction' ? 'rotate-to-x' : 'rotate-to-plus'"
       @click="toggleFunctionAdd"
@@ -153,7 +154,7 @@ export default {
   methods: {
     notEditableMessage (evt) {
       const messageBuilder = {
-        type: 'info',
+        type: 'warn',
         msg: 'Can\'t edit'
       }
 
@@ -162,7 +163,7 @@ export default {
     editingFunctionMessage (func) {
       if (this.editingFunction) {
         const messageBuilder = {
-          type: 'info',
+          type: 'success',
           msg: `${func.name}`
         }
         this.$store.dispatch('addMessage', messageBuilder)

@@ -45,6 +45,10 @@
   flex-grow: 1;
 }
 
+.functions-show-overflow {
+  overflow: visible;
+}
+
 .functions > * {
   margin-bottom: 20px!important;
 }
@@ -136,7 +140,7 @@
   margin: 0;
 }
 
-.open-staged {
+#open-staged {
   display: flex;
   align-self: flex-start;
   cursor: pointer;

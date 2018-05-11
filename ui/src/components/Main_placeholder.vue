@@ -1,6 +1,6 @@
 <template>
   <div class="main-placeholder" v-if="stepData.mainMax !== 10000">
-    <div class="placeholder-container placeholder-short-background">
+    <div id="placeholder-container" class="placeholder-short-background">
       <div
         v-for="(_, ind) in placeholders"
         :key="'placeholder/' + ind"
@@ -33,7 +33,7 @@ export default {
   },
   watch: {
     mainFull (bool) {
-      const $placeHolder = $('.placeholder-container')
+      const $placeHolder = $('#placeholder-container')
       if (bool) this.placeholderFull($placeHolder)
       else this.placeholderShort($placeHolder)
     }
