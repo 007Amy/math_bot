@@ -116,4 +116,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/arithmetic.css"></style>
+<style scoped src="../css/scoped/arithmetic.css"></style>

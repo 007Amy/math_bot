@@ -126,4 +126,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/grid.css"></style>
+<style scoped src="../css/scoped/grid.css"></style>

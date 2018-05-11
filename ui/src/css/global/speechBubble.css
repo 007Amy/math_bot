@@ -1,0 +1,20 @@
+/* GLobal styles needed to handle v-html */
+.speech-bubble {
+  color: #000000;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: left;
+  padding: 13px 13px 13px 20px;
+}
+/* None scoped styles for speech images */
+.speech-bubble img {
+  height: 22px;
+  background-color: black;
+  border-radius: 2px;
+}
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+  .speech-bubble img {
+    height: 10px;
+  }
+}

@@ -198,7 +198,7 @@ export default new Vuex.Store({
         // Display mainMax if not 10000
         if (stepData.mainMax < 10000) {
           addMessage(state, {
-            type: 'info',
+            type: 'success',
             msg: `Main max is ${stepData.mainMax}`,
             handlers () {
               const $placeholderContainer = $('.placeholder-container')

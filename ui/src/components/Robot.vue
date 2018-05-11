@@ -135,4 +135,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/robot.css"></style>
+<style scoped src="../css/scoped/robot.css"></style>

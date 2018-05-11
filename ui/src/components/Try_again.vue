@@ -8,5 +8,5 @@
 export default {}
 </script>
 
-<style scoped src="../css/congrats.css"></style>
-<style scoped src="../css/tryAgain.css"></style>
+<style scoped src="../css/scoped/congrats.css"></style>
+<style scoped src="../css/scoped/tryAgain.css"></style>

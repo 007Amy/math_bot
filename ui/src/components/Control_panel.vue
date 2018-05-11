@@ -63,4 +63,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/controlPanel.css"></style>
+<style scoped src="../css/scoped/controlPanel.css"></style>

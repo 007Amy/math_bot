@@ -174,4 +174,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/editFunction.css"></style>
+<style scoped src="../css/scoped/editFunction.css"></style>
