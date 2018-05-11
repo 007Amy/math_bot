@@ -12,10 +12,6 @@
       <div class="instructions-robot-container">
         <img @click="toggleSpeechBubble(this)" :src="permanentImages.instructionsRobot" class="instructions-robot" data-toggle="tooltip" title="Toggle speech bubble">
       </div>
-        <!--<div class="speech-container" :class="description !== '' && speechBubbleShowing ? 'fade-in-speech' : 'fade-out-speech'">-->
-        <!--<img class="speech-bubble" :src="permanentImages.speechBubble" :alt="description">-->
-        <!--<div class="speech" v-html="description"></div>-->
-      <!--</div>-->
       <speech-bubble :html="description" :showing="speechBubbleShowing"></speech-bubble>
       <div class="instructions-filler-right"></div>
     </div>
