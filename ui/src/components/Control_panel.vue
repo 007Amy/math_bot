@@ -24,6 +24,7 @@
 
 <script>
 import SpeechBubble from './Speech_bubble'
+
 export default {
   name: 'control-panel',
   computed: {

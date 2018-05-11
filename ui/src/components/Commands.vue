@@ -165,7 +165,6 @@ export default {
           type: 'info',
           msg: `${func.name}`
         }
-
         this.$store.dispatch('addMessage', messageBuilder)
       }
     },
