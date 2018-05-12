@@ -385,7 +385,6 @@ class SameOriginFailedActor(out: ActorRef, logger: MathBotLogger) extends Actor 
 
   override def receive: Receive = {
     case _ =>
-      logger.LogFailure(className, msg)
       out ! JsString(msg)
   }
 }
