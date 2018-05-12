@@ -1,10 +1,15 @@
 package utils
 
 import java.net.URI
+
+import loggers.MathBotLogger
+
 import scala.util.Properties._
 import play.api.mvc.RequestHeader
 
 trait SameOriginCheck {
+
+  val logger = new MathBotLogger
 
   /**
    * Checks that the WebSocket comes from the same origin.  This is necessary to protect
@@ -44,12 +49,20 @@ trait SameOriginCheck {
           host == "localhost" &&
           (port match {
             case 9000 | 8080 | 19001 => true;
-            case _ => false
+            case _ =>
+              logger.LogFailure("SameOriginCheck", s"Connection failed host: $host port: $port")
+              false
           })
         case Some(h) =>
-          host == h
+          val test = host == h
+          if (test) logger.LogInfo("SameOriginCheck", s"Testing origin $host == $h")
+          else logger.LogInfo("SameOriginCheck", s"Test failed $host !- $h")
+
+          test
       }
     } catch {
-      case e: Exception => false
+      case e: Exception =>
+        logger.LogFailure("SameOriginCheck", s"Connection failed host: ${e.getMessage}")
+        false
     }
 }
