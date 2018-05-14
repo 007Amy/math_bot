@@ -1,18 +1,14 @@
 .arithmetic {
   display: flex;
-  height: 100%;
+  flex-grow: 2;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .space {
-  flex-grow: 25;
   position: relative;
-}
-
-.blue {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  width: 670px;
+  height: 721px;
 }
 
 .button-container {
@@ -20,49 +16,6 @@
   vertical-align: middle;
   flex-direction: column;
   flex-grow: 1;
-}
-
-.info {
-  height: 70%;
-  overflow-y: auto;
-}
-
-.step-info {
-  display: flex;
-  font-size: 26px;
-  font-weight: 500;
-  line-height: 30px;
-  height: 100px;
-  width: 365px;
-  border: 1px solid rgba(255,255,255,0.47);
-  margin: 10px 15px;
-  cursor: pointer;
-  background-color: black;
-  color: white;
-}
-
-.step-disabled {
-  opacity: .47;
-}
-
-.step-info-container {
-  display: flex;
-  flex-grow: 1;
-  margin: 20px;
-}
-
-.step-text {
-  text-align: left;
-  flex-grow: 1;
-}
-
-.step-image {
-
-}
-
-.buttons {
-  display: flex;
-  height: 20%;
 }
 
 .store {
@@ -88,52 +41,48 @@
 }
 
 .planet1 {
-  height: 412px;
-  width: 412px;
-  left: 0;
+  height: 383px;
+  width: 383px;
   top: 0;
+  left: 0;
 }
 
 .planet2 {
-  height: 236px;
-  width: 236px;
-  top: 20%;
+  height: 284px;
+  width: 284px;
+  top: -8%;
   left: 55%;
 }
 
 .planet3 {
-  height: 300px;
-  width: 300px;
-  top: 38%;
-  left: 60%;
+  height: 307px;
+  width: 307px;
+  top: 25%;
+  left: 63%;
 }
 
 .planet4 {
-  height: 160px;
-  width: 160px;
-  top: 50%;
-  left: 15%;
+  height: 269px;
+  width: 269px;
+  top: 59%;
+  left: 38%;
 }
 
 .planet5 {
-  position: absolute;
-  height: 260px;
-  width: 260px;
-  top: 60%;
-  left: 45%;
+  height: 220px;
+  width: 220px;
+  top: 75%;
+  left: 5%;
 }
 
 .space-ship {
   position: absolute;
-  height: 10%;
-  width: 15%;
   top: 50%;
-  left: 40%;
-  z-index: 2;
+  left: 0;
+  transform: rotate(-20deg);
 }
 
 .galaxy {
-  position: absolute;
   height: 10%;
   width: 15%;
   top: 5%;
@@ -166,356 +115,94 @@
   border: 1px solid white;
 }
 
-/* 13" screen */
-@media only screen and (max-width : 1280px) {
+/* iPad */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+  .space {
+    margin-right: 20px;
+  }
+
   .planet1 {
-    height: 380px;
-    width: 380px;
-    left: 0;
-    top: 0;
+    height: 295px;
+    width: 296px;
   }
 
   .planet2 {
-    height: 216px;
-    width: 216px;
-    top: 10%;
-    left: 50%;
+    height: 218px;
+    width: 218px;
   }
 
   .planet3 {
-    height: 280px;
-    width: 280px;
-    top: 25%;
-    left: 65%;
+    height: 236px;
+    width: 236px;
   }
 
   .planet4 {
-    height: 140px;
-    width: 140px;
-    top: 60%;
-    left: 15%;
+    height: 206px;
+    width: 206px;
   }
 
   .planet5 {
-    height: 240px;
-    width: 240px;
-    top: 50%;
-    left: 45%;
+    height: 169px;
+    width: 169px;
   }
-  .step-info-container {
-    margin: 0;
+}
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
+  .space {
+    width: 495px;
+    height: 554px;
+    margin-left: 100px;
   }
-  .step-info {
-    font-size: 15px;
-    line-height: 18px;
-    height: 70px;
-    width: 250px;
+
+  .planet1 {
+    height: 295px;
+    width: 296px;
   }
-  .step-text {
-    flex-grow: 3;
-    vertical-align: middle;
+
+  .planet2 {
+    height: 218px;
+    width: 218px;
   }
-  .step-image {
-    height: 100%;
-    width: 50%;
+
+  .planet3 {
+    height: 236px;
+    width: 236px;
   }
-  .level {
-    font-size: 18px;
-    line-height: 24px;
-    max-width: 211px;
+
+  .planet4 {
+    height: 206px;
+    width: 206px;
+  }
+
+  .planet5 {
+    height: 169px;
+    width: 169px;
   }
 }
 
+
 @media only screen and (max-width : 992px) {
-  .planet1 {
-    height: 380px;
-    width: 380px;
-    left: -10%;
-    top: -5%;
-  }
 
-  .planet2 {
-    height: 216px;
-    width: 216px;
-    top: 15%;
-    left: 50%;
-  }
-
-  .planet3 {
-    height: 280px;
-    width: 280px;
-    top: 35%;
-    left: 50%;
-  }
-
-  .planet4 {
-    height: 140px;
-    width: 140px;
-    top: 75%;
-    left: 15%;
-  }
-
-  .planet5 {
-    height: 240px;
-    width: 240px;
-    top: 60%;
-    left: 45%;
-  }
-
-  .step-info-container {
-    margin: 0;
-  }
-  .step-info {
-    font-size: 15px;
-    line-height: 18px;
-    height: 59px;
-    width: 150px;
-  }
-  .step-text {
-    flex-grow: 3;
-    vertical-align: middle;
-  }
-  .step-image {
-    height: 100%;
-    width: 50%;
-  }
-  .level {
-    font-size: 18px;
-    line-height: 24px;
-    max-width: 211px;
-  }
 }
 
 @media only screen and (max-height: 411px) {
-  .planet1 {
-    height: 170px;
-    width: 170px;
-    top: -10px;
-    left: 20px;
-  }
-  .planet2 {
-    height: 158px;
-    width: 158px;
-    top: 10px;
-    left: 270px;
-  }
-  .planet3 {
-    height: 172px;
-    width: 172px;
-    top: 120px;
-    left: 400px;
-  }
-  .planet4 {
-    height: 114px;
-    width: 114px;
-    top: 160px;
-    left: 50px;
-  }
-  .planet5 {
-    height: 196px;
-    width: 196px;
-    top: 170px;
-    left: 220px;
-  }
+
 }
 
 /* Small Devices */
 @media only screen and (max-width : 736px) {
-  .planet1 {
-    height: 150px;
-    width: 150px;
-    top: -10px;
-    left: 20px;
-  }
-  .planet2 {
-    height: 138px;
-    width: 138px;
-    top: 20px;
-    left: 240px;
-  }
-  .planet3 {
-    height: 152px;
-    width: 152px;
-    top: 120px;
-    left: 300px;
-  }
-  .planet4 {
-    height: 94px;
-    width: 94px;
-    top: 160px;
-    left: 50px;
-  }
-  .planet5 {
-    height: 176px;
-    width: 176px;
-    top: 130px;
-    left: 150px;
-  }
-  .step-info-container {
-    margin: 0;
-  }
-  .step-info {
-    font-size: 15px;
-    line-height: 18px;
-    height: 59px;
-    width: 150px;
-  }
-  .step-text {
-    flex-grow: 3;
-    vertical-align: middle;
-  }
-  .step-image {
-    height: 100%;
-    width: 50%;
-  }
-  .level {
-    font-size: 18px;
-    line-height: 24px;
-    max-width: 211px;
-  }
+
 }
 
 @media only screen and (max-width: 568px) {
-  .planet1 {
-    height: 150px;
-    width: 150px;
-    top: -10px;
-    left: -10px;
-  }
-  .planet2 {
-    height: 138px;
-    width: 138px;
-    top: 0;
-    left: 140px;
-  }
-  .planet3 {
-    height: 152px;
-    width: 152px;
-    top: 50px;
-    left: 240px;
-  }
-  .planet4 {
-    height: 94px;
-    width: 94px;
-    top: 120px;
-    left: 50px;
-  }
-  .planet5 {
-    height: 176px;
-    width: 176px;
-    top: 100px;
-    left: 120px;
-  }
+
 }
 
 /* Extra Small Devices, Phones */
 @media only screen and (max-width : 480px) {
-  .planet1 {
-    height: 150px;
-    width: 150px;
-    top: 0;
-    left: 0;
-  }
-  .planet2 {
-    height: 138px;
-    width: 138px;
-    top: 130px;
-    left: 40px;
-  }
-  .planet3 {
-    height: 152px;
-    width: 152px;
-    top: 240px;
-    left: 60px;
-  }
-  .planet4 {
-    height: 94px;
-    width: 94px;
-    top: 310px;
-    left: 10px;
-  }
-  .planet5 {
-    height: 176px;
-    width: 176px;
-    top: 400px;
-    left: 30px;
-  }
-  .step-info-container {
-    margin: 0;
-  }
-  .step-info {
-    font-size: 15px;
-    line-height: 18px;
-    height: 59px;
-    width: 150px;
-  }
-  .step-text {
-    flex-grow: 3;
-    vertical-align: middle;
-  }
-  .step-image {
-    height: 100%;
-    width: 50%;
-  }
-  .level {
-    font-size: 18px;
-    line-height: 24px;
-    max-width: 211px;
-  }
+
 }
 
 /* Custom, iPhone Retina */
 @media only screen and (max-width : 360px) {
-  .planet1 {
-    height: 150px;
-    width: 150px;
-    top: -20px;
-    left: -20px;
-  }
-  .planet2 {
-    height: 138px;
-    width: 138px;
-    top: 85px;
-    left: 20px;
-  }
-  .planet3 {
-    height: 152px;
-    width: 152px;
-    top: 170px;
-    left: -10px;
-  }
-  .planet4 {
-    height: 94px;
-    width: 94px;
-    top: 275px;
-    left: 50px;
-  }
-  .planet5 {
-    height: 176px;
-    width: 176px;
-    top: 315px;
-    left: -30px;
-  }
-  .step-info-container {
-    margin: 0;
-  }
-  .step-info {
-    font-size: 15px;
-    line-height: 18px;
-    height: 59px;
-    width: 150px;
-  }
-  .step-text {
-    flex-grow: 3;
-    vertical-align: middle;
-  }
-  .step-image {
-    height: 100%;
-    width: 50%;
-  }
-  .level {
-    font-size: 18px;
-    line-height: 24px;
-    max-width: 211px;
-  }
+
 }

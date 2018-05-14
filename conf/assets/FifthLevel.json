@@ -2,7 +2,7 @@
   "level": "FifthLevel",
   "prevLevel": "FourthLevel",
   "nextLevel": "None",
-  "show": false,
+  "show": true,
   "steps": {
     "Three": {
       "level": "FourthLevel",
@@ -29,6 +29,7 @@
       "specialParameters": [],
       "problem": "0",
       "clearMain": false,
+      "initFocus": [],
       "prevStep": "None",
       "nextStep": "None"
     }

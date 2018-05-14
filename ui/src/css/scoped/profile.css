@@ -6,6 +6,8 @@
 }
 
 .profile {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -13,8 +15,7 @@
   margin: 0 auto;
 }
 
-.bottomButtons {
-  position: absolute;
+.bottom-buttons {
   bottom: 0;
 }
 
@@ -26,52 +27,17 @@
   z-index: 10000;
 }
 
-.mathbotText {
-  position: absolute;
-  height: 72px;
-  width: 209px;
-  color: #FFFFFF;
-  margin-left: 245px;
-  font-size: 60px;
-  line-height: 72px;
-  bottom: 57px;
-}
-
-.text {
-  position: absolute;
-  bottom: 0;
-  opacity: 0.3;
-  color: #FFFFFF;
-  font-size: 26px;
-  font-weight: 600;
-  line-height: 30px;
-  cursor: pointer;
-}
-
-.text > * {
-  color: inherit;
-  text-decoration: none;
-}
-
-#about {
-  height: 30px;
-  width: 70px;
-  margin-bottom: 20px;
-  margin-left: 245px;
-}
-
-#signOut {
-  height: 30px;
-  width: 120px;
-  margin-bottom: 20px;
-  margin-left: 365px;
-}
-
 img {
   position: absolute;
   height: 240px;
   width: 212px;
   bottom: -20px;
+}
+
+.secretTools {
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .secretTools > button {

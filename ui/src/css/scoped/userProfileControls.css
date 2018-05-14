@@ -1,0 +1,57 @@
+.user-profile-controls {
+  flex-grow: 1;
+  display: flex;
+}
+
+.user-profile-controls-image-container {
+  display: flex;
+  align-items: flex-end;
+}
+
+.user-profile-controls-image-container > img {
+  width: 240px;
+  height: 212px;
+}
+
+.user-profile-controls-text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.mathbot-header {
+  height: 72px;
+  color: #FFFFFF;
+  font-size: 60px;
+  line-height: 72px;
+  bottom: 57px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.line {
+  font-weight: bold;
+  color: #B8E986;
+}
+
+.user-profile-controls-text-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.text {
+  opacity: 0.3;
+  color: #FFFFFF;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 30px;
+  cursor: pointer;
+}
+
+.text:hover {
+  opacity: 1;
+}
+
+.text-filler {
+  height: 28px;
+}

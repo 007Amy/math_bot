@@ -57,7 +57,6 @@ trait SameOriginCheck {
           val test = host == h
           if (test) logger.LogInfo("SameOriginCheck", s"Testing origin $host == $h")
           else logger.LogInfo("SameOriginCheck", s"Test failed $host !- $h")
-
           test
       }
     } catch {
