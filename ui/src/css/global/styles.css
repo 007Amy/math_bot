@@ -42,7 +42,8 @@
   }
 
  .dragging > .command-name, .function-drop > .sortable-chosen > .command-name {
-   display: none;
+   /*display: none;*/
+   z-index: 1000000!important;
  }
 
  .pulse {

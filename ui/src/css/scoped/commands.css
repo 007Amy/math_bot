@@ -126,6 +126,11 @@
   right: -21px;
 }
 
+.command-button {
+  max-height: 30px;
+  max-width: 30px;
+}
+
 .commands-up {
   -webkit-transform: rotate(-90deg);
   transform:rotate(-90deg);

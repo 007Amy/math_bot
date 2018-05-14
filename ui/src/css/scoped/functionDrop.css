@@ -16,13 +16,14 @@
   flex-wrap: nowrap;
   overflow-x: auto;
   overflow-y: visible;
-  height: 100px;
+  height: 100%;
   width: 100%;
 }
 
 .mesh-background {
   background: url("https://res.cloudinary.com/deqjemwcu/image/upload/v1522345998/misc/grid-mesh_auu3wh.svg");
   background-position: inherit;
+  z-index: 1;
 }
 
 .ghost {
@@ -35,9 +36,7 @@
 
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
-  .function-drop-drop-zone {
-    height: 50px;
-  }
+
 }
 
 /* Small Devices */
@@ -52,5 +51,13 @@
 
 /* Custom, iPhone 5 Retina */
 @media only screen and (max-width : 320px) {
+
+}
+
+/* iPad */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+
+}
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
 
 }

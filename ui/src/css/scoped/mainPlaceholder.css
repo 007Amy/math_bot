@@ -13,7 +13,7 @@
 #placeholder-container {
   display: flex;
   position: relative;
-  left: 0.35em;
+  left: 0.5em;
   border-radius: 2px;
 }
 
@@ -40,7 +40,19 @@
 
 /* 13" screen */
 @media only screen and (max-width : 1280px) {
+  #placeholder-container {
+    left: 0.25em;
+  }
 
+  .placeholder {
+    height: 64px;
+    width: 60px;
+  }
+
+  .single-placeholder {
+    height: 64px;
+    width: 64px;
+  }
 }
 
 /* Large Phones, landscape*/
@@ -86,12 +98,32 @@
 
 /* iPad */
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+  #placeholder-container {
+    left: 0.23em;
+  }
+
   .placeholder {
-    height: 78px;
+    height: 76px;
     width: 72px;
+  }
+
+  .single-placeholder {
+    height: 76px;
+    width: 76px;
   }
 }
 
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
+  #placeholder-container {
+    left: 0.2em;
+  }
 
+  .placeholder {
+    height: 76px;
+    width: 72px;
+  }
+
+  .single-placeholder {
+    width: 44px;
+  }
 }
