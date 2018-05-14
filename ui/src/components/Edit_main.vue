@@ -13,10 +13,10 @@
     <main-placeholder></main-placeholder>
 
     <div class="bar noDrag">
-      <img class="x button noDrag dialog-button" :src="permanentImages.buttons.trashButton"  @click="wipeFunction" data-toggle="tooltip" title="Clear main" />
-      <div class="speed button dialog-button" @click="goFast" data-toggle="tooltip" title="Adjust speed"> {{ speeds[currentSpeed].display }}</div>
-      <img v-if="robot.state === 'home' || robot.state === 'paused'" class="play button noDrag dialog-button" :src="permanentImages.buttons.playButton" @click="compileMain" data-toggle="tooltip" title="Run program" />
-      <img v-else class="play button noDrag dialog-button" :src="permanentImages.buttons.pauseButton" @click="pause" data-toggle="tooltip" title="Pause program" />
+      <img class="x noDrag dialog-button" :src="permanentImages.buttons.trashButton"  @click="wipeFunction" data-toggle="tooltip" title="Clear main" />
+      <div class="speed dialog-button" @click="goFast" data-toggle="tooltip" title="Adjust speed"> {{ speeds[currentSpeed].display }}</div>
+      <img class="play noDrag dialog-button" v-if="robot.state === 'home' || robot.state === 'paused'" :src="permanentImages.buttons.playButton" @click="compileMain" data-toggle="tooltip" title="Run program" />
+      <img v-else class="play noDrag dialog-button" :src="permanentImages.buttons.pauseButton" @click="pause" data-toggle="tooltip" title="Pause program" />
       <img v-if="robot.state === 'running'" class="stop button noDrag dialog-button" :src="permanentImages.buttons.stopButton" @click="stop" data-toggle="tooltip" title="Stop program" />
     </div>
   </div>

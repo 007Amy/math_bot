@@ -32,6 +32,7 @@
   .dialog-button {
     height: 40px;
     width: 40px;
+    cursor: pointer;
   }
 
   /*This is where v-html styles must go*/
@@ -86,6 +87,21 @@
  /* Custom, iPhone Retina */
  @media only screen and (max-width : 320px) {
 
+ }
+
+ /* iPad */
+ @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+   .dialog-button {
+     height: 30px;
+     width: 30px;
+   }
+ }
+
+ @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
+   .dialog-button {
+     height: 30px;
+     width: 30px;
+   }
  }
 
  ::-webkit-scrollbar {

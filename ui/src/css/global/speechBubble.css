@@ -18,7 +18,7 @@
   .speech-bubble {
     font-size: 18px;
     line-height: 24px;
-    padding: 1px 1px 1px 5px;
+    padding: 1px 1px 1px 10px;
   }
 
   .speech-bubble img {
@@ -31,7 +31,7 @@
   .speech-bubble {
     font-size: 12px;
     line-height: 14px;
-    padding: 0 0 0 5px;
+    padding: 0 0 0 10px;
   }
 
   .speech-bubble img {
@@ -44,7 +44,7 @@
   .speech-bubble {
     font-size: 12px;
     line-height: 14px;
-    padding: 0 0 0 5px;
+    padding: 0 0 0 10px;
   }
 
   .speech-bubble img {
@@ -57,7 +57,7 @@
   .speech-bubble {
     font-size: 12px;
     line-height: 14px;
-    padding: 3px 3px 3px 5px;
+    padding: 3px 3px 3px 10px;
   }
 
   .speech-bubble img {
@@ -69,3 +69,22 @@
 @media only screen and (max-width : 320px) {
 
 }
+
+/* Custom, iPhone 5 Retina */
+@media only screen and (max-width : 320px) {
+
+}
+
+/* iPad */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+  .speech-bubble {
+    font-size: 18px;
+    line-height: 20px;
+    padding: 0 0 0 10px;
+  }
+
+  .speech-bubble img {
+    height: 10px;
+  }
+}
+

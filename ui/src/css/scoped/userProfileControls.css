@@ -24,7 +24,6 @@
   color: #FFFFFF;
   font-size: 60px;
   line-height: 72px;
-  bottom: 57px;
   display: flex;
   justify-content: flex-start;
 }
@@ -43,7 +42,7 @@
   opacity: 0.3;
   color: #FFFFFF;
   font-size: 32px;
-  font-weight: 600;
+  font-weight: bolder;
   line-height: 30px;
   cursor: pointer;
 }
@@ -54,4 +53,44 @@
 
 .text-filler {
   height: 28px;
+}
+
+@media only screen and (max-width : 992px) {
+
+}
+
+@media only screen and (max-height: 411px) {
+
+}
+
+/* Small Devices */
+@media only screen and (max-width : 736px) {
+
+}
+
+@media only screen and (max-width: 568px) {
+
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 360px) {
+  .user-profile-controls-image-container > img {
+    height: 100px;
+    width: 120px;
+  }
+
+  .mathbot-header {
+    font-size: 22px;
+    line-height: 24px;
+  }
+
+  .text {
+    font-size: 18px;
+    line-height: 20px;
+  }
 }

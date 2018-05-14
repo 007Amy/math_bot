@@ -15,23 +15,12 @@
   margin: 0 auto;
 }
 
-.bottom-buttons {
-  bottom: 0;
-}
-
 .secretTools {
   width: 100%;
   display: flex;
   left: 0;
   position: absolute;
   z-index: 10000;
-}
-
-img {
-  position: absolute;
-  height: 240px;
-  width: 212px;
-  bottom: -20px;
 }
 
 .secretTools {
@@ -47,140 +36,4 @@ img {
   border: none;
   color: transparent;
   cursor: default;
-}
-
-/* Medium Devices, Desktops */
-@media only screen and (max-width : 992px) {
-  .profile {
-    left: 0;
-    right: 0;
-  }
-  img {
-    height: 141px;
-    width: 124px;
-  }
-  #about {
-    height: 18px;
-    width: 41px;
-    margin-left: 148px;
-  }
-  #signOut {
-    height: 18px;
-    width: 70px;
-    margin-left: 214px;
-  }
-  .text {
-    font-size: 15px;
-    line-height: 18px;
-  }
-  .mathbotText {
-    height: 42px;
-    width: 122px;
-    font-size: 35px;
-    line-height: 42px;
-    bottom: 35px;
-    margin-left: 145px;
-  }
-}
-
-/* Small Devices */
-@media only screen and (max-width : 667px) {
-  .profile {
-    left: 0;
-    right: 0;
-  }
-  img {
-    height: 141px;
-    width: 124px;
-  }
-  #about {
-    height: 18px;
-    width: 41px;
-    margin-left: 148px;
-  }
-  #signOut {
-    height: 18px;
-    width: 70px;
-    margin-left: 214px;
-  }
-  .text {
-    font-size: 15px;
-    line-height: 18px;
-  }
-  .mathbotText {
-    height: 42px;
-    width: 122px;
-    font-size: 35px;
-    line-height: 42px;
-    bottom: 35px;
-    margin-left: 145px;
-  }
-}
-
-/* Extra Small Devices, Phones */
-@media only screen and (max-width : 480px) {
-  .profile {
-    left: 0;
-    right: 0;
-  }
-  img {
-    height: 141px;
-    width: 124px;
-  }
-  #about {
-    height: 18px;
-    width: 41px;
-    margin-left: 148px;
-  }
-  #signOut {
-    height: 18px;
-    width: 70px;
-    margin-left: 214px;
-  }
-  .text {
-    font-size: 15px;
-    line-height: 18px;
-  }
-  .mathbotText {
-    height: 42px;
-    width: 122px;
-    font-size: 35px;
-    line-height: 42px;
-    bottom: 35px;
-    margin-left: 145px;
-  }
-}
-
-/* Custom, iPhone Retina */
-@media only screen and (max-width : 320px) {
-  .profile {
-    left: 0;
-    right: 0;
-  }
-  img {
-    height: 141px;
-    width: 124px;
-  }
-  #about {
-    height: 18px;
-    width: 41px;
-    margin-left: 148px;
-  }
-  #signOut {
-    height: 18px;
-    width: 70px;
-    margin-left: 214px;
-  }
-  .text {
-    font-size: 15px;
-    line-height: 18px;
-  }
-  .mathbotText {
-    height: 42px;
-    width: 122px;
-    font-size: 35px;
-    line-height: 42px;
-    bottom: 35px;
-    margin-left: 145px;
-  }
 }

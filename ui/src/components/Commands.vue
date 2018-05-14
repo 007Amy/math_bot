@@ -7,8 +7,8 @@
     ></popover-bucket>
 
     <div class="command-control-button-group">
-      <img class="commands-up command-control-button" @click="moveSwiper('up')" :src="permanentImages.buttons.playButton">
-      <img class="commands-down command-control-button" @click="moveSwiper('down')" :src="permanentImages.buttons.playButton">
+      <img class="commands-up dialog-button" @click="moveSwiper('up')" :src="permanentImages.buttons.playButton">
+      <img class="commands-down dialog-button" @click="moveSwiper('down')" :src="permanentImages.buttons.playButton">
     </div>
 
     <div class="commands-slide">
@@ -58,7 +58,6 @@
       @click="toggleFunctionAdd"
       :src="permanentImages.buttons.plusButton"
       data-toggle="tooltip" :title="functionAreaShowing === 'addFunction' ? 'Close' : 'Open'" />
-
   </div>
 </template>
 

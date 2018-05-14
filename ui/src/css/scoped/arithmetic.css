@@ -9,6 +9,7 @@
   position: relative;
   width: 670px;
   height: 721px;
+  /*border: 1px solid teal;*/
 }
 
 .button-container {
@@ -38,6 +39,7 @@
   position: absolute;
   color: white;
   cursor: pointer;
+  /*display: none;*/
 }
 
 .planet1 {
@@ -115,6 +117,33 @@
   border: 1px solid white;
 }
 
+@media only screen and (max-width : 992px) {
+
+}
+
+@media only screen and (max-height: 411px) {
+
+}
+
+/* Small Devices */
+@media only screen and (max-width : 736px) {
+
+}
+
+@media only screen and (max-width: 568px) {
+
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 360px) {
+
+}
+
 /* iPad */
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
   .space {
@@ -146,6 +175,7 @@
     width: 169px;
   }
 }
+
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
   .space {
     width: 495px;
@@ -177,32 +207,4 @@
     height: 169px;
     width: 169px;
   }
-}
-
-
-@media only screen and (max-width : 992px) {
-
-}
-
-@media only screen and (max-height: 411px) {
-
-}
-
-/* Small Devices */
-@media only screen and (max-width : 736px) {
-
-}
-
-@media only screen and (max-width: 568px) {
-
-}
-
-/* Extra Small Devices, Phones */
-@media only screen and (max-width : 480px) {
-
-}
-
-/* Custom, iPhone Retina */
-@media only screen and (max-width : 360px) {
-
 }

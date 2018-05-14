@@ -163,6 +163,10 @@ img {
   top: 0;
 }
 
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
+
+}
+
 /* 13" screen */
 @media only screen and (max-width : 1280px) {
   .grid-space {
@@ -196,5 +200,13 @@ img {
   .grid-space {
     height: 30px;
     width: 30px;
+  }
+}
+
+/* iPad */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+  .grid-space {
+    height: 70px;
+    width: 70px;
   }
 }

@@ -99,3 +99,27 @@
 @media only screen and (max-width : 320px) {
 
 }
+
+/* iPad */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+  .instructions {
+    height: 100px;
+  }
+
+  .instructions-filler-left {
+    flex-grow: 1.4;
+  }
+}
+
+/* iPad */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+  .return-to-profile {
+    height: 100px;
+  }
+}
+
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
+  .return-to-profile {
+    height: 150px;
+  }
+}
