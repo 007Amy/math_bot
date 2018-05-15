@@ -1,17 +1,6 @@
 <template>
   <div class="arithmetic">
-    <div class="space">
-      <img class="space-ship" :src="permanentImages.spaceShip" />
-      <img
-        v-for="(level, index) in levels"
-        class="planet"
-        :key="level.name + '-planet'"
-        :id="level.name + '-planet'"
-        :class="'planet' + (index + 1)"
-        :src="isLevelActive(level) ? selectedLevel === level.name ? permanentImages.planets['selected' + (index + 1)] : permanentImages.planets['active' + (index + 1)] : permanentImages.planets['inactive' + (index + 1)]"
-        @click="selectLevel(level.name, firstStep)"
-      >
-    </div>
+    <space :levels="levels" :is-level-active="isLevelActive" :permanent-images="permanentImages" :select-level="selectLevel" :selected-level="selectedLevel" :first-step="firstStep"></space>
     <steps :level="level" :steps="steps" :permanent-images="permanentImages" :go-to-robot="goToRobot"></steps>
   </div>
 </template>
@@ -20,6 +9,7 @@
 import api from '../services/api'
 import utils from '../services/utils'
 import Steps from './Steps'
+import Space from './Space'
 
 export default {
   mounted () {
@@ -99,7 +89,8 @@ export default {
     }
   },
   components: {
-    Steps
+    Steps,
+    Space
   }
 }
 </script>

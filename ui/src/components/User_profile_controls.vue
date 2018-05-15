@@ -9,7 +9,6 @@
         <div class="text about" @click="$router.push({path: '/marketing'})">About</div>
         <div class="text sign-out" v-if="auth !== null" @click="auth.logout()">Sign Out</div>
       </div>
-      <div class="text-filler"></div>
     </div>
   </div>
 </template>

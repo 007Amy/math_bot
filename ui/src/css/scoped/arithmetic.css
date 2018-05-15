@@ -5,13 +5,6 @@
   align-items: center;
 }
 
-.space {
-  position: relative;
-  width: 670px;
-  height: 721px;
-  /*border: 1px solid teal;*/
-}
-
 .button-container {
   display: flex;
   vertical-align: middle;
@@ -19,76 +12,11 @@
   flex-grow: 1;
 }
 
-.store {
-  display: flex;
-  justify-content: center;
-  margin-top: auto;
-  margin-bottom: auto;
-  height: 35%;
-  font-size: 3vh;
-}
-
 .logout {
   display: flex;
   justify-content: center;
   margin-top: auto;
   margin-bottom: auto;
-}
-
-.planet {
-  position: absolute;
-  color: white;
-  cursor: pointer;
-  /*display: none;*/
-}
-
-.planet1 {
-  height: 383px;
-  width: 383px;
-  top: 0;
-  left: 0;
-}
-
-.planet2 {
-  height: 284px;
-  width: 284px;
-  top: -8%;
-  left: 55%;
-}
-
-.planet3 {
-  height: 307px;
-  width: 307px;
-  top: 25%;
-  left: 63%;
-}
-
-.planet4 {
-  height: 269px;
-  width: 269px;
-  top: 59%;
-  left: 38%;
-}
-
-.planet5 {
-  height: 220px;
-  width: 220px;
-  top: 75%;
-  left: 5%;
-}
-
-.space-ship {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: rotate(-20deg);
-}
-
-.galaxy {
-  height: 10%;
-  width: 15%;
-  top: 5%;
-  left: 5%;
 }
 
 .activated {
@@ -146,65 +74,9 @@
 
 /* iPad */
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
-  .space {
-    margin-right: 20px;
-  }
 
-  .planet1 {
-    height: 295px;
-    width: 296px;
-  }
-
-  .planet2 {
-    height: 218px;
-    width: 218px;
-  }
-
-  .planet3 {
-    height: 236px;
-    width: 236px;
-  }
-
-  .planet4 {
-    height: 206px;
-    width: 206px;
-  }
-
-  .planet5 {
-    height: 169px;
-    width: 169px;
-  }
 }
 
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
-  .space {
-    width: 495px;
-    height: 554px;
-    margin-left: 100px;
-  }
 
-  .planet1 {
-    height: 295px;
-    width: 296px;
-  }
-
-  .planet2 {
-    height: 218px;
-    width: 218px;
-  }
-
-  .planet3 {
-    height: 236px;
-    width: 236px;
-  }
-
-  .planet4 {
-    height: 206px;
-    width: 206px;
-  }
-
-  .planet5 {
-    height: 169px;
-    width: 169px;
-  }
 }

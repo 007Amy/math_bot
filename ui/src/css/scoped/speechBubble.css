@@ -130,34 +130,7 @@
 
 /* Extra Small Devices, Phones */
 @media only screen and (max-width : 480px) {
-  .speech-bubble {
-    height: 50px;
-    width: 200px;
-    margin-top: -15px;
-    margin-left: -10px;
-  }
 
-  .speech-bubble:before {
-    border-top: 20px solid #FFFF;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-
-    transform: rotate(50deg);
-
-    margin-left: -10px;
-    margin-bottom: -14px;
-  }
-
-  .speech-bubble:after {
-    border-top: 20px solid #E8E8E8;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-
-    transform: rotate(50deg);
-
-    margin-left: -9px;
-    margin-bottom: -13px;
-  }
 }
 
 /* Custom, iPhone 5 Retina */
