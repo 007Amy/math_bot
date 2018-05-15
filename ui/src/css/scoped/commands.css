@@ -126,6 +126,11 @@
   right: -21px;
 }
 
+.command-button {
+  max-height: 30px;
+  max-width: 30px;
+}
+
 .commands-up {
   -webkit-transform: rotate(-90deg);
   transform:rotate(-90deg);
@@ -175,7 +180,6 @@
   }
 
   .command-control-button-group {
-    height: 90%;
     margin-right: 10px;
   }
 
@@ -189,7 +193,7 @@
 @media only screen and (max-width : 992px) {
   .commands {
     margin-bottom: 5px;
-    height: 45px;
+    /*height: 45px;*/
   }
 
   .commands-slide {
@@ -200,11 +204,7 @@
     /*height: 35px;*/
   }
 
-  .methods {
-  }
-
   .command-control-button-group {
-    height: 45px;
     margin-right: 10px;
   }
 
@@ -250,6 +250,26 @@
 
 /* Custom, iPhone Retina */
 @media only screen and (max-width : 320px) {
+
+}
+
+/* iPad */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+  .instructions {
+    height: 100px;
+  }
+
+  .instructions-filler-left {
+    flex-grow: 1.4;
+  }
+}
+
+/* iPad */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+
+}
+
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
 
 }
 

@@ -13,10 +13,10 @@
     <main-placeholder></main-placeholder>
 
     <div class="bar noDrag">
-      <img class="x button noDrag dialog-button" :src="permanentImages.buttons.trashButton"  @click="wipeFunction" data-toggle="tooltip" title="Clear main" />
-      <div class="speed button dialog-button" @click="goFast" data-toggle="tooltip" title="Adjust speed"> {{ speeds[currentSpeed].display }}</div>
-      <img v-if="robot.state === 'home' || robot.state === 'paused'" class="play button noDrag dialog-button" :src="permanentImages.buttons.playButton" @click="compileMain" data-toggle="tooltip" title="Run program" />
-      <img v-else class="play button noDrag dialog-button" :src="permanentImages.buttons.pauseButton" @click="pause" data-toggle="tooltip" title="Pause program" />
+      <img class="x noDrag dialog-button" :src="permanentImages.buttons.trashButton"  @click="wipeFunction" data-toggle="tooltip" title="Clear main" />
+      <div class="speed dialog-button" @click="goFast" data-toggle="tooltip" title="Adjust speed"> {{ speeds[currentSpeed].display }}</div>
+      <img class="play noDrag dialog-button" v-if="robot.state === 'home' || robot.state === 'paused'" :src="permanentImages.buttons.playButton" @click="compileMain" data-toggle="tooltip" title="Run program" />
+      <img v-else class="play noDrag dialog-button" :src="permanentImages.buttons.pauseButton" @click="pause" data-toggle="tooltip" title="Pause program" />
       <img v-if="robot.state === 'running'" class="stop button noDrag dialog-button" :src="permanentImages.buttons.stopButton" @click="stop" data-toggle="tooltip" title="Stop program" />
     </div>
   </div>
@@ -28,7 +28,6 @@ import uid from 'uid'
 import utils from '../services/utils'
 import buildUtils from '../services/build_function_utils'
 import draggable from 'vuedraggable'
-import api from '../services/api'
 import RunCompiled from '../services/RunCompiled'
 import FunctionBox from './Function_box'
 import FunctionDrop from './Function_drop'
@@ -137,7 +136,6 @@ export default {
     },
     compileMain () {
       const scripts = this.$store.getters.getMainFunction.func
-      const problem = this.stepData.problem
 
       // Ensure draggable put is true for next level
       this.togglePut(true)
@@ -146,10 +144,8 @@ export default {
         if (scripts.length) {
           // Delete all existing messages
           this.$store.dispatch('deleteMessages')
-
-          api.compileWs({context: this, problem: problem}, (compiled) => {
-            this.runCompiled = new RunCompiled({context: this, frames: compiled.frames})
-          })
+          // Compile robot
+          this.runCompiled = new RunCompiled({context: this})
         } else {
           const messageBuilder = {
             type: 'warn',

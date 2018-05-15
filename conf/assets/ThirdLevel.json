@@ -2,7 +2,7 @@
   "level": "ThirdLevel",
   "prevLevel": "SecondLevel",
   "nextLevel": "FourthLevel",
-  "show": false,
+  "show": true,
   "steps": {
     "One": {
       "level": "ThirdLevel",
@@ -29,6 +29,7 @@
       "specialParameters": [],
       "problem": "{3} * {9} + 4",
       "clearMain": false,
+      "initFocus": [],
       "prevStep": "None",
       "nextStep": "Two"
     },
@@ -57,6 +58,7 @@
       "specialParameters": [],
       "problem": "0",
       "clearMain": false,
+      "initFocus": [],
       "prevStep": "One",
       "nextStep": "Three"
     },
@@ -85,6 +87,7 @@
       "specialParameters": [],
       "problem": "0",
       "clearMain": false,
+      "initFocus": [],
       "prevStep": "Two",
       "nextStep": "None"
     }

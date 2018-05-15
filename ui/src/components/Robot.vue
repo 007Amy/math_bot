@@ -25,7 +25,7 @@
         <trash></trash>
       </div>
 
-      <div class="filler-box"></div>
+      <!--<div class="filler-box"></div>-->
     </div>
   </div>
 </template>

@@ -233,12 +233,14 @@ The project has been built thus far with Intellij
 
 #### Pre-prod Deployment
 * Use heroku for testing
+* If you do not plan to setup a heroku, just do step 3
     
 1) Create a [Heroku](https://heroku.com/) account (if you don't have one) and create a new app.
 
 2) Setup an mLab resource for MongoDb.
 
-3) Change `project/HerokuDeployKeys-example.scala` to `project/HerokuDeployKeys.scala` 
+3) Change `project/HerokuDeployKeys` to `project/HerokuDeployKeys.scala` 
+    * If you do not plan to setup a heroku account you are finished
     * Be sure to change the object name to match also
     * Be sure not to remove `project/HerokuDeployKeys-example.scala`
     

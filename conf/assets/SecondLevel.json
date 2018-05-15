@@ -2,7 +2,7 @@
   "level": "SecondLevel",
   "prevLevel": "BasicProgramming",
   "nextLevel": "ThirdLevel",
-  "show": false,
+  "show": true,
   "steps": {
     "One": {
       "level": "SecondLevel",
@@ -32,6 +32,7 @@
       "specialParameters": [],
       "problem": "50 + 50",
       "clearMain": false,
+      "initFocus": [],
       "prevStep": "None",
       "nextStep": "Two"
     },
@@ -40,7 +41,7 @@
       "step": "Two",
       "gridMap": [
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
-        "|E| |E| |E| |E| [TS] |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| (R) |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
@@ -60,6 +61,7 @@
       "specialParameters": [],
       "problem": "0",
       "clearMain": false,
+      "initFocus": [],
       "prevStep": "One",
       "nextStep": "Three"
     },
@@ -88,6 +90,7 @@
       "specialParameters": [],
       "problem": "0",
       "clearMain": false,
+      "initFocus": [],
       "prevStep": "Two",
       "nextStep": "None"
     }

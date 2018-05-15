@@ -7,8 +7,8 @@
     ></popover-bucket>
 
     <div class="command-control-button-group">
-      <img class="commands-up command-control-button" @click="moveSwiper('up')" :src="permanentImages.buttons.playButton">
-      <img class="commands-down command-control-button" @click="moveSwiper('down')" :src="permanentImages.buttons.playButton">
+      <img class="command-button commands-up dialog-button" @click="moveSwiper('up')" :src="permanentImages.buttons.playButton">
+      <img class="command-button commands-down dialog-button" @click="moveSwiper('down')" :src="permanentImages.buttons.playButton">
     </div>
 
     <div class="commands-slide">
@@ -58,7 +58,6 @@
       @click="toggleFunctionAdd"
       :src="permanentImages.buttons.plusButton"
       data-toggle="tooltip" :title="functionAreaShowing === 'addFunction' ? 'Close' : 'Open'" />
-
   </div>
 </template>
 
@@ -213,29 +212,31 @@ export default {
       })
     },
     moveSwiper (direction) {
-      this.closeFunctionBox();
-      (function (windowWidth, dis) {
-        const $functions = $('.functions')
-        const functionsWidth = $functions.width()
-        const $functionBoxes = $functions.children()
-        const $firstFunctionBox = $functionBoxes.first()
-        const functionBoxMarginRight = Number($firstFunctionBox.css('margin-right').replace('px', ''))
-        const functionBoxMarginBottom = Number($firstFunctionBox.css('margin-bottom').replace('px', ''))
-        const functionBoxWidth = $firstFunctionBox.outerWidth() + (functionBoxMarginRight * 2)
-        const functionBoxHeight = $firstFunctionBox.outerHeight() + (functionBoxMarginBottom)
-        const amtPerRow = Math.floor(functionsWidth / functionBoxWidth)
-        const rowCount = Math.ceil($functionBoxes.length / amtPerRow)
-        const allRowsHeight = functionBoxHeight * rowCount
-        const ableToScrollDown = (dis.functionsPosition + functionBoxHeight) < allRowsHeight
+      this.closeFunctionBox()
+      const $functions = $('.functions')
+      const $functionBoxes = $functions.children()
+      if ($functionBoxes.length) {
+        (function (windowWidth, dis) {
+          const functionsWidth = $functions.width()
+          const $firstFunctionBox = $functionBoxes.first()
+          const functionBoxMarginRight = Number($firstFunctionBox.css('margin-right').replace('px', ''))
+          const functionBoxMarginBottom = Number($firstFunctionBox.css('margin-bottom').replace('px', ''))
+          const functionBoxWidth = $firstFunctionBox.outerWidth() + (functionBoxMarginRight * 2)
+          const functionBoxHeight = $firstFunctionBox.outerHeight() + (functionBoxMarginBottom)
+          const amtPerRow = Math.floor(functionsWidth / functionBoxWidth)
+          const rowCount = Math.ceil($functionBoxes.length / amtPerRow)
+          const allRowsHeight = functionBoxHeight * rowCount
+          const ableToScrollDown = (dis.functionsPosition + functionBoxHeight) < allRowsHeight
 
-        if (direction === 'up' && dis.functionsPosition > 0) {
-          dis.functionsPosition -= functionBoxHeight
-        } else if (direction === 'down' && ableToScrollDown) {
-          dis.functionsPosition += functionBoxHeight
-        }
+          if (direction === 'up' && dis.functionsPosition > 0) {
+            dis.functionsPosition -= functionBoxHeight
+          } else if (direction === 'down' && ableToScrollDown) {
+            dis.functionsPosition += functionBoxHeight
+          }
 
-        $functions.animate({scrollTop: dis.functionsPosition + 'px'}, 300, 'linear')
-      })($(window).width(), this)
+          $functions.animate({scrollTop: dis.functionsPosition + 'px'}, 300, 'linear')
+        })($(window).width(), this)
+      }
     }
   },
   components: {

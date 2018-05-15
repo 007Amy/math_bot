@@ -7,7 +7,7 @@
   justify-content: center;
   overflow: visible;
   width: 100%;
-  padding: 20px;
+  height: 100px;
 }
 
 .edit-main .function-drop {
@@ -27,7 +27,7 @@
   background-color: #FF0000;
 }
 
-.button {
+.dialog-button {
   z-index: 2010;
   display: flex;
   cursor: pointer;
@@ -76,9 +76,7 @@
     width: 75%;
   }
 
-  .button {
-    width: 24px;
-    height: 24px;
+  .dialog-button {
     top: -12px;
   }
 
@@ -112,6 +110,7 @@
   .edit-main {
     padding: 0;
     align-items: center;
+    height: 60px;
   }
 
   .function-drop {
@@ -119,9 +118,7 @@
     width: 75%;
   }
 
-  .button {
-    width: 24px;
-    height: 24px;
+  .dialog-button {
     top: -12px;
   }
 
@@ -163,3 +160,46 @@
 
 }
 
+/* iPad */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+  .dialog-button {
+    top: -15px;
+  }
+
+  .stop {
+    display: none;
+  }
+
+  .speed {
+    right: 35px;
+    font-size: 12px;
+  }
+}
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
+  .edit-main {
+    padding: 0;
+  }
+
+  .function-drop {
+    height: 60px;
+    width: 75%;
+  }
+
+  .dialog-button {
+    top: -15px;
+  }
+
+  .stop {
+    display: none;
+  }
+
+  .speed {
+    right: 35px;
+    font-size: 12px;
+  }
+
+  .ghost, .sortable-chosen, .dragging {
+    width: 40px;
+    height: 40px;
+  }
+}

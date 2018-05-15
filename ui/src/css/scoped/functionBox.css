@@ -59,6 +59,7 @@
 .editMain-box-button:first-child {
   background: no-repeat right;
   margin-left: 0;
+  width: 85px;
 }
 
 /* 13" screen */
@@ -135,5 +136,36 @@
 
 /* Custom, iPhone Retina */
 @media only screen and (max-width : 320px) {
+
+}
+
+/* iPad */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+  .function-box-button {
+    height: 72px;
+    width: 70px;
+  }
+
+  .editMain-box-button {
+    height: 72px;
+    width: 78px;
+    margin: 0 0 0 -10px;
+  }
+
+  .editMain-box-button:first-child {
+    height: 69px;
+    width: 75px;
+  }
+
+  .command-name {
+    display: none;
+  }
+
+  .command-name {
+    display: block;
+  }
+}
+
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
 
 }

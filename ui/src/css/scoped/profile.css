@@ -6,16 +6,13 @@
 }
 
 .profile {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   overflow: hidden;
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.bottomButtons {
-  position: absolute;
-  bottom: 0;
 }
 
 .secretTools {
@@ -26,52 +23,10 @@
   z-index: 10000;
 }
 
-.mathbotText {
-  position: absolute;
-  height: 72px;
-  width: 209px;
-  color: #FFFFFF;
-  margin-left: 245px;
-  font-size: 60px;
-  line-height: 72px;
-  bottom: 57px;
-}
-
-.text {
-  position: absolute;
-  bottom: 0;
-  opacity: 0.3;
-  color: #FFFFFF;
-  font-size: 26px;
-  font-weight: 600;
-  line-height: 30px;
-  cursor: pointer;
-}
-
-.text > * {
-  color: inherit;
-  text-decoration: none;
-}
-
-#about {
-  height: 30px;
-  width: 70px;
-  margin-bottom: 20px;
-  margin-left: 245px;
-}
-
-#signOut {
-  height: 30px;
-  width: 120px;
-  margin-bottom: 20px;
-  margin-left: 365px;
-}
-
-img {
-  position: absolute;
-  height: 240px;
-  width: 212px;
-  bottom: -20px;
+.secretTools {
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .secretTools > button {
@@ -81,140 +36,4 @@ img {
   border: none;
   color: transparent;
   cursor: default;
-}
-
-/* Medium Devices, Desktops */
-@media only screen and (max-width : 992px) {
-  .profile {
-    left: 0;
-    right: 0;
-  }
-  img {
-    height: 141px;
-    width: 124px;
-  }
-  #about {
-    height: 18px;
-    width: 41px;
-    margin-left: 148px;
-  }
-  #signOut {
-    height: 18px;
-    width: 70px;
-    margin-left: 214px;
-  }
-  .text {
-    font-size: 15px;
-    line-height: 18px;
-  }
-  .mathbotText {
-    height: 42px;
-    width: 122px;
-    font-size: 35px;
-    line-height: 42px;
-    bottom: 35px;
-    margin-left: 145px;
-  }
-}
-
-/* Small Devices */
-@media only screen and (max-width : 667px) {
-  .profile {
-    left: 0;
-    right: 0;
-  }
-  img {
-    height: 141px;
-    width: 124px;
-  }
-  #about {
-    height: 18px;
-    width: 41px;
-    margin-left: 148px;
-  }
-  #signOut {
-    height: 18px;
-    width: 70px;
-    margin-left: 214px;
-  }
-  .text {
-    font-size: 15px;
-    line-height: 18px;
-  }
-  .mathbotText {
-    height: 42px;
-    width: 122px;
-    font-size: 35px;
-    line-height: 42px;
-    bottom: 35px;
-    margin-left: 145px;
-  }
-}
-
-/* Extra Small Devices, Phones */
-@media only screen and (max-width : 480px) {
-  .profile {
-    left: 0;
-    right: 0;
-  }
-  img {
-    height: 141px;
-    width: 124px;
-  }
-  #about {
-    height: 18px;
-    width: 41px;
-    margin-left: 148px;
-  }
-  #signOut {
-    height: 18px;
-    width: 70px;
-    margin-left: 214px;
-  }
-  .text {
-    font-size: 15px;
-    line-height: 18px;
-  }
-  .mathbotText {
-    height: 42px;
-    width: 122px;
-    font-size: 35px;
-    line-height: 42px;
-    bottom: 35px;
-    margin-left: 145px;
-  }
-}
-
-/* Custom, iPhone Retina */
-@media only screen and (max-width : 320px) {
-  .profile {
-    left: 0;
-    right: 0;
-  }
-  img {
-    height: 141px;
-    width: 124px;
-  }
-  #about {
-    height: 18px;
-    width: 41px;
-    margin-left: 148px;
-  }
-  #signOut {
-    height: 18px;
-    width: 70px;
-    margin-left: 214px;
-  }
-  .text {
-    font-size: 15px;
-    line-height: 18px;
-  }
-  .mathbotText {
-    height: 42px;
-    width: 122px;
-    font-size: 35px;
-    line-height: 42px;
-    bottom: 35px;
-    margin-left: 145px;
-  }
 }

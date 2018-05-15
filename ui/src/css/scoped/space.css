@@ -1,0 +1,246 @@
+.space {
+  position: relative;
+  width: 670px;
+  height: 721px;
+  border: 1px solid teal;
+}
+
+.planet {
+  position: absolute;
+  color: white;
+  cursor: pointer;
+  /*display: none;*/
+}
+
+.planet1 {
+  height: 383px;
+  width: 383px;
+  top: 0;
+  left: 0;
+}
+
+.planet2 {
+  height: 284px;
+  width: 284px;
+  top: -8%;
+  left: 55%;
+}
+
+.planet3 {
+  height: 307px;
+  width: 307px;
+  top: 25%;
+  left: 63%;
+}
+
+.planet4 {
+  height: 269px;
+  width: 269px;
+  top: 59%;
+  left: 38%;
+}
+
+.planet5 {
+  height: 220px;
+  width: 220px;
+  top: 75%;
+  left: 5%;
+}
+
+.space-ship {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: rotate(-20deg);
+}
+
+@media only screen and (max-width : 992px) {
+
+}
+
+/* Small Devices */
+@media only screen and (max-width : 736px) {
+  .space {
+    margin: 0;
+    width: 455px;
+    height: 250px;
+  }
+
+  .planet1 {
+    left: 10%;
+    height: 127px;
+    width: 127px;
+  }
+
+  .planet2 {
+    height: 95px;
+    width: 95px;
+  }
+
+  .planet3 {
+    height: 103px;
+    width: 103px;
+  }
+
+  .planet4 {
+    height: 82px;
+    width: 82px;
+  }
+
+  .planet5 {
+    height: 73px;
+    width: 73px;
+  }
+
+  .space-ship {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 568px) {
+  .space {
+    margin: 0;
+    width: 340px;
+    height: 200px;
+  }
+
+  .planet1 {
+    left: 10%;
+    height: 98px;
+    width: 98px;
+  }
+
+  .planet2 {
+    height: 73px;
+    width: 73px;
+  }
+
+  .planet3 {
+    height: 79px;
+    width: 79px;
+  }
+
+  .planet4 {
+    height: 69px;
+    width: 69px;
+  }
+
+  .planet5 {
+    height: 56px;
+    width: 56px;
+  }
+
+  .space-ship {
+    display: none;
+  }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+  .space {
+    margin: 0;
+    width: 200px;
+    height: 450px;
+  }
+
+  .planet1 {
+    left: 0;
+    height: 98px;
+    width: 98px;
+  }
+
+  .planet2 {
+    top: -5%;
+    height: 73px;
+    width: 73px;
+  }
+
+  .planet3 {
+    height: 79px;
+    width: 79px;
+  }
+
+  .planet4 {
+    height: 69px;
+    width: 69px;
+  }
+
+  .planet5 {
+    height: 56px;
+    width: 56px;
+  }
+
+  .space-ship {
+    display: none;
+  }
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 360px) {
+
+}
+
+/* iPad */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+  .space {
+    margin-right: 20px;
+  }
+
+  .planet1 {
+    height: 295px;
+    width: 296px;
+  }
+
+  .planet2 {
+    height: 218px;
+    width: 218px;
+  }
+
+  .planet3 {
+    height: 236px;
+    width: 236px;
+  }
+
+  .planet4 {
+    height: 206px;
+    width: 206px;
+  }
+
+  .planet5 {
+    height: 169px;
+    width: 169px;
+  }
+}
+
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
+  .space {
+    width: 495px;
+    height: 554px;
+    margin-left: 100px;
+  }
+
+  .planet1 {
+    height: 295px;
+    width: 296px;
+  }
+
+  .planet2 {
+    height: 218px;
+    width: 218px;
+  }
+
+  .planet3 {
+    height: 236px;
+    width: 236px;
+  }
+
+  .planet4 {
+    height: 206px;
+    width: 206px;
+  }
+
+  .planet5 {
+    height: 169px;
+    width: 169px;
+  }
+}
