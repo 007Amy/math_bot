@@ -3,8 +3,8 @@ import api from './api'
 import Promise from 'bluebird'
 
 class RunCompiled {
-  constructor ({context}) {
-    if (context) {
+  constructor ({context, frames}) {
+    if (context && frames) {
       this.context = context
       this.frames = frames
       this.$store = this.context.$store
@@ -13,8 +13,8 @@ class RunCompiled {
       this.stepData = this.$store.getters.getCurrentStepData
       this.toolList = this.stepData.toolList
 
-      this._initiateCompile = this._initiateCompile.bind(this)
-      this._initiateCompile()
+      if (this.frames !== undefined && this.frames.length) this.processFrames()
+      else console.log('NO FRAMES')
     }
   }
 
@@ -107,16 +107,11 @@ class RunCompiled {
     this.robot.state = programState
   }
 
-  _haltSocket () {
-    api.compilerWebSocket.stopProgram()
-  }
-
   processFrames () {
     if (this.robot.state === 'paused') return
     else if (this.robot.state === 'stop') {
       this.frames = []
       this.lost()
-      this._haltSocket()
       return
     }
 
@@ -132,35 +127,18 @@ class RunCompiled {
       .then(_ => new Promise(resolve => resolve(this.moveRobot(Object.assign(robotState.location, {orientation: robotState.orientation}), robotState.animation))))
       .then(_ => new Promise(resolve => resolve(this.updateRobotHolding(robotState.holding))))
       .done(_ => {
-        const robotSpeed = this.$store.getters.getRobotSpeed
         if (!this.frames.length) {
-          console.log('[ProgramState, last frame] ', current.programState)
           if (current.programState === 'success') {
             this.win()
-          } else if (current.programState === 'running') {
-            setTimeout(this._initiateCompile, robotSpeed) // Should ask for next 4 frames, instead keeps sending first four frames.
           } else {
             this.lost(true)
           }
           this.robot.state = 'home'
           this.$store.dispatch('deactivateRobot')
-        } else {
-          setTimeout(() => this.processFrames(), robotSpeed)
+          return
         }
+        setTimeout(() => this.processFrames(), this.$store.getters.getRobotSpeed)
       })
-  }
-
-  _initiateCompile () {
-    api.compilerWebSocket.compileWs({context: this, problem: this.stepData.problem}, (compiled) => {
-      const frames = compiled.frames
-      console.log('[FRAMES] ', frames)
-      if (frames !== undefined && frames.length) {
-        this.frames = frames
-        this.processFrames()
-      } else {
-        console.log('NO FRAMES')
-      }
-    })
   }
 }
 

@@ -28,7 +28,6 @@ import uid from 'uid'
 import utils from '../services/utils'
 import buildUtils from '../services/build_function_utils'
 import draggable from 'vuedraggable'
-import api from '../services/api'
 import RunCompiled from '../services/RunCompiled'
 import FunctionBox from './Function_box'
 import FunctionDrop from './Function_drop'
@@ -137,7 +136,6 @@ export default {
     },
     compileMain () {
       const scripts = this.$store.getters.getMainFunction.func
-      const problem = this.stepData.problem
 
       // Ensure draggable put is true for next level
       this.togglePut(true)
@@ -146,10 +144,8 @@ export default {
         if (scripts.length) {
           // Delete all existing messages
           this.$store.dispatch('deleteMessages')
-
-          api.compileWs({context: this, problem: problem}, (compiled) => {
-            this.runCompiled = new RunCompiled({context: this, frames: compiled.frames})
-          })
+          // Compile robot
+          this.runCompiled = new RunCompiled({context: this})
         } else {
           const messageBuilder = {
             type: 'warn',
