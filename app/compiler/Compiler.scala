@@ -99,8 +99,7 @@ object Compiler {
     }
   }
 
-  def compile(script: JsValue,
-              main: FuncToken,
+  def compile(main: FuncToken,
               funcs: List[FuncToken],
               commands: List[FuncToken],
               grid: GridMap,

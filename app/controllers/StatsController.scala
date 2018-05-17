@@ -3,7 +3,7 @@ package controllers
 import java.net.URLDecoder
 import javax.inject.Inject
 
-import actors.LevelGenerationActor.ActorFailed
+import actors.messages.ActorFailed
 import actors.StatsActor._
 import actors.StatsActor
 import akka.actor.ActorSystem

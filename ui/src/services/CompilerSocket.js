@@ -51,7 +51,7 @@ class CompilerSocket extends Ws {
   }
 
   _compilerSend (problem, halt) {
-    this._send(JSON.stringify({steps: this._compilerTake, program: {problem: problem}, halt: halt}))
+    this._send(JSON.stringify({steps: this._compilerTake, problem: problem, halt: halt}))
   }
 }
 

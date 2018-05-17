@@ -39,7 +39,7 @@ lazy val docs = (project in file("docs")).enablePlugins(ParadoxPlugin).
   )
 
 // Pre - Prod deploy
-herokuAppName in Compile := HerokuDeployKeys.NAME
-herokuJdkVersion in Compile := "1.8"
-herokuConfigVars in Compile := HerokuDeployKeys.CONFIG_VARS
-herokuProcessTypes in Compile := HerokuDeployKeys.PROCESS_TYPES
+//herokuAppName in Compile := HerokuDeployKeys.NAME
+//herokuJdkVersion in Compile := "1.8"
+//herokuConfigVars in Compile := HerokuDeployKeys.CONFIG_VARS
+//herokuProcessTypes in Compile := HerokuDeployKeys.PROCESS_TYPES

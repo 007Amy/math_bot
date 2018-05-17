@@ -3,7 +3,7 @@ package controllers
 import java.net.URLDecoder
 import javax.inject.Inject
 
-import actors.LevelGenerationActor.ActorFailed
+import actors.messages.ActorFailed
 import actors.PlayerActor
 import actors.PlayerActor._
 import actors.messages.ResponsePlayerToken

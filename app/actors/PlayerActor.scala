@@ -1,7 +1,7 @@
 package actors
 
-import actors.LevelGenerationActor.{makeQtyUnlimited, ActorFailed}
-import actors.messages.{PreparedStepData, RawLevelData, ResponsePlayerToken}
+import actors.LevelGenerationActor.makeQtyUnlimited
+import actors.messages.{PreparedStepData, RawLevelData, ResponsePlayerToken, ActorFailed}
 import akka.actor.{Actor, ActorSystem, Props}
 import akka.pattern.pipe
 import loggers.MathBotLogger
@@ -124,8 +124,6 @@ object PlayerActor {
             }
         }
       )
-
-      val p = 0
 
       updated
     }
