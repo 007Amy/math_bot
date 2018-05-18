@@ -6,6 +6,11 @@
   text-align: left;
   padding: 13px 13px 13px 20px;
 }
+
+.speech-bubble p {
+  margin: 0!important;
+}
+
 /* None scoped styles for speech images */
 .speech-bubble img {
   height: 22px;
@@ -29,8 +34,8 @@
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
   .speech-bubble {
-    font-size: 12px;
-    line-height: 14px;
+    font-size: 14px;
+    line-height: 16px;
     padding: 0 0 0 10px;
   }
 
@@ -57,7 +62,7 @@
   .speech-bubble {
     font-size: 12px;
     line-height: 14px;
-    padding: 3px 3px 3px 10px;
+    padding: 0 0 0 10px;
   }
 
   .speech-bubble img {

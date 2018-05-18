@@ -193,7 +193,7 @@
 @media only screen and (max-width : 992px) {
   .commands {
     margin-bottom: 5px;
-    /*height: 45px;*/
+    height: 40px;
   }
 
   .commands-slide {
@@ -255,18 +255,9 @@
 
 /* iPad */
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
-  .instructions {
-    height: 100px;
+  .commands {
+    height: 85px;
   }
-
-  .instructions-filler-left {
-    flex-grow: 1.4;
-  }
-}
-
-/* iPad */
-@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
-
 }
 
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {

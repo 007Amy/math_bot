@@ -204,12 +204,86 @@ export default {
     .command-name {
       display: none;
     }
+
+    .command-name {
+      display: none;
+    }
+
+    .piece {
+      height: 32px;
+      width: 32px;
+      margin-left: 4px;
+    }
+
+    .puzzle-start, .puzzle-middle {
+      width: 27px;
+    }
+
+    .tab-insert {
+      width: 5px;
+      left: 26px;
+      height: 32px;
+    }
+
+    .notch {
+      width: 10px;
+      height: 10px;
+      left: -5px;
+      background: radial-gradient(transparent 5px, rgba(0, 0, 0, 1) 5px) no-repeat 5px;
+    }
+
+    .left-tab {
+      left: -5px;
+    }
+
+    .left-tab::before {
+      content: "";
+      width: 5px;
+      height: 10px;
+      border-bottom-right-radius: 10px;
+      border-top-right-radius: 10px;
+    }
   }
 
   /* Small Devices */
   @media only screen and (max-width : 667px) {
     .command-name {
       display: none;
+    }
+
+    .piece {
+      height: 32px;
+      width: 32px;
+      margin-left: 4px;
+    }
+
+    .puzzle-start, .puzzle-middle {
+      width: 27px;
+    }
+
+    .tab-insert {
+      width: 5px;
+      left: 26px;
+      height: 32px;
+    }
+
+    .notch {
+      width: 10px;
+      height: 10px;
+      left: -5px;
+      background: radial-gradient(transparent 5px, rgba(0, 0, 0, 1) 5px) no-repeat 5px;
+    }
+
+    .left-tab {
+      left: -5px;
+    }
+
+    .left-tab::before {
+      content: "";
+      width: 5px;
+      height: 10px;
+      border-bottom-right-radius: 10px;
+      border-top-right-radius: 10px;
     }
   }
 
@@ -227,6 +301,42 @@ export default {
   @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
     .command-name {
       display: block;
+    }
+
+    .piece {
+      height: 75px;
+      width: 75px;
+      margin-left: 9px;
+    }
+
+    .puzzle-start, .puzzle-middle {
+      width: 65px;
+    }
+
+    .tab-insert {
+      top: -1px;
+      left: 64px;
+      width: 10px;
+      height: 75px;
+    }
+
+    .notch {
+      left: -10px;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(transparent 10px, rgba(0, 0, 0, 1) 10px) no-repeat 10px;
+    }
+
+    .left-tab {
+      left: -10px;
+    }
+
+    .left-tab::before {
+      content: "";
+      width: 10px;
+      height: 20px;
+      border-bottom-right-radius: 20px;
+      border-top-right-radius: 20px;
     }
   }
 

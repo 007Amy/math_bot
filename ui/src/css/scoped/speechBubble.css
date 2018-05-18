@@ -12,6 +12,11 @@
   transition: opacity 1s linear;
 }
 
+.bubble-text {
+  height: 100%;
+  width: 100%;
+}
+
 .hide-speech-bubble {
   visibility: hidden;
   opacity: 0;
@@ -69,8 +74,9 @@
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
   .speech-bubble {
-    height: 45px;
-    width: 200px;
+    top: 15px;
+    height: 55px;
+    width: 240px;
     margin-left: -2px;
   }
 
@@ -103,6 +109,7 @@
     height: 45px;
     width: 200px;
     margin-left: -2px;
+    top: 5px;
   }
 
   .speech-bubble:before {
@@ -130,7 +137,9 @@
 
 /* Extra Small Devices, Phones */
 @media only screen and (max-width : 480px) {
-
+  .speech-bubble {
+    top: 0;
+  }
 }
 
 /* Custom, iPhone 5 Retina */

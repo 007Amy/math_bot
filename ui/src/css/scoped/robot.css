@@ -47,7 +47,6 @@
 
 .filler-box {
   display: flex;
-  flex-grow: 1;
 }
 
 .grow {
@@ -59,7 +58,7 @@
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
   #robot {
-    width: 100vw;
+    width: 80vw;
   }
 }
 
@@ -91,8 +90,11 @@
 
 /* iPad */
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
-
+  #robot {
+    width: 100vw;
+  }
 }
+
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
 
 }
