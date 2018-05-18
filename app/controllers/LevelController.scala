@@ -1,15 +1,15 @@
 package controllers
 
 import java.net.URLDecoder
-import javax.inject.Singleton
 
 import actors.LevelGenerationActor
-import actors.LevelGenerationActor.{GetLevel, GetStep}
-import actors.messages._
+import javax.inject.Singleton
+import actors.LevelGenerationActor.{ GetLevel, GetStep }
+import actors.messages.{ ActorFailed, PreparedStepData, RawLevelData }
 import akka.actor.ActorSystem
 
 import scala.concurrent.duration._
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.{ Action, Controller }
 import play.modules.reactivemongo.ReactiveMongoApi
 import akka.pattern.ask
 import akka.util.Timeout
@@ -33,7 +33,7 @@ class LevelController @Inject()(system: ActorSystem,
 
   def getStep(level: String, step: String, encodedTokenId: Option[String]) = Action.async { implicit request =>
     (levelActor ? GetStep(level, step, encodedTokenId.map(URLDecoder.decode(_, "UTF-8"))))
-      .mapTo[Either[PreparedStepData, LevelGenerationActor.ActorFailed]]
+      .mapTo[Either[PreparedStepData, ActorFailed]]
       .map {
         case Left(preparedStepData) => Ok(Json.toJson(preparedStepData))
         case Right(invalidJson) => BadRequest(invalidJson.msg)
@@ -42,7 +42,7 @@ class LevelController @Inject()(system: ActorSystem,
 
   def getLevel(level: String, encodedTokenId: Option[String]) = Action.async { implicit request =>
     (levelActor ? GetLevel(level, encodedTokenId.map(URLDecoder.decode(_, "UTF-8"))))
-      .mapTo[Either[RawLevelData, LevelGenerationActor.ActorFailed]]
+      .mapTo[Either[RawLevelData, ActorFailed]]
       .map {
         case Left(rawLevelData) => Ok(Json.toJson(rawLevelData))
         case Right(invalidJson) => BadRequest(invalidJson.msg)

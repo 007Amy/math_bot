@@ -48,7 +48,7 @@ trait SameOriginCheck {
         case None =>
           host == "localhost" &&
           (port match {
-            case 9000 | 8080 | 19001 =>
+            case 9000 | 8080 | 8081 | 19001 =>
               logger.LogInfo("SameOriginCheck", s"Testing $host == $port")
               true;
             case _ =>

@@ -7,11 +7,11 @@ import utils.Encryption._
 
 import scala.util.Random
 
-case class Problem(problem: String, encryptedProblem: String)
+case class Problem(problem: Option[String] = None, encryptedProblem: String)
 
 object Problem {
 
-  def apply(problem: String): Problem = new Problem(problem, encrypt("PROBLEM", problem))
+  def apply(problem: String): Problem = new Problem(Some(problem), encrypt("PROBLEM", problem))
 
   implicit val jsonFormat = Json.format[Problem]
 
@@ -57,8 +57,8 @@ object Problem {
     val validateP = Evaluator.evaluate(p)
 
     validateP.isSuccess match {
-      case true => this.apply(p, encrypt("PROBLEM", p))
-      case false => this.apply(s"$p is not a valid problem.", encrypt("PROBLEM", p))
+      case true => this.apply(Some(p), encrypt("PROBLEM", p))
+      case false => this.apply(Some(s"$p is not a valid problem."), encrypt("PROBLEM", p))
     }
   }
 
@@ -71,7 +71,7 @@ object Problem {
    *   - else Exception(Rational("This is why input is invalid"))
    * */
   def evalProblem(prob: Problem): Rational = {
-    val e = Evaluator.evaluate(decrypt("PROBLEM", prob.problem))
+    val e = Evaluator.evaluate(decrypt("PROBLEM", prob.encryptedProblem))
     e.isSuccess match {
       case true => e.toList.head
       case false => throw new Exception("invalid expression --> " + e.toString)

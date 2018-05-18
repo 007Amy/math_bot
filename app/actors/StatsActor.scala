@@ -1,6 +1,6 @@
 package actors
 
-import actors.LevelGenerationActor.ActorFailed
+import actors.messages.ActorFailed
 import actors.PlayerActor.UpdatePlayerToken
 import akka.actor.{Actor, ActorSystem, PoisonPill, Props}
 import akka.pattern.pipe
