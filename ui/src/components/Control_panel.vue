@@ -13,7 +13,6 @@
         <img @click="toggleSpeechBubble(this)" :src="permanentImages.instructionsRobot" class="instructions-robot" data-toggle="tooltip" title="Toggle speech bubble">
       </div>
       <speech-bubble :html="description" :showing="speechBubbleShowing"></speech-bubble>
-      <div class="instructions-filler-right"></div>
     </div>
   </div>
 </template>

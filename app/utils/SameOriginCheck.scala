@@ -48,16 +48,17 @@ trait SameOriginCheck {
         case None =>
           host == "localhost" &&
           (port match {
-            case 9000 | 8080 | 19001 => true;
+            case 9000 | 8080 | 19001 =>
+              logger.LogDebug("SameOriginCheck", s"Testing $host == $port")
+              true;
             case _ =>
               logger.LogFailure("SameOriginCheck", s"Connection failed host: $host port: $port")
               false
           })
         case Some(h) =>
           val test = host == h
-          if (test) logger.LogInfo("SameOriginCheck", s"Testing origin $host == $h")
-          else logger.LogInfo("SameOriginCheck", s"Test failed $host !- $h")
-
+          if (test) logger.LogDebug("SameOriginCheck", s"Testing origin $host == $h")
+          else logger.LogDebug("SameOriginCheck", s"Test failed $host != $h")
           test
       }
     } catch {

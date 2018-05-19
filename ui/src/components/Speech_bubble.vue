@@ -1,6 +1,6 @@
 <template>
   <div class="speech-bubble" :class="!showing ? 'hide-speech-bubble' : ''">
-    <div class="bubble" v-html="html"></div>
+    <div class="bubble-text" v-html="html"></div>
   </div>
 </template>
 

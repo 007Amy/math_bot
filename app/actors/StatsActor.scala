@@ -45,7 +45,6 @@ object StatsActor {
               else l
           )
       )
-
     } else {
 
       val updatedNextStep: StepToken =
@@ -71,7 +70,9 @@ object StatsActor {
           Some(
             stats
               .levels(currentStep.nextLevel)
-              .map(st => if (st._1 == updatedNextStep.name) st._1 -> updatedNextStep else st)
+              .map { st =>
+                if (st._1 == updatedNextStep.name) st._1 -> updatedNextStep else st
+              }
           )
         } else None
 
@@ -185,7 +186,8 @@ class StatsActor @Inject()(val system: ActorSystem, val reactiveMongoApi: Reacti
                 val resetLevels = stats.levels
                   .map { level =>
                     (level._1, level._2.map { step =>
-                      (step._1, step._2.copy(active = step._2.prevStep == "None" && step._2.prevLevel == "None"))
+                      (step._1,
+                       step._2.copy(active = step._2.prevStep == "None" && step._2.prevLevel == "None", stars = 0))
                     })
                   }
                 UpdatePlayerToken(token.copy(stats = Some(stats.copy(levels = resetLevels))))
@@ -195,7 +197,7 @@ class StatsActor @Inject()(val system: ActorSystem, val reactiveMongoApi: Reacti
         }
         .pipeTo(self)(sender)
     case doneUpdating: StatsDoneUpdating =>
-      logger.LogInfo(className, s"Stats updated successfully. token_id: ${doneUpdating.tokenId}")
+      logger.LogDebug(className, s"Stats updated successfully. token_id: ${doneUpdating.tokenId}")
       sender ! Left(doneUpdating)
     case actorFailed: ActorFailed =>
       logger.LogFailure(className, actorFailed.msg)

@@ -1,0 +1,112 @@
+.user-profile-controls {
+  flex-grow: 1;
+  display: flex;
+}
+
+.user-profile-controls-image-container {
+  display: flex;
+  align-items: flex-end;
+}
+
+.user-profile-controls-image-container > img {
+  width: 240px;
+  height: 212px;
+}
+
+.user-profile-controls-text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.mathbot-header {
+  color: #FFFFFF;
+  font-size: 60px;
+  line-height: 72px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.line {
+  font-weight: bold;
+  color: #B8E986;
+}
+
+.user-profile-controls-text-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.text {
+  opacity: 0.3;
+  color: #FFFFFF;
+  font-size: 32px;
+  font-weight: bolder;
+  line-height: 30px;
+  cursor: pointer;
+}
+
+.text:hover {
+  opacity: 1;
+}
+
+.text-filler {
+  height: 28px;
+}
+
+@media only screen and (max-width : 992px) {
+
+}
+
+@media only screen and (max-height: 411px) {
+
+}
+
+/* Small Devices */
+@media only screen and (max-width : 736px) {
+  .user-profile-controls-image-container > img {
+    height: 120px;
+    width: 144px;
+  }
+
+  .mathbot-header {
+    border: 1px solid maroon;
+    font-size: 36px;
+    line-height: 38px;
+  }
+
+  .text {
+    border: 1px solid yellowgreen;
+    font-size: 24px;
+    line-height: 26px;
+  }
+}
+
+@media only screen and (max-width: 568px) {
+  .user-profile-controls-image-container > img {
+    height: 100px;
+    width: 120px;
+  }
+
+  .mathbot-header {
+    border: 1px solid maroon;
+    font-size: 30px;
+    line-height: 34px;
+  }
+
+  .text {
+    border: 1px solid yellowgreen;
+    font-size: 20px;
+    line-height: 24px;
+  }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 360px) {
+
+}

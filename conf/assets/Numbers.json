@@ -1,0 +1,296 @@
+{
+  "level": "Numbers",
+  "prevLevel": "Counting",
+  "nextLevel": "Recursion",
+  "show": true,
+  "steps": {
+    "Number7": {
+      "level": "Numbers",
+      "step": "Number7",
+      "gridMap": [
+        "[1] |E| ($) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| (R) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
+      ],
+      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "mainMax": 1,
+      "robotOrientation": 0,
+      "stagedEnabled": true,
+      "activeEnabled": true,
+      "stagedQty": -1,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot",
+        "changeRobotDirection",
+        "pickUpItem",
+        "setItemDown"
+      ],
+      "specialParameters": ["functionRequired"],
+      "problem": "7",
+      "clearMain": false,
+      "initFocus": [],
+      "prevStep": "None",
+      "nextStep": "Number8"
+    },
+    "Number8": {
+      "level": "Numbers",
+      "step": "Number8",
+      "gridMap": [
+        "[1] |E| ($) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| (R) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
+      ],
+      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "mainMax": 1,
+      "robotOrientation": 0,
+      "stagedEnabled": true,
+      "activeEnabled": true,
+      "stagedQty": -1,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot",
+        "changeRobotDirection",
+        "pickUpItem",
+        "setItemDown"
+      ],
+      "specialParameters": ["functionRequired"],
+      "problem": "8",
+      "clearMain": false,
+      "initFocus": [],
+      "prevStep": "Number7",
+      "nextStep": "SevenAgain"
+    },
+    "SevenAgain": {
+      "level": "Numbers",
+      "step": "SevenAgain",
+      "gridMap": [
+        "[1] |E| ($) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| (R) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
+      ],
+      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "mainMax": 1,
+      "robotOrientation": 0,
+      "stagedEnabled": true,
+      "activeEnabled": true,
+      "stagedQty": -1,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot",
+        "changeRobotDirection",
+        "pickUpItem",
+        "setItemDown"
+      ],
+      "specialParameters": ["functionRequired"],
+      "problem": "7",
+      "clearMain": false,
+      "initFocus": [],
+      "prevStep": "Number8",
+      "nextStep": "Number2"
+    },
+    "Number2": {
+      "level": "Numbers",
+      "step": "Number2",
+      "gridMap": [
+        "[1] |E| ($) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| (R) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
+      ],
+      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "mainMax": 1,
+      "robotOrientation": 0,
+      "stagedEnabled": true,
+      "activeEnabled": true,
+      "stagedQty": -1,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot",
+        "changeRobotDirection",
+        "pickUpItem",
+        "setItemDown"
+      ],
+      "specialParameters": ["functionRequired"],
+      "problem": "2",
+      "clearMain": false,
+      "initFocus": [],
+      "prevStep": "SevenAgain",
+      "nextStep": "SevenAgainAgain"
+    },
+    "SevenAgainAgain": {
+      "level": "Numbers",
+      "step": "SevenAgainAgain",
+      "gridMap": [
+        "[1] |E| ($) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| (R) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
+      ],
+      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "mainMax": 1,
+      "robotOrientation": 0,
+      "stagedEnabled": true,
+      "activeEnabled": true,
+      "stagedQty": -1,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot",
+        "changeRobotDirection",
+        "pickUpItem",
+        "setItemDown"
+      ],
+      "specialParameters": ["functionRequired"],
+      "problem": "7",
+      "clearMain": false,
+      "initFocus": [],
+      "prevStep": "Number2",
+      "nextStep": "Number3"
+    },
+    "Number3": {
+      "level": "Numbers",
+      "step": "Number3",
+      "gridMap": [
+        "[1] |E| ($) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| (R) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
+      ],
+      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "mainMax": 1,
+      "robotOrientation": 0,
+      "stagedEnabled": true,
+      "activeEnabled": true,
+      "stagedQty": -1,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot",
+        "changeRobotDirection",
+        "pickUpItem",
+        "setItemDown"
+      ],
+      "specialParameters": ["functionRequired"],
+      "problem": "3",
+      "clearMain": false,
+      "initFocus": [],
+      "prevStep": "SevenAgainAgain",
+      "nextStep": "Reuse7"
+    },
+    "Reuse7": {
+      "level": "Numbers",
+      "step": "Reuse7",
+      "gridMap": [
+        "[1] |E| ($) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| (R) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
+      ],
+      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "mainMax": 1,
+      "robotOrientation": 0,
+      "stagedEnabled": true,
+      "activeEnabled": true,
+      "stagedQty": -1,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot",
+        "changeRobotDirection",
+        "pickUpItem",
+        "setItemDown"
+      ],
+      "specialParameters": ["functionRequired"],
+      "problem": "7",
+      "clearMain": false,
+      "initFocus": [],
+      "prevStep": "Number7",
+      "nextStep": "Number5"
+    },
+    "Number5": {
+      "level": "Numbers",
+      "step": "Number5",
+      "gridMap": [
+        "[1] |E| ($) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| (R) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
+      ],
+      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "mainMax": 1,
+      "robotOrientation": 0,
+      "stagedEnabled": true,
+      "activeEnabled": true,
+      "stagedQty": -1,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot",
+        "changeRobotDirection",
+        "pickUpItem",
+        "setItemDown"
+      ],
+      "specialParameters": ["functionRequired"],
+      "problem": "5",
+      "clearMain": false,
+      "initFocus": [],
+      "prevStep": "Reuse7",
+      "nextStep": "ReuseCode"
+    },
+    "ReuseCode": {
+      "level": "Numbers",
+      "step": "ReuseCode",
+      "gridMap": [
+        "[1] |E| ($) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| (R) |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
+      ],
+      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "mainMax": 1,
+      "robotOrientation": 0,
+      "stagedEnabled": true,
+      "activeEnabled": true,
+      "stagedQty": -1,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot",
+        "changeRobotDirection",
+        "pickUpItem",
+        "setItemDown"
+      ],
+      "specialParameters": ["functionRequired"],
+      "problem": "7",
+      "clearMain": false,
+      "initFocus": [],
+      "prevStep": "Number5",
+      "nextStep": "None"
+    }
+  }
+}

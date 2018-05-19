@@ -7,12 +7,7 @@
       </div>
       <splash-screen v-if="splashScreenShowing"></splash-screen>
       <arithmetic v-else-if="!splashScreenShowing && profileView === 'Arithmetic' && stats !== undefined"></arithmetic>
-      <div class="bottomButtons">
-        <img :src="permanentImages.instructionsRobot">
-        <div class="mathbotText">MathBot</div>
-        <div @click="$router.push({path: '/marketing'})" class="text" id="about">About</div>
-        <div v-if="auth !== null" @click="auth.logout()" class="text" id="signOut">Sign Out</div>
-      </div>
+      <user-profile-controls :auth="auth" :permanent-images="permanentImages"></user-profile-controls>
     </div>
   </div>
 </template>
@@ -21,6 +16,7 @@
 import SplashScreen from './Splash_screen'
 import Arithmetic from './Arithmetic'
 import AuthService from '../services/AuthService'
+import UserProfileControls from './User_profile_controls'
 
 export default {
   mounted () {
@@ -67,7 +63,8 @@ export default {
   },
   components: {
     Arithmetic,
-    SplashScreen
+    SplashScreen,
+    UserProfileControls
   }
 }
 </script>

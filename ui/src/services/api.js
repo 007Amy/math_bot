@@ -44,7 +44,7 @@ export default {
     Vue.http.post('/api/token', JSON.stringify({token_id: tokenId}))
       .then(res => res.body)
       .then(token => {
-        // console.log('GET TOKEN ~ ', token);
+        // console.log('GET TOKEN ~ ', token)
         this.openCompilerWs({tokenId: token.token_id})
         cb(token)
       })

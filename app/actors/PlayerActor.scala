@@ -116,11 +116,18 @@ object PlayerActor {
                 } else l
             }
             .map { l =>
-              l._1 -> l._2.map(
-                s =>
-                  if (s._2.prevLevel == "None" && s._2.prevStep == "None") s._1 -> s._2.copy(active = true)
-                  else s
-              )
+              l._1 -> l._2.map { s =>
+                val prevLevel = if (userStats.levels.exists(l => l._1 == s._2.prevLevel)) {
+                  Some(userStats.levels(s._2.prevLevel))
+                } else None
+
+                prevLevel match {
+                  case Some(level) =>
+                    val activate = level.filter(st => st._2.nextStep == "None").map(st => st._2.stars > 0).head
+                    s._1 -> s._2.copy(active = activate)
+                  case None => s
+                }
+              }
             }
         }
       )
@@ -227,7 +234,7 @@ class PlayerActor()(system: ActorSystem,
               )
           ).map { AddNamesToCommands.apply }
             .pipeTo(self)(sender)
-          logger.LogInfo(className, "Adding default tokens")
+          logger.LogDebug(className, "Adding default tokens")
         case None =>
           Future {}
             .map { _ =>
@@ -388,10 +395,10 @@ class PlayerActor()(system: ActorSystem,
       }
 
     case updatedLambdasToken: PreparedLambdasToken =>
-      logger.LogInfo(className, "PreparedLambdasToken generated.")
+      logger.LogDebug(className, "PreparedLambdasToken generated.")
       sender ! Left(updatedLambdasToken)
     case preparedToken: PreparedPlayerToken =>
-      logger.LogInfo(className, "PreparedPlayerToken generated.")
+      logger.LogDebug(className, "PreparedPlayerToken generated.")
       sender ! Left(ResponsePlayerToken(preparedToken.playerToken))
     case actorFailed: ActorFailed =>
       logger.LogFailure(className, actorFailed.msg)

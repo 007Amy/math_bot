@@ -1,40 +1,15 @@
 <template>
   <div class="arithmetic">
-    <div class="space">
-      <img
-        v-for="(level, index) in levels"
-        class="planet"
-        :key="level.name + '-planet'"
-        :id="level.name + '-planet'"
-        :class="'planet' + (index + 1)"
-        :src="isLevelActive(level) ? selectedLevel === level.name ? permanentImages.planets['selected' + (index + 1)] : permanentImages.planets['active' + (index + 1)] : permanentImages.planets['inactive' + (index + 1)]"
-        @click="selectLevel(level.name, firstStep)"
-      >
-    </div>
-
-    <div class="blue">
-      <div class="level"> {{ parseCamelCase(level) }}</div>
-      <div class="info">
-        <div
-          v-for="(step, value) in steps"
-          class="step-info"
-          :class="step.active ? '' : 'step-disabled'"
-          @click="step.active ? goToRobot(level, step.name) : ''"
-          :key="step + ':' + value"
-        >
-          <div class="step-info-container">
-            <div class="step-text">{{ parseCamelCase(step.name) }}</div>
-            <img class="step-image" :src="step.active ? permanentImages.stars[step.stars] : permanentImages.lock">
-          </div>
-        </div>
-      </div>
-    </div>
+    <space :levels="levels" :is-level-active="isLevelActive" :permanent-images="permanentImages" :select-level="selectLevel" :selected-level="selectedLevel" :first-step="firstStep"></space>
+    <steps :level="level" :steps="steps" :permanent-images="permanentImages" :go-to-robot="goToRobot"></steps>
   </div>
 </template>
 
 <script>
 import api from '../services/api'
 import utils from '../services/utils'
+import Steps from './Steps'
+import Space from './Space'
 
 export default {
   mounted () {
@@ -112,6 +87,10 @@ export default {
           }})
       })
     }
+  },
+  components: {
+    Steps,
+    Space
   }
 }
 </script>
