@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   cmdImages: {
     drop_item: 'https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345223/robotCommands/setDown.png',
     pick_up: 'https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345227/robotCommands/pickup.png',
@@ -141,6 +141,12 @@ export default {
     plusButton: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522343465/buttons/plusButton.png',
     emptyButton: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522342824/buttons/Green_Circle.png',
     trashButton: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522342913/buttons/trashButton.png'
+  },
+  robotImages: {
+    robotUp: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437134/robotDirections/RobotUp_nbpcu2.png',
+    robotRight: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437145/robotDirections/PlayerRight_n39yyp.png',
+    robotDown: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437155/robotDirections/PlayerDown_pjawwx.png',
+    robotLeft: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437164/robotDirections/RobotLeft_uf8xym.png'
   },
   floor: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522346538/misc/window.png',
   wall: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522346541/misc/windowPane.png',

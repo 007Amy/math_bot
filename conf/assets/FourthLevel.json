@@ -2,7 +2,7 @@
   "level": "FourthLevel",
   "prevLevel": "ThirdLevel",
   "nextLevel": "FifthLevel",
-  "show": true,
+  "show": false,
   "steps": {
     "Three": {
       "level": "FourthLevel",

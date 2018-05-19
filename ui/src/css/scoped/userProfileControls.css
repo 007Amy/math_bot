@@ -14,7 +14,6 @@
 }
 
 .user-profile-controls-text-container {
-  border: 1px solid floralwhite;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;

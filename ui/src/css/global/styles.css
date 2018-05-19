@@ -42,7 +42,6 @@
   }
 
  .dragging > .command-name, .function-drop > .sortable-chosen > .command-name {
-   /*display: none;*/
    z-index: 1000000!important;
  }
 
@@ -106,20 +105,14 @@
  }
 
  ::-webkit-scrollbar {
-   width: 20px;
-   z-index: 1002;
+   width: 12px;
  }
 
  ::-webkit-scrollbar-track {
-   border-radius: 10px;
-   background-clip: padding-box;
-   background-color: rgba(0, 0, 0, 0);
+   display: none;
  }
 
  ::-webkit-scrollbar-thumb {
    border-radius: 10px;
-   background-clip: padding-box;
-   border: 1px solid rgba(0, 0, 0, 0);
-   -webkit-box-shadow: inset 0px 11px 0px rgba(0,0,0,1);
-   background-color: rgba(255,255,255,0.4);
+   border: 1px solid white;
  }

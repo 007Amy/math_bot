@@ -13,7 +13,7 @@
 #placeholder-container {
   display: flex;
   position: relative;
-  left: 0.5em;
+  left: 0.32em;
   border-radius: 2px;
 }
 
@@ -30,8 +30,8 @@
 }
 
 .placeholder {
-  height: 78px;
-  width: 72px;
+  height: 82px;
+  width: 78px;
 }
 
 .single-placeholder {

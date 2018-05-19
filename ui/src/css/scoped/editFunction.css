@@ -17,6 +17,7 @@
   position: relative;
   overflow: hidden;
   padding: 10px 20px 10px 20px;
+  height: 120px;
 }
 
 .edit-function-drop > * {

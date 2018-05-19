@@ -31,7 +31,7 @@
 }
 
 ::-webkit-scrollbar {
-  display: none;
+  /*display: none;*/
 }
 
 /* Medium Devices, Desktops */

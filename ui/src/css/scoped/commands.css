@@ -92,11 +92,7 @@
 }
 
 .dragging, .ghost, .chosen {
-  height: 70px;
-  width: 70px;
-  background-size: contain;
-  background: no-repeat center;
-  float: left;
+
 }
 
 .command-control-button-group {

@@ -34,7 +34,9 @@ export default {
   computed: {
     planetName () {
       const planets = {
-        BasicProgramming: 'Planet 1'
+        BasicProgramming: 'Planet 1',
+        Counting: 'Planet 2',
+        Numbers: 'Planet 3'
       }
       return planets[this.level]
     }
