@@ -1,11 +1,13 @@
 <template>
-  <div id="main-placeholder" v-if="stepData.mainMax !== 10000">
-    <div
-      v-for="(_, ind) in placeholders"
-      :key="'placeholder/' + ind"
-      class="placeholder placeholder-short-background"
-      :class="placeholders.length === 1 ? 'single-placeholder' : ''"
-    ></div>
+  <div class="main-placeholder-container" v-if="stepData.mainMax !== 10000">
+    <div id="main-placeholder">
+      <div
+        v-for="(_, ind) in placeholders"
+        :key="'placeholder/' + ind"
+        class="placeholder placeholder-short-background"
+        :class="placeholders.length === 1 ? 'single-placeholder' : ''"
+      ></div>
+    </div>
   </div>
 </template>
 
@@ -46,7 +48,7 @@ export default {
     placeHolderWidth () {
       const $functionDrop = $('.function-drop-drop-zone')
       const dropWidth = $functionDrop.width()
-      $('#main-placeholder').css({width: `${dropWidth}px`})
+      $('.main-placeholder-container').css({width: `${dropWidth}px`})
     },
     placeholderFull ($placeholder) {
       const messageBuilder = {
