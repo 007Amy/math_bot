@@ -17,7 +17,7 @@
   position: relative;
   overflow: hidden;
   padding: 10px 20px 10px 20px;
-  height: 120px;
+  height: 130px;
 }
 
 .edit-function-drop > * {
@@ -111,6 +111,7 @@
 
   .edit-function-content {
     padding: 0;
+    height: 60px;
   }
 
   .close-edit-function {
@@ -145,6 +146,7 @@
 
   .edit-function-content {
     padding: 0;
+    height: 60px;
   }
 
   .close-edit-function {
@@ -159,5 +161,44 @@
 
 /* Custom, iPhone Retina */
 @media only screen and (max-width : 320px) {
+
+}
+
+/* iPad */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+  .displayed-func {
+    height: 70px;
+    width: 70px;
+  }
+
+  .func-param-form {
+    left: 1px;
+    right: 0;
+  }
+  .func-param-form > * {
+    margin-right: 3px;
+  }
+
+  .func-name {
+    width: auto;
+    font-size: 18px;
+  }
+
+  .edit-function-data {
+    margin: 0;
+  }
+
+  .edit-function-content {
+    padding: 10px 20px 10px 20px;
+    height: 130px;
+  }
+
+  .close-edit-function {
+    bottom: 20px;
+    right: -20px;
+  }
+}
+
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
 
 }

@@ -1,21 +1,20 @@
 <template>
-  <div class="main-placeholder" v-if="stepData.mainMax !== 10000">
-    <div id="placeholder-container" class="placeholder-short-background">
-      <div
-        v-for="(_, ind) in placeholders"
-        :key="'placeholder/' + ind"
-        class="placeholder"
-        :class="placeholders.length === 1 ? 'single-placeholder' : ''"
-      ></div>
-    </div>
+  <div id="main-placeholder" v-if="stepData.mainMax !== 10000">
+    <div
+      v-for="(_, ind) in placeholders"
+      :key="'placeholder/' + ind"
+      class="placeholder placeholder-short-background"
+      :class="placeholders.length === 1 ? 'single-placeholder' : ''"
+    ></div>
   </div>
 </template>
 
 <script>
-import FunctionBox from './Function_box'
-
 export default {
   name: 'main_placeholder',
+  mounted () {
+    this.placeHolderWidth()
+  },
   computed: {
     mainFunctionFunc () {
       const mainToken = this.$store.getters.getMainFunction
@@ -33,7 +32,7 @@ export default {
   },
   watch: {
     mainFull (bool) {
-      const $placeHolder = $('#placeholder-container')
+      const $placeHolder = $('.placeholder')
       if (bool) this.placeholderFull($placeHolder)
       else this.placeholderShort($placeHolder)
     }
@@ -44,6 +43,11 @@ export default {
     }
   },
   methods: {
+    placeHolderWidth () {
+      const $functionDrop = $('.function-drop-drop-zone')
+      const dropWidth = $functionDrop.width()
+      $('#main-placeholder').css({width: `${dropWidth}px`})
+    },
     placeholderFull ($placeholder) {
       const messageBuilder = {
         type: 'success',
@@ -71,9 +75,6 @@ export default {
       $placeholder
         .removeClass('placeholder-full-background')
     }
-  },
-  components: {
-    FunctionBox
   }
 }
 </script>

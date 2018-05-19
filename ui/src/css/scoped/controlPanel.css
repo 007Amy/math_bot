@@ -39,13 +39,6 @@
   transition: all 0.4s ease-in;
 }
 
-/* 13" screen */
-@media only screen and (max-width : 1280px) {
-  .instructions-filler-left {
-    /*flex-grow: 1.4;*/
-  }
-}
-
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
   .instructions-robot-container {
@@ -94,11 +87,8 @@
 
 /* iPad */
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
-  .instructions {
-  }
-
-  .instructions-filler-left {
-    width: 100px;
+  .instructions-robot-container {
+    height: 150px;
   }
 
   .return-to-profile {
@@ -106,7 +96,7 @@
   }
 
   .instructions-filler-left {
-    width: 100px;
+    width: 75px;
   }
 }
 
@@ -116,6 +106,6 @@
   }
 
   .instructions-filler-left {
-    width: 100px;
+    width: 800px;
   }
 }

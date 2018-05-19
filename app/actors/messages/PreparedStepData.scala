@@ -57,7 +57,7 @@ object PreparedStepData {
   )
 
   def createInitFocus(initFocus: List[String]): List[String] = initFocus.map {
-    case a if a == "main-placeholder" => "placeholder-container"
+    case a if a == "main-placeholder" => a
     case a if a == "staged" => "open-staged"
     case a => createdIdGen(a)
   }

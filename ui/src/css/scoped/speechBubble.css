@@ -61,16 +61,6 @@
   margin-bottom: -26px;
 }
 
-/* 13" screen */
-@media only screen and (max-width : 1280px) {
-  .speech-bubble {
-    height: 70px;
-    width: 400px;
-    margin-left: -2px;
-  }
-}
-
-
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
   .speech-bubble {
@@ -150,8 +140,8 @@
 /* iPad */
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
   .speech-bubble {
-    height: 70px;
-    width: 400px;
+    height: 100px;
+    width: 450px;
     margin-left: -2px;
   }
 
@@ -188,4 +178,12 @@
     margin-bottom: -26px;
   }
 
+}
+
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
+  .speech-bubble {
+    height: 100px;
+    width: 400px;
+    margin-left: -2px;
+  }
 }

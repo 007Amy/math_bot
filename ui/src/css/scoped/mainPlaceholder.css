@@ -1,20 +1,8 @@
-.main-placeholder {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
+#main-placeholder {
   display: flex;
   justify-content: center;
-  align-items: center;
-}
-
-#placeholder-container {
-  display: flex;
   position: relative;
-  left: 0.32em;
-  border-radius: 2px;
+  left: 0.3em;
 }
 
 .placeholder-short-background {
@@ -38,42 +26,25 @@
   width: 78px;
 }
 
-/* 13" screen */
-@media only screen and (max-width : 1280px) {
-  #placeholder-container {
-    left: 0.25em;
-  }
-
-  .placeholder {
-    height: 64px;
-    width: 60px;
-  }
-
-  .single-placeholder {
-    height: 64px;
-    width: 64px;
-  }
-}
-
 /* Large Phones, landscape*/
 @media only screen and (max-width : 992px) {
-  #placeholder-container {
-    left: 0.05em;
+  #main-placeholder {
+    left: 0.2em;
   }
 
   .placeholder {
-    height: 44px;
-    width: 41px;
+    height: 36px;
+    width: 29px;
   }
 
   .single-placeholder {
-    width: 44px;
+    width: 34px;
   }
 }
 
 /* Small Devices */
 @media only screen and (max-width : 667px) {
-  #placeholder-container {
+  #main-placeholder {
     left: 0.15em;
   }
 
@@ -98,32 +69,31 @@
 
 /* iPad */
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
-  #placeholder-container {
-    left: 0.23em;
+  #main-placeholder {
+    left: 0.3em;
   }
 
   .placeholder {
-    height: 76px;
-    width: 72px;
+    height: 82px;
+    width: 78px;
   }
 
   .single-placeholder {
-    height: 76px;
-    width: 76px;
+    width: 78px;
   }
 }
 
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
-  #placeholder-container {
+  #main-placeholder {
     left: 0.2em;
   }
 
   .placeholder {
-    height: 76px;
-    width: 72px;
+    height: 82px;
+    width: 78px;
   }
 
   .single-placeholder {
-    width: 44px;
+    width: 78px;
   }
 }

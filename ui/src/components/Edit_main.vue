@@ -10,10 +10,9 @@
       :origin="'editMain'"
     ></function-drop>
 
-    <main-placeholder></main-placeholder>
-
     <div class="bar noDrag" v-if="Object.keys(robot).length">
-      <img class="x noDrag dialog-button" :src="permanentImages.buttons.trashButton"  @click="wipeFunction" data-toggle="tooltip" title="Clear main" />
+      <main-placeholder></main-placeholder>
+      <img class="trash noDrag dialog-button" :src="permanentImages.buttons.trashButton"  @click="wipeFunction" data-toggle="tooltip" title="Clear main" />
       <div class="speed dialog-button" @click="adjustSpeed" data-toggle="tooltip" title="Adjust speed"> {{ robotSpeedDisplay }}</div>
       <img class="play noDrag dialog-button" v-if="robot.state === 'home' || robot.state === 'paused'" :src="permanentImages.buttons.playButton" @click="compileMain" data-toggle="tooltip" title="Run program" />
       <img v-else class="play noDrag dialog-button" :src="permanentImages.buttons.pauseButton" @click="pause" data-toggle="tooltip" title="Pause program" />
