@@ -134,7 +134,7 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
 
                   Future { preparedStepData }
                     .map { psd =>
-                      logger.LogInfo(className, "Successfully created GridMap")
+                      logger.LogDebug(className, "Successfully created GridMap")
                       GridMap(
                         gMap = psd.gridMap,
                         robotOrientation = rawStepData.robotOrientation.toString,
@@ -300,13 +300,13 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
     case gridMap: GridMap =>
       sender ! gridMap
     case preparedStepData: PreparedStepData =>
-      logger.LogInfo(className, "PreparedStepData generated.")
+      logger.LogDebug(className, "PreparedStepData generated.")
       sender ! Left(preparedStepData)
     case rawLevelData: RawLevelData =>
-      logger.LogInfo(className, "RawLevelData generated.")
+      logger.LogDebug(className, "RawLevelData generated.")
       sender ! Left(rawLevelData)
     case rawStepData: RawStepData =>
-      logger.LogInfo(className, "RawStepData generated.")
+      logger.LogDebug(className, "RawStepData generated.")
       sender ! rawStepData
     case actorFailed: ActorFailed =>
       logger.LogFailure(className, s"ActorFailed generated. msg:${actorFailed.msg}")

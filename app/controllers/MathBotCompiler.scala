@@ -255,13 +255,13 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
       }
 
     case socketResponse: SocketResponse =>
-      logger.LogResponse(className, "Compiler responded.")
+      logger.LogInfo(className, "Compiler responded.")
       out ! socketResponse.response
 
     case socketRequest: SocketRequest =>
       val killProgram =
         socketRequest.halt.map(v => Future(Option.empty[ProgramState]))
-      logger.LogInfo(className, "Compiler starting.")
+      logger.LogDebug(className, "Compiler starting.")
       val newprogram =
         socketRequest.program
           .map { json =>
@@ -357,7 +357,7 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
       f.flatMap(v => v) pipeTo sender()
 
     case Left(statsDoneUpdating: StatsDoneUpdating) =>
-      logger.LogResponse(className, s"Stats updated successfully. token_id:$tokenId")
+      logger.LogInfo(className, s"Stats updated successfully. token_id:$tokenId")
 
     case Right(invalidJson: ActorFailed) =>
       logger.LogFailure(className, invalidJson.msg)
