@@ -7,27 +7,32 @@
   justify-content: center;
   overflow: visible;
   width: 100%;
-  padding: 20px;
+  height: 120px;
+  /*border: 1px solid goldenrod;*/
 }
 
 .edit-main .function-drop {
-  width: 75%!important;
+  width: 65%!important;
+  /*border: 1px solid teal;*/
 }
 
 .bar {
   position: absolute;
   left: 48px;
   right: 48px;
-  top: 49.5%;
+  top: 39.5%;
   height: 2px;
   background-color: #B8E986;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .red-bar {
   background-color: #FF0000;
 }
 
-.button {
+.dialog-button {
   z-index: 2010;
   display: flex;
   cursor: pointer;
@@ -47,6 +52,10 @@
 
 .stop {
   right: -58px;
+}
+
+.trash {
+  left: 0;
 }
 
 .speed {
@@ -69,6 +78,7 @@
 @media only screen and (max-width : 992px) {
   .edit-main {
     padding: 0;
+    height: 55px;
   }
 
   .function-drop {
@@ -76,13 +86,12 @@
     width: 75%;
   }
 
-  .button {
-    width: 24px;
-    height: 24px;
-    top: -12px;
+  .dialog-button {
+    top: -9px;
   }
 
   .bar {
+    top: 30%;
     left: -10px;
     right: -10px;
   }
@@ -112,6 +121,7 @@
   .edit-main {
     padding: 0;
     align-items: center;
+    height: 60px;
   }
 
   .function-drop {
@@ -119,13 +129,12 @@
     width: 75%;
   }
 
-  .button {
-    width: 24px;
-    height: 24px;
-    top: -12px;
+  .dialog-button {
+    top: -9px;
   }
 
   .bar {
+    top: 30%;
     left: -10px;
     right: -10px;
   }
@@ -163,3 +172,56 @@
 
 }
 
+/* iPad */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+  .edit-main {
+    height: 105px;
+  }
+
+  .dialog-button {
+    top: -15px;
+  }
+
+  .bar {
+    top: 39%;
+    left: -10px;
+    right: -10px;
+  }
+
+  .stop {
+    display: none;
+  }
+
+  .speed {
+    right: 35px;
+    font-size: 12px;
+  }
+}
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
+  .edit-main {
+    padding: 0;
+  }
+
+  .function-drop {
+    height: 60px;
+    width: 75%;
+  }
+
+  .dialog-button {
+    top: -15px;
+  }
+
+  .stop {
+    display: none;
+  }
+
+  .speed {
+    right: 35px;
+    font-size: 12px;
+  }
+
+  .ghost, .sortable-chosen, .dragging {
+    width: 40px;
+    height: 40px;
+  }
+}

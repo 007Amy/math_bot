@@ -1,7 +1,7 @@
 {
   "level": "BasicProgramming",
   "prevLevel": "None",
-  "nextLevel": "SecondLevel",
+  "nextLevel": "Counting",
   "show": true,
   "steps": {
     "WalkOne": {

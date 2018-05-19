@@ -1,0 +1,40 @@
+{
+  "level": "Recursion",
+  "prevLevel": "Numbers",
+  "nextLevel": "None",
+  "show": false,
+  "steps": {
+    "RecurForward": {
+      "level": "Recursion",
+      "step": "RecurForward",
+      "gridMap": [
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "(R) |E| |E| [E] |E| |E| |E| |E| |E| ($)",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
+        "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
+      ],
+      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "mainMax": -1,
+      "robotOrientation": 90,
+      "stagedEnabled": true,
+      "activeEnabled": true,
+      "stagedQty": -1,
+      "assignedStaged": {},
+      "activeQty": -1,
+      "preBuiltActive": {},
+      "cmdsAvailable": [
+        "moveRobotForwardOneSpot",
+        "changeRobotDirection",
+        "pickUpItem",
+        "setItemDown"
+      ],
+      "specialParameters": [],
+      "problem": "0",
+      "clearMain": false,
+      "initFocus": [],
+      "prevStep": "None",
+      "nextStep": "None"
+    }
+  }
+}

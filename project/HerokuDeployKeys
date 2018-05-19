@@ -1,0 +1,17 @@
+object HerokuDeploy {
+
+  val CONFIG_VARS = Map(
+    "AUTH0_DOMAIN" -> "FILL_ME_IN (or not)",
+    "AUTH0_ID" -> "FILL_ME_IN (or not)",
+    "MONGODB_URI" -> "FILL_ME_IN (or not)",
+    "CRYPTO_SALT" -> "FILL_ME_IN (or not)",
+    "PLAY_SECRET" -> "FILL_ME_IN (or not)",
+    "DEPLOY_HOST" -> "FILL_ME_IN (or not)"
+  )
+
+  val NAME = "FILL_ME_IN (or not)"
+
+  val PROCESS_TYPES = Map(
+    "web" -> "target/universal/stage/bin/math_bot -Dhttp.port=$PORT"
+  )
+}

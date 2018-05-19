@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   cmdImages: {
     drop_item: 'https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345223/robotCommands/setDown.png',
     pick_up: 'https://res.cloudinary.com/deqjemwcu/image/upload/o_80/v1522345227/robotCommands/pickup.png',
@@ -114,23 +114,23 @@ export default {
     0: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522348066/stars/stars-0_jlw3en.png'
   },
   planets: {
-    selected1: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344146/planets/selectedPlanet1.png',
-    selected2: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344140/planets/selectedPlanet2.png',
+    selected1: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344124/planets/selectedPlanet4.png',
+    selected2: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344140/planets/selectedPlanet5.png',
     selected3: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344146/planets/selectedPlanet3.png',
-    selected4: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344124/planets/selectedPlanet4.png',
-    selected5: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344140/planets/selectedPlanet5.png',
+    selected4: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344146/planets/selectedPlanet1.png',
+    selected5: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344140/planets/selectedPlanet2.png',
     selected6: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344128/planets/selectedPlanet6.png',
-    active1: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344135/planets/activePlanet1.png',
-    active2: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344131/planets/activePlanet2.png',
+    active1: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344125/planets/activePlanet4.png',
+    active2: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344131/planets/activePlanet5.png',
     active3: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344122/planets/activePlanet3.png',
-    active4: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344125/planets/activePlanet4.png',
-    active5: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344131/planets/activePlanet5.png',
+    active4: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344131/planets/activePlanet2.png',
+    active5: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344135/planets/activePlanet1.png',
     active6: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344129/planets/activePlanet6.png',
-    inactive1: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344144/planets/inactivePlanet1.png',
-    inactive2: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344131/planets/inactivePlanet2.png',
+    inactive1: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344142/planets/inactivePlanet4.png',
+    inactive2: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344146/planets/inactivePlanet5.png',
     inactive3: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344145/planets/inactivePlanet3.png',
-    inactive4: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344142/planets/inactivePlanet4.png',
-    inactive5: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344146/planets/inactivePlanet5.png',
+    inactive4: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344131/planets/inactivePlanet2.png',
+    inactive5: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344144/planets/inactivePlanet1.png',
     inactive6: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522344135/planets/inactivePlanet6.png'
   },
   buttons: {
@@ -141,6 +141,12 @@ export default {
     plusButton: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522343465/buttons/plusButton.png',
     emptyButton: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522342824/buttons/Green_Circle.png',
     trashButton: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522342913/buttons/trashButton.png'
+  },
+  robotImages: {
+    robotUp: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437134/robotDirections/RobotUp_nbpcu2.png',
+    robotRight: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437145/robotDirections/PlayerRight_n39yyp.png',
+    robotDown: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437155/robotDirections/PlayerDown_pjawwx.png',
+    robotLeft: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437164/robotDirections/RobotLeft_uf8xym.png'
   },
   floor: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522346538/misc/window.png',
   wall: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522346541/misc/windowPane.png',

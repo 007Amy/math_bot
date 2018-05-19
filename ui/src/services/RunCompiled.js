@@ -137,7 +137,7 @@ class RunCompiled {
           this.$store.dispatch('deactivateRobot')
           return
         }
-        setTimeout(() => this.processFrames(), this.$store.getters.getRobotSpeed)
+        setTimeout(() => this.processFrames(), this.robot.getSpeed().speed)
       })
   }
 }

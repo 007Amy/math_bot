@@ -12,6 +12,11 @@
   transition: opacity 1s linear;
 }
 
+.bubble-text {
+  height: 100%;
+  width: 100%;
+}
+
 .hide-speech-bubble {
   visibility: hidden;
   opacity: 0;
@@ -56,43 +61,12 @@
   margin-bottom: -26px;
 }
 
-/* 13" screen */
-@media only screen and (max-width : 1280px) {
-  .speech-bubble {
-    height: 70px;
-    width: 400px;
-    margin-left: -2px;
-  }
-
-  /*.speech-bubble:before {*/
-    /*border-top: 20px solid #FFFF;*/
-    /*border-left: 5px solid transparent;*/
-    /*border-right: 5px solid transparent;*/
-
-    /*transform: rotate(70deg);*/
-
-    /*margin-left: -13px;*/
-    /*margin-bottom: 0;*/
-  /*}*/
-
-  /*.speech-bubble:after {*/
-    /*border-top: 20px solid #E8E8E8;*/
-    /*border-left: 5px solid transparent;*/
-    /*border-right: 5px solid transparent;*/
-
-    /*transform: rotate(70deg);*/
-
-    /*margin-left: -11px;*/
-    /*margin-bottom: 1px;*/
-  /*}*/
-}
-
-
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
   .speech-bubble {
-    height: 45px;
-    width: 200px;
+    top: 15px;
+    height: 55px;
+    width: 240px;
     margin-left: -2px;
   }
 
@@ -125,6 +99,7 @@
     height: 45px;
     width: 200px;
     margin-left: -2px;
+    top: 5px;
   }
 
   .speech-bubble:before {
@@ -153,36 +128,62 @@
 /* Extra Small Devices, Phones */
 @media only screen and (max-width : 480px) {
   .speech-bubble {
-    height: 50px;
-    width: 200px;
-    margin-top: -15px;
-    margin-left: -10px;
-  }
-
-  .speech-bubble:before {
-    border-top: 20px solid #FFFF;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-
-    transform: rotate(50deg);
-
-    margin-left: -10px;
-    margin-bottom: -14px;
-  }
-
-  .speech-bubble:after {
-    border-top: 20px solid #E8E8E8;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-
-    transform: rotate(50deg);
-
-    margin-left: -9px;
-    margin-bottom: -13px;
+    top: 0;
   }
 }
 
 /* Custom, iPhone 5 Retina */
 @media only screen and (max-width : 320px) {
 
+}
+
+/* iPad */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+  .speech-bubble {
+    height: 100px;
+    width: 450px;
+    margin-left: -2px;
+  }
+
+  .speech-bubble:before, .speech-bubble:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .speech-bubble:before {
+    border-top: 40px solid #FFFF;
+
+    transform: rotate(50deg);
+
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+
+    margin-left: -20px;
+    margin-bottom: -27px;
+  }
+
+  .speech-bubble:after {
+    border-top: 40px solid #E8E8E8;
+
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+
+    transform: rotate(50deg);
+
+    margin-left: -18px;
+    margin-bottom: -26px;
+  }
+
+}
+
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
+  .speech-bubble {
+    height: 100px;
+    width: 400px;
+    margin-left: -2px;
+  }
 }

@@ -10,13 +10,12 @@
       :origin="'editMain'"
     ></function-drop>
 
-    <main-placeholder></main-placeholder>
-
-    <div class="bar noDrag">
-      <img class="x button noDrag dialog-button" :src="permanentImages.buttons.trashButton"  @click="wipeFunction" data-toggle="tooltip" title="Clear main" />
-      <div class="speed button dialog-button" @click="goFast" data-toggle="tooltip" title="Adjust speed"> {{ speeds[currentSpeed].display }}</div>
-      <img v-if="robot.state === 'home' || robot.state === 'paused'" class="play button noDrag dialog-button" :src="permanentImages.buttons.playButton" @click="compileMain" data-toggle="tooltip" title="Run program" />
-      <img v-else class="play button noDrag dialog-button" :src="permanentImages.buttons.pauseButton" @click="pause" data-toggle="tooltip" title="Pause program" />
+    <div class="bar noDrag" v-if="Object.keys(robot).length">
+      <main-placeholder></main-placeholder>
+      <img class="trash noDrag dialog-button" :src="permanentImages.buttons.trashButton"  @click="wipeFunction" data-toggle="tooltip" title="Clear main" />
+      <div class="speed dialog-button" @click="adjustSpeed" data-toggle="tooltip" title="Adjust speed"> {{ robotSpeedDisplay }}</div>
+      <img class="play noDrag dialog-button" v-if="robot.state === 'home' || robot.state === 'paused'" :src="permanentImages.buttons.playButton" @click="compileMain" data-toggle="tooltip" title="Run program" />
+      <img v-else class="play noDrag dialog-button" :src="permanentImages.buttons.pauseButton" @click="pause" data-toggle="tooltip" title="Pause program" />
       <img v-if="robot.state === 'running'" class="stop button noDrag dialog-button" :src="permanentImages.buttons.stopButton" @click="stop" data-toggle="tooltip" title="Stop program" />
     </div>
   </div>
@@ -71,22 +70,16 @@ export default {
       return this.$store.getters.getWipeFunctionShowing
     },
     robot () {
-      // if (this.$store.getters.getRobot) {
-      //   this.buttonSize = $('.commands > button').width()
-      // }
       return this.$store.getters.getRobot
+    },
+    robotSpeedDisplay () {
+      return this.robot.getSpeed().display
     },
     stepData () {
       return this.$store.getters.getCurrentStepData
     },
     currentColor () {
       return this.$store.getters.getColorSelected
-    },
-    speed () {
-      return this.$store.getters.getRobotSpeed
-    },
-    speedImages () {
-      return { 300: this.permanentImages.buttons.turtleButton, 100: this.permanentImages.buttons.rabbitButton, 800: this.permanentImages.buttons.snailButton }
     },
     colors () {
       return this.$store.getters.getColors
@@ -107,22 +100,7 @@ export default {
         chosenClass: 'chosen',
         filter: '.noDrag',
         dragClass: 'dragging'
-      },
-      speeds: {
-        800: {
-          display: '.5x',
-          next: 300
-        },
-        300: {
-          display: '1x',
-          next: 100
-        },
-        100: {
-          display: '2x',
-          next: 800
-        }
-      },
-      currentSpeed: this.$store.getters.getRobotSpeed
+      }
     }
   },
   methods: {
@@ -190,10 +168,6 @@ export default {
         utils.toggleFunctionEdit(this, func, ind, 'editMain')
       }
     },
-    goFast () {
-      this.currentSpeed = this.speeds[this.currentSpeed].next
-      this.$store.dispatch('changeRobotSpeed', this.currentSpeed)
-    },
     uID () {
       return uid(7)
     },
@@ -203,6 +177,9 @@ export default {
     wipeFunction () {
       this.$store.dispatch('clearCurrentFunction')
       buildUtils.updateFunctionsOnChange({context: this, currentFunction: buildUtils.currentFunc(this), addedFunction: null, newIndex: null, override: true})
+    },
+    adjustSpeed () {
+      this.$store.dispatch('changeRobotSpeed')
     },
     moving () {
       this.$store.dispatch('updateTrashVisible', true)
