@@ -56,10 +56,17 @@ object PreparedStepData {
     stepControl = new StepControl(rawStepData, prepareLambdas(playerToken, rawStepData))
   )
 
-  def createInitFocus(initFocus: List[String]): List[String] = initFocus.map {
-    case a if a == "main-placeholder" => a
-    case a if a == "staged" => "open-staged"
-    case a => createdIdGen(a)
+  import model.DefaultCommands._
+
+  def createInitFocus(initFocus: List[String]): List[String] = initFocus.map { a =>
+    cmds.find(_.name.getOrElse("") == a) match {
+      case Some(token) => token.created_id
+      case None =>
+        a match {
+          case a if a == "open-staged" => "open-staged"
+          case a => createdIdGen(a)
+        }
+    }
   }
 
   def problemGen(rawStepData: RawStepData): Problem = makeProblem(rawStepData.problem)

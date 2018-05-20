@@ -1,5 +1,5 @@
 <template>
-  <div :id="func.created_id" class="function-box" @click="method ? method($event, func, ind) : ''">
+  <div :id="id" class="function-box" @click="method ? method($event, func, ind) : ''">
     <puzzle-pieces
       :piece-to-show="pieceToShow"
       :background-img="funcAndcmdImages[func.image]"
@@ -11,12 +11,16 @@
 
 <script>
 import { _ } from 'underscore'
+import uId from 'uid'
 
 import PuzzlePieces from './Puzzle_pieces'
 
 export default {
   name: 'function_box',
   computed: {
+    id () {
+      return this.origin === 'functions' ? this.func.created_id : uId(7)
+    },
     showName () {
       return this.origin === 'functions'
     },
