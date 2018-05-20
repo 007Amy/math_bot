@@ -21,24 +21,3 @@
   animation: spin1 2s infinite linear;
   display: block;
 }
-
-@-webkit-keyframes spin1 {
-  0% { -webkit-transform: rotate(360deg);}
-  100% { -webkit-transform: rotate(0deg);}
-}
-@-moz-keyframes spin1 {
-  0% { -webkit-transform: rotate(360deg);}
-  100% { -webkit-transform: rotate(0deg);}
-}
-@-o-keyframes spin1 {
-  0% { -webkit-transform: rotate(360deg);}
-  100% { -webkit-transform: rotate(0deg);}
-}
-@-ms-keyframes spin1 {
-  0% { -webkit-transform: rotate(360deg);}
-  100% { -webkit-transform: rotate(0deg);}
-}
-@keyframes spin1 {
-  0% { -webkit-transform: rotate(360deg);}
-  100% { -webkit-transform: rotate(0deg);}
-}
