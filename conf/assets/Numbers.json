@@ -14,7 +14,7 @@
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "description": "Create a function to put 7 kitties on the portal.",
       "mainMax": 1,
       "robotOrientation": 0,
       "stagedEnabled": true,
@@ -46,7 +46,7 @@
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "description": "Create a function to put 8 kitties on the portal.",
       "mainMax": 1,
       "robotOrientation": 0,
       "stagedEnabled": true,
@@ -78,7 +78,7 @@
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "description": "Reuse your function to put 7 kitties on the portal.",
       "mainMax": 1,
       "robotOrientation": 0,
       "stagedEnabled": true,
@@ -110,7 +110,7 @@
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "description": "Create a function to put 2 kitties on the portal.",
       "mainMax": 1,
       "robotOrientation": 0,
       "stagedEnabled": true,
@@ -142,7 +142,7 @@
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "description": "Reuse your function to put 7 kitties on the portal.",
       "mainMax": 1,
       "robotOrientation": 0,
       "stagedEnabled": true,
@@ -174,7 +174,7 @@
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "description": "Create a function to put 3 kitties on the portal.",
       "mainMax": 1,
       "robotOrientation": 0,
       "stagedEnabled": true,
@@ -206,7 +206,7 @@
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "description": "Reuse your function to put 7 kitties on the portal.",
       "mainMax": 1,
       "robotOrientation": 0,
       "stagedEnabled": true,
@@ -238,7 +238,7 @@
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "description": "Create a function to put 5 kitties on the portal.",
       "mainMax": 1,
       "robotOrientation": 0,
       "stagedEnabled": true,
@@ -270,7 +270,7 @@
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|",
         "|E| |E| |E| |E| |E| |E| |E| |E| |E| |E|"
       ],
-      "description": "problem: !![P]!!\n level: !![L]!!\n step: !![S]!!",
+      "description": "You know what to do. No more repetative tasks for you!",
       "mainMax": 1,
       "robotOrientation": 0,
       "stagedEnabled": true,
