@@ -165,12 +165,9 @@ export default {
       padding: 100px 0 100px 0;
     }
 
-    .mathbot-header {
+    .header-wrapper {
       grid-column: c-one / span 2;
       margin-left: 30px;
-      font-size: 30px;
-      line-height: 25px;
-      letter-spacing: 4px;
     }
 
     .header-content {
@@ -220,13 +217,9 @@ export default {
       padding: 20px 0 20px 0;
     }
 
-    .mathbot-header {
+    .header-wrapper {
       grid-column: c-two / span 2;
-      font-size: 20px;
-      line-height: 25px;
-      letter-spacing: 4px;
-      margin: 0;
-      align-self: center;
+      margin-left: 30px;
     }
 
     .header-content {
