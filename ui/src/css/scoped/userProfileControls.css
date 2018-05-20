@@ -19,22 +19,10 @@
   justify-content: flex-end;
 }
 
-.mathbot-header {
-  color: #FFFFFF;
-  font-size: 60px;
-  line-height: 72px;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.line {
-  font-weight: bold;
-  color: #B8E986;
-}
-
 .user-profile-controls-text-footer {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .text {
