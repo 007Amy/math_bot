@@ -140,7 +140,7 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
                         robotOrientation = rawStepData.robotOrientation.toString,
                         success = psd.stepControl.success,
                         description = psd.description,
-                        problem = Problem(psd.problem)
+                        problem = Problem(psd.problem.encryptedProblem)
                       )
                     }
                     .pipeTo(self)(sender)

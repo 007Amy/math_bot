@@ -21,6 +21,8 @@
             :key="'space:' + rInd + ':' + sInd"
             :style="{'background-image': 'url(' + permanentImages[convertToImgName(space.name)] + ')'}"
           >
+            <span v-if="space.name === 'final answer'"
+                  class="problem single-digit-problem">{{singleDigitProblem(problem)}}</span>
             <img
               v-if="space.name === 'final answer'"
               class="drop-point glyphicon"
@@ -51,6 +53,9 @@ import Robotcarrying from './Robot_carrying'
 
 export default {
   computed: {
+    problem () {
+      return this.currentStepData.problem.problem
+    },
     currentStepData () {
       return this.$store.getters.getCurrentStepData
     },
@@ -106,6 +111,12 @@ export default {
     }
   },
   methods: {
+    singleDigitProblem (problem) {
+      const pNumber = Number(problem)
+      if (!isNaN(pNumber) && pNumber > 0) {
+        return problem
+      }
+    },
     pause () {
       this.robot.state = 'paused'
     },

@@ -1,5 +1,5 @@
  body {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: "Proba Pro Regular", serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
@@ -61,6 +61,27 @@
    100% {
      box-shadow: 0 0 0 0 rgba(184, 233, 134, 0);
    }
+ }
+
+ @-webkit-keyframes spin1 {
+   0% { -webkit-transform: rotate(360deg);}
+   100% { -webkit-transform: rotate(0deg);}
+ }
+ @-moz-keyframes spin1 {
+   0% { -webkit-transform: rotate(360deg);}
+   100% { -webkit-transform: rotate(0deg);}
+ }
+ @-o-keyframes spin1 {
+   0% { -webkit-transform: rotate(360deg);}
+   100% { -webkit-transform: rotate(0deg);}
+ }
+ @-ms-keyframes spin1 {
+   0% { -webkit-transform: rotate(360deg);}
+   100% { -webkit-transform: rotate(0deg);}
+ }
+ @keyframes spin1 {
+   0% { -webkit-transform: rotate(360deg);}
+   100% { -webkit-transform: rotate(0deg);}
  }
 
  /* Medium Devices, Desktops */
