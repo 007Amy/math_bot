@@ -256,9 +256,8 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
 
             Map("newStaged" -> newStaged, "newDefault" -> newDefault)
           }
-
-          // Swapping created_id out with commandId for cmds, can't do this in default funcs because wont work for existing users
-          val cmds = lambdas.cmds.map(c => c.copy(created_id = createdIdGen(c.commandId.get)))
+///////////
+          val cmds = lambdas.cmds.map(c => c.copy(created_id = c.created_id))
 
           val preBuiltActiveIds = preBuiltActive.map(_.created_id)
 

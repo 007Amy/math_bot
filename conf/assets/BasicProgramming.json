@@ -29,7 +29,7 @@
       "specialParameters": [],
       "problem": "0",
       "clearMain": true,
-      "initFocus": ["moveRobotForwardOneSpot", "main-placeholder"],
+      "initFocus": ["Walk"],
       "prevStep": "None",
       "nextStep": "WalkThree"
     },
@@ -58,7 +58,7 @@
       "specialParameters": [],
       "problem": "0",
       "clearMain": true,
-      "initFocus": ["moveRobotForwardOneSpot", "main-placeholder"],
+      "initFocus": ["Walk"],
       "prevStep": "WalkOne",
       "nextStep": "WalkFour"
     },
@@ -87,7 +87,7 @@
       "specialParameters": [],
       "problem": "0",
       "clearMain": true,
-      "initFocus": ["moveRobotForwardOneSpot", "main-placeholder"],
+      "initFocus": ["Walk"],
       "prevStep": "WalkThree",
       "nextStep": "WalkFourWithFunction"
     },
@@ -125,7 +125,7 @@
       ],
       "problem": "0",
       "clearMain": true,
-      "initFocus": ["rocket", "main-placeholder"],
+      "initFocus": ["rocket"],
       "prevStep": "WalkFour",
       "nextStep": "EditFirstFunction"
     },
@@ -186,7 +186,7 @@
       "specialParameters": [],
       "problem": "0",
       "clearMain": true,
-      "initFocus": ["changeRobotDirection", "rocket", "main-placeholder"],
+      "initFocus": ["Turn Right"],
       "prevStep": "EditFirstFunction",
       "nextStep": "CreateNewFunction"
     },
@@ -220,7 +220,7 @@
       ],
       "problem": "0",
       "clearMain": true,
-      "initFocus": ["staged"],
+      "initFocus": ["open-staged"],
       "prevStep": "TurnRight",
       "nextStep": "TurnLeft"
     },
@@ -254,7 +254,7 @@
       ],
       "problem": "0",
       "clearMain": true,
-      "initFocus": ["staged"],
+      "initFocus": ["open-staged"],
       "prevStep": "Uturn",
       "nextStep": "WalkAndTurn"
     },
