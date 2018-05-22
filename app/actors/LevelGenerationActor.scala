@@ -208,6 +208,7 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
       playerToken.stats match {
         /*
          * If user has played this level do not update with generated function data
+         * Just reset main func if step requires it
          * */
         case Some(stats) if stats.levels(rawStepData.level)(rawStepData.step).timesPlayed > 0 =>
           for {
