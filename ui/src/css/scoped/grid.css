@@ -34,6 +34,8 @@ img {
   background-size: 100% 100%;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  vertical-align: middle;
 }
 
 .grid-row:nth-child(5n+0) .grid-space {
@@ -42,6 +44,15 @@ img {
 
 .grid-space:nth-child(1) {
   border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.problem {
+  z-index: 120;
+  font-size: 22px;
+}
+
+.single-digit-problem {
+
 }
 
 .grid-space > img {
@@ -53,6 +64,7 @@ img {
   right: 0;
   bottom: 0;
   top: 0;
+  z-index: 100;
 }
 
 .grid-space > .wall {
@@ -183,8 +195,8 @@ img {
 /* Small Devices */
 @media only screen and (max-width : 667px) {
   .grid-space {
-    height: 35px;
-    width: 35px;
+    height: 30px;
+    width: 30px;
   }
 }
 
@@ -194,10 +206,7 @@ img {
 
 /* Custom, iPhone 5 Retina */
 @media only screen and (max-width : 320px) {
-  .grid-space {
-    height: 30px;
-    width: 30px;
-  }
+
 }
 
 /* iPad */

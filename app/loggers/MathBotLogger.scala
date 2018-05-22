@@ -9,7 +9,7 @@ class MathBotLogger {
 
   def LogFailure(who: String, msg: String) = logger(who).warn(msg)
 
-  def LogResponse(who: String, msg: String) = logger(who).info(msg)
-
   def LogInfo(who: String, msg: String) = logger(who).info(msg)
+
+  def LogDebug(who: String, msg: String) = logger(who).info(msg)
 }

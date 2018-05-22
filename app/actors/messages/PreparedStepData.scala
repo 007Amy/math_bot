@@ -18,7 +18,7 @@ case class PreparedStepData(
     lambdas: ResponseLambdas,
     toolList: ToolList,
     specialParameters: List[String],
-    problem: String,
+    problem: Problem,
     prevStep: String,
     nextStep: String,
     preBuiltActiveIds: Option[List[String]],
@@ -47,7 +47,7 @@ object PreparedStepData {
     lambdas = ResponseLambdas(prepareLambdas(playerToken, rawStepData)),
     toolList = ToolList(),
     specialParameters = rawStepData.specialParameters,
-    problem = problemGen(rawStepData).encryptedProblem,
+    problem = problemGen(rawStepData),
     prevStep = rawStepData.prevStep,
     nextStep = rawStepData.nextStep,
     preBuiltActiveIds = preBuiltActiveIds,
@@ -56,10 +56,17 @@ object PreparedStepData {
     stepControl = new StepControl(rawStepData, prepareLambdas(playerToken, rawStepData))
   )
 
-  def createInitFocus(initFocus: List[String]): List[String] = initFocus.map {
-    case a if a == "main-placeholder" => "placeholder-container"
-    case a if a == "staged" => "open-staged"
-    case a => createdIdGen(a)
+  import model.DefaultCommands._
+
+  def createInitFocus(initFocus: List[String]): List[String] = initFocus.map { a =>
+    cmds.find(_.name.getOrElse("") == a) match {
+      case Some(token) => token.created_id
+      case None =>
+        a match {
+          case a if a == "open-staged" => "open-staged"
+          case a => createdIdGen(a)
+        }
+    }
   }
 
   def problemGen(rawStepData: RawStepData): Problem = makeProblem(rawStepData.problem)
@@ -134,7 +141,7 @@ object PreparedStepData {
     (JsPath \ "lambdas").write[ResponseLambdas] and
     (JsPath \ "toolList").write[ToolList] and
     (JsPath \ "specialParameters").write[List[String]] and
-    (JsPath \ "problem").write[String] and
+    (JsPath \ "problem").write[Problem] and
     (JsPath \ "prevStep").write[String] and
     (JsPath \ "nextStep").write[String] and
     (JsPath \ "preBuiltActiveIds").writeNullable[List[String]] and

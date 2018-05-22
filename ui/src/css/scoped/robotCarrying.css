@@ -1,6 +1,8 @@
 .robot-carrying {
-  min-height: 40px;
-  display: flex;
+  min-height: 20px;
+  min-width: 20px;
+  display: inline-block;
+  justify-content: center;
   margin: 0 auto;
   flex-wrap: wrap;
 }

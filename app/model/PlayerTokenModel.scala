@@ -18,6 +18,12 @@ trait PlayerTokenModel extends MongoController with ReactiveMongoComponents with
     _.collection[JSONCollection]("tokens")
   )
 
+  def getTokenCount: Future[Int] =
+    for {
+      db <- collection
+      count <- db.count()
+    } yield count
+
   def getToken(tokenId: String): Future[Option[PlayerToken]] =
     for {
       db <- collection

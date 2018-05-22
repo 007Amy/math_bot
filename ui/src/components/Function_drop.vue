@@ -1,8 +1,7 @@
 <template>
-  <div class="function-drop">
+  <div class="function-drop" :class="showMesh ? 'mesh-background' : ''">
     <draggable
       class="function-drop-drop-zone"
-      :class="showMesh ? 'mesh-background' : ''"
       :list="list"
       :options="options"
       @change="change"

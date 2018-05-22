@@ -14,35 +14,22 @@
 }
 
 .user-profile-controls-text-container {
-  border: 1px solid floralwhite;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 }
 
-.mathbot-header {
-  color: #FFFFFF;
-  font-size: 60px;
-  line-height: 72px;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.line {
-  font-weight: bold;
-  color: #B8E986;
-}
-
 .user-profile-controls-text-footer {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .text {
   opacity: 0.3;
   color: #FFFFFF;
   font-size: 32px;
-  font-weight: bolder;
+  font-weight: 600;
   line-height: 30px;
   cursor: pointer;
 }

@@ -163,7 +163,7 @@ export default {
       if (this.editingFunction) {
         const messageBuilder = {
           type: 'success',
-          msg: `${func.name}`
+          msg: `${func.name ? `Edit: ${func.name}` : 'Edit: Function'}`
         }
         this.$store.dispatch('addMessage', messageBuilder)
       }

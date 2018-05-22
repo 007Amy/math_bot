@@ -3,9 +3,11 @@
   flex-direction: column;
   justify-content: center;
   height: 714px;
-  width: 398px;
+  width: 400px;
   margin-top: 138px;
-  border: 1px solid pink;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /*border: 1px solid pink;*/
 }
 
 .steps-header-container {
@@ -17,7 +19,7 @@
   color: #FFFFFF;
   font-family: Roboto, serif;
   font-size: 30px;
-  font-weight: bolder;
+  font-weight: 600;
   line-height: 35px;
 }
 
@@ -52,7 +54,7 @@
   color: #FFFFFF;
   font-family: Roboto, serif;
   font-size: 26px;
-  font-weight: bolder;
+  font-weight: 600;
   line-height: 30px;
   text-align: left;
 }
@@ -192,6 +194,10 @@
 
 /* iPad */
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
+  .steps {
+    width: 300px;
+  }
+
   .steps-navigator-item {
     width: 240px;
   }

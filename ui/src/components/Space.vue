@@ -1,6 +1,5 @@
 <template>
   <div class="space">
-    <img class="space-ship" :src="permanentImages.spaceShip" />
     <img
       v-for="(level, index) in levels"
       class="planet"
