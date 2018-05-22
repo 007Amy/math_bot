@@ -143,7 +143,7 @@ export default new Vuex.Store({
       api.getStep({tokenId: tokenId, level: level, step: step}, res => {
         // All data require for this step
         const stepData = res.body
-        console.log(`${level}/${step}:\n`, stepData)
+        // console.log(`${level}/${step}:\n`, stepData)
 
         // Reverses tools for rendering
         const reverseTools = (gridMap) => {
