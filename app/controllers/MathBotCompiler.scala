@@ -2,24 +2,19 @@ package controllers
 
 import java.net.URLDecoder
 
-import javax.inject.Inject
-import actors.messages.{ ActorFailed, SocketRequest, SocketResponse }
-import actors.StatsActor.{ StatsDoneUpdating, UpdateStats }
 import actors._
-import akka.actor.{ Actor, ActorRef, ActorSystem, Props }
+import akka.actor.{ Actor, ActorSystem, Props }
 import akka.pattern.ask
 import akka.stream.Materializer
 import akka.util.Timeout
-import compiler.processor.{ AnimationType, Frame, Processor }
-import compiler.{ Cell, Compiler, GridAndProgram, Point }
-import controllers.MathBotCompiler.ClientFrame
+import compiler.processor.{ AnimationType, Frame }
+import compiler.{ Cell, Point }
+import javax.inject.Inject
 import loggers.MathBotLogger
 import model.PlayerTokenModel
 import model.models._
 import play.api.Environment
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api.libs.functional.syntax._
-import play.api.libs.json.Reads._
 import play.api.libs.json._
 import play.api.libs.streams.ActorFlow
 import play.api.mvc._
@@ -27,8 +22,6 @@ import play.modules.reactivemongo.ReactiveMongoApi
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
-
-case class LevelAndStep(level: String, step: String)
 
 object MathBotCompiler {
 
