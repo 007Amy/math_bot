@@ -3,45 +3,17 @@ import Vuex from 'vuex'
 import _ from 'underscore'
 import api from '../services/api'
 import VueDefaultValue from 'vue-default-value/dist/vue-default-value'
-
+import Robot from '../services/Robot'
 import permanentImages from '../assets/assets'
 import Message from '../services/Message'
+import InitFocus from '../services/InitFocus'
 
 Vue.use(Vuex)
 Vue.use(VueDefaultValue)
 
-const robotUp = 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437134/robotDirections/RobotUp_nbpcu2.png'
-const robotRight = 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437145/robotDirections/PlayerRight_n39yyp.png'
-const robotDown = 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437155/robotDirections/PlayerDown_pjawwx.png'
-const robotLeft = 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437164/robotDirections/RobotLeft_uf8xym.png'
-
 function addMessage (state, messageBuilder) {
   const message = new Message(state, messageBuilder)
   message.add()
-}
-
-function initFocus (state, stepData) {
-  setTimeout(() => {
-    const focusEleList = stepData.initFocus.map(id => $(`#${id}`))
-
-    function iterate (list) {
-      if (!list.length) return
-      const $ele = list.shift()
-      const $parent = $ele.parent()
-      const parentId = $parent.attr('class')
-      if (parentId === 'functions') {
-        $parent.addClass('functions-show-overflow')
-      }
-      $ele.addClass('pulse')
-      setTimeout(() => {
-        $ele.removeClass('pulse')
-        $parent.removeClass('functions-show-overflow')
-        iterate(list)
-      }, 2000)
-    }
-
-    iterate(focusEleList)
-  }, 200)
 }
 
 function orderEm (steps) {
@@ -56,22 +28,6 @@ function orderEm (steps) {
   })()
 
   return stepsInOrder
-}
-
-class NewRobot {
-  constructor ({state, robotCarrying, robotFacing}) {
-    this.state = state || 'home'
-    this.robotCarrying = robotCarrying || []
-    this.robotFacing = robotFacing || 0
-    this._robotDirections = {
-      '0': robotUp,
-      '90': robotRight,
-      '180': robotDown,
-      '270': robotLeft
-    }
-
-    this.trash = []
-  };
 }
 
 const colors = {
@@ -122,17 +78,12 @@ export default new Vuex.Store({
     currentFunction: 'main',
     programPanelShowing: false,
     editFunctionShowing: false,
-    speed: 300,
     currentUser: JSON.parse(localStorage.getItem('profile')),
     fullscreen: false,
     robotDeactivated: false,
     lock: {},
     showCongrats: false,
     tryAgainShowing: false,
-    debuggerShowing: false,
-    debuggerCurrentCommand: '',
-    debuggerCurrentInd: 0,
-    debuggerRender: false,
     compiledDone: false,
     currentStepData: {},
     robot: {},
@@ -175,21 +126,6 @@ export default new Vuex.Store({
     DEACTIVATE_ROBOT (state) {
       state.robotDeactivated = !state.robotDeactivated
     },
-    UPDATE_DEBUGGER_RENDER (state, func) {
-      state.debuggerRender = func
-    },
-    UPDATE_DEBUGGER_CURRENT_COMMAND (state, command) {
-      state.debuggerCurrentCommand = command
-    },
-    UPDATE_DEBUGGER_CURRENT_IND (state, ind) {
-      state.debuggerCurrentInd = ind
-    },
-    TOGGLE_DEBUGGER (state) {
-      state.debuggerShowing = !state.debuggerShowing
-      if (!state.debuggerShowing) {
-        state.speed = 300
-      }
-    },
     SHOW_CONGRATS (state) {
       state.showCongrats = true
     },
@@ -225,7 +161,7 @@ export default new Vuex.Store({
 
         state.showCongrats = false
         state.tryAgainShowing = false
-        state.robot = new NewRobot({robotFacing: stepData.robotOrientation})
+        state.robot = new Robot({robotFacing: stepData.robotOrientation})
 
         // update lambdas to step specific lambdas
         context.$store.dispatch('updateLambdas', {lambdas: stepData.lambdas})
@@ -234,7 +170,8 @@ export default new Vuex.Store({
         localStorage.setItem('LEVEL_STEP', JSON.stringify({level: level, step: step}))
         context.$router.push({path: 'robot'})
 
-        initFocus(state, stepData)
+        const initFocus = new InitFocus(state, stepData)
+        initFocus.init()
       })
     },
     UPDATE_LAMBDAS (state, {lambdas}) {
@@ -296,8 +233,8 @@ export default new Vuex.Store({
       state.disToken.token_id = userData.token_id
       state.disToken.u_id = userData._id
     },
-    CHANGE_ROBOT_SPEED (state, speed) {
-      state.speed = speed
+    CHANGE_ROBOT_SPEED (state) {
+      state.robot.adjustSpeed()
     },
     CHANGE_FULLSCREEN (state) {
       state.fullscreen = !state.fullscreen
@@ -379,18 +316,6 @@ export default new Vuex.Store({
     deactivateRobot ({commit}) {
       commit('DEACTIVATE_ROBOT')
     },
-    updateDebuggerRender ({commit}, func) {
-      commit('UPDATE_DEBUGGER_RENDER', func)
-    },
-    updateDebuggerCurrentCommand ({commit}, command) {
-      commit('UPDATE_DEBUGGER_CURRENT_COMMAND', command)
-    },
-    updateDebuggerCurrentInd ({commit}, ind) {
-      commit('UPDATE_DEBUGGER_CURRENT_IND', ind)
-    },
-    toggleDebugger ({commit}) {
-      commit('TOGGLE_DEBUGGER')
-    },
     showCongrats ({commit}) {
       commit('SHOW_CONGRATS')
     },
@@ -433,8 +358,8 @@ export default new Vuex.Store({
     addCurrentUser ({commit}, userData) {
       commit('ADD_CURRENT_USER', userData)
     },
-    changeRobotSpeed ({commit}, speed) {
-      commit('CHANGE_ROBOT_SPEED', speed)
+    changeRobotSpeed ({commit}) {
+      commit('CHANGE_ROBOT_SPEED')
     },
     changeFullscreen ({commit}) {
       commit('CHANGE_FULLSCREEN')
@@ -499,10 +424,6 @@ export default new Vuex.Store({
     // getFunctionGroups: state => state.functionGroups,
     getGrid: state => state.currentStepData.grid,
     getRobotDeactivated: state => state.robotDeactivated,
-    getDebuggerCurrentCommand: state => state.debuggerCurrentCommand,
-    getDebuggerCurrentInd: state => state.debuggerCurrentInd,
-    getDebuggerShowing: state => state.debuggerShowing,
-    getDebuggerRender: state => state.debuggerRender || state.disToken.funcs[0],
     getCurrentEquation: state => state.disToken.stats.currentEquation,
     getCongratsShowing: state => state.showCongrats,
     getTryAgainShowing: state => state.tryAgainShowing,
@@ -525,7 +446,6 @@ export default new Vuex.Store({
     getRememberUser: state => state.rememberUser,
     getToken: state => state.disToken,
     getShowDupAlert: state => state.showDupAlert,
-    getRobotSpeed: state => state.speed,
     getFullscreen: state => state.fullscreen,
     getSignupLoading: state => state.signupLoading,
     getLock: state => state.lock,

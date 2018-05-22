@@ -85,13 +85,13 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
 
                   Future { preparedStepData }
                     .map { psd =>
-                      logger.LogInfo(className, "Successfully created GridMap")
+                      logger.LogDebug(className, "Successfully created GridMap")
                       GridMap(
                         gMap = psd.gridMap,
                         robotOrientation = rawStepData.robotOrientation.toString,
                         success = psd.stepControl.success,
                         description = psd.description,
-                        problem = Problem(psd.problem)
+                        problem = Problem(psd.problem.encryptedProblem)
                       )
                     }
                     .pipeTo(self)(sender)
@@ -207,9 +207,8 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
 
             Map("newStaged" -> newStaged, "newDefault" -> newDefault)
           }
-
-          // Swapping created_id out with commandId for cmds, can't do this in default funcs because wont work for existing users
-          val cmds = lambdas.cmds.map(c => c.copy(created_id = createdIdGen(c.commandId.get)))
+///////////
+          val cmds = lambdas.cmds.map(c => c.copy(created_id = c.created_id))
 
           val preBuiltActiveIds = preBuiltActive.map(_.created_id)
 
@@ -251,13 +250,13 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
     case gridMap: GridMap =>
       sender ! gridMap
     case preparedStepData: PreparedStepData =>
-      logger.LogInfo(className, "PreparedStepData generated.")
+      logger.LogDebug(className, "PreparedStepData generated.")
       sender ! Left(preparedStepData)
     case rawLevelData: RawLevelData =>
-      logger.LogInfo(className, "RawLevelData generated.")
+      logger.LogDebug(className, "RawLevelData generated.")
       sender ! Left(rawLevelData)
     case rawStepData: RawStepData =>
-      logger.LogInfo(className, "RawStepData generated.")
+      logger.LogDebug(className, "RawStepData generated.")
       sender ! rawStepData
     case actorFailed: ActorFailed =>
       logger.LogFailure(className, s"ActorFailed generated. msg:${actorFailed.msg}")

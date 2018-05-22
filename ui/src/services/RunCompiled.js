@@ -147,11 +147,12 @@ class RunCompiled {
         } else {
           setTimeout(() => this.processFrames(), robotSpeed)
         }
+        setTimeout(() => this.processFrames(), this.robot.getSpeed().speed)
       })
   }
 
   _initiateCompile () {
-    api.compilerWebSocket.compileWs({context: this, problem: this.stepData.problem}, (compiled) => {
+    api.compilerWebSocket.compileWs({context: this, problem: this.stepData.problem.encryptedProblem}, (compiled) => {
       const frames = compiled.frames
       console.log('[FRAMES] ', frames)
       if (frames !== undefined && frames.length) {

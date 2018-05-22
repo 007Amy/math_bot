@@ -2,7 +2,7 @@
   position: relative;
   width: 670px;
   height: 721px;
-  border: 1px solid teal;
+  /*border: 1px solid teal;*/
 }
 
 .planet {
@@ -47,13 +47,6 @@
   left: 5%;
 }
 
-.space-ship {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: rotate(-20deg);
-}
-
 @media only screen and (max-width : 992px) {
 
 }
@@ -91,10 +84,6 @@
     height: 73px;
     width: 73px;
   }
-
-  .space-ship {
-    display: none;
-  }
 }
 
 @media only screen and (max-width: 568px) {
@@ -128,10 +117,6 @@
   .planet5 {
     height: 56px;
     width: 56px;
-  }
-
-  .space-ship {
-    display: none;
   }
 }
 
@@ -168,10 +153,6 @@
   .planet5 {
     height: 56px;
     width: 56px;
-  }
-
-  .space-ship {
-    display: none;
   }
 }
 

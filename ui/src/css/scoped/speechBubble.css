@@ -12,6 +12,11 @@
   transition: opacity 1s linear;
 }
 
+.bubble-text {
+  height: 100%;
+  width: 100%;
+}
+
 .hide-speech-bubble {
   visibility: hidden;
   opacity: 0;
@@ -56,21 +61,12 @@
   margin-bottom: -26px;
 }
 
-/* 13" screen */
-@media only screen and (max-width : 1280px) {
-  .speech-bubble {
-    height: 70px;
-    width: 400px;
-    margin-left: -2px;
-  }
-}
-
-
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
   .speech-bubble {
-    height: 45px;
-    width: 200px;
+    top: 15px;
+    height: 55px;
+    width: 240px;
     margin-left: -2px;
   }
 
@@ -103,6 +99,7 @@
     height: 45px;
     width: 200px;
     margin-left: -2px;
+    top: 5px;
   }
 
   .speech-bubble:before {
@@ -130,7 +127,9 @@
 
 /* Extra Small Devices, Phones */
 @media only screen and (max-width : 480px) {
-
+  .speech-bubble {
+    top: 0;
+  }
 }
 
 /* Custom, iPhone 5 Retina */
@@ -141,8 +140,8 @@
 /* iPad */
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
   .speech-bubble {
-    height: 70px;
-    width: 400px;
+    height: 100px;
+    width: 450px;
     margin-left: -2px;
   }
 
@@ -179,4 +178,12 @@
     margin-bottom: -26px;
   }
 
+}
+
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
+  .speech-bubble {
+    height: 100px;
+    width: 400px;
+    margin-left: -2px;
+  }
 }

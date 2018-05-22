@@ -32,19 +32,6 @@
   max-width: 360px;
 }
 
-::-webkit-scrollbar {
-  width: 12px;
-}
-
-::-webkit-scrollbar-track {
-  display: none;
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  border: 1px solid white;
-}
-
 @media only screen and (max-width : 992px) {
 
 }

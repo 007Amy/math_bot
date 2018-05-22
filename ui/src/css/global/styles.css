@@ -1,5 +1,5 @@
  body {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: "Proba Pro Regular", serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
@@ -42,7 +42,6 @@
   }
 
  .dragging > .command-name, .function-drop > .sortable-chosen > .command-name {
-   /*display: none;*/
    z-index: 1000000!important;
  }
 
@@ -62,6 +61,27 @@
    100% {
      box-shadow: 0 0 0 0 rgba(184, 233, 134, 0);
    }
+ }
+
+ @-webkit-keyframes spin1 {
+   0% { -webkit-transform: rotate(360deg);}
+   100% { -webkit-transform: rotate(0deg);}
+ }
+ @-moz-keyframes spin1 {
+   0% { -webkit-transform: rotate(360deg);}
+   100% { -webkit-transform: rotate(0deg);}
+ }
+ @-o-keyframes spin1 {
+   0% { -webkit-transform: rotate(360deg);}
+   100% { -webkit-transform: rotate(0deg);}
+ }
+ @-ms-keyframes spin1 {
+   0% { -webkit-transform: rotate(360deg);}
+   100% { -webkit-transform: rotate(0deg);}
+ }
+ @keyframes spin1 {
+   0% { -webkit-transform: rotate(360deg);}
+   100% { -webkit-transform: rotate(0deg);}
  }
 
  /* Medium Devices, Desktops */
@@ -106,20 +126,16 @@
  }
 
  ::-webkit-scrollbar {
-   width: 20px;
-   z-index: 1002;
+   width: 22px;
+   height: 22px;
  }
 
  ::-webkit-scrollbar-track {
-   border-radius: 10px;
-   background-clip: padding-box;
-   background-color: rgba(0, 0, 0, 0);
+   visibility: hidden;
  }
 
  ::-webkit-scrollbar-thumb {
+   box-shadow: inset 0 0 10px 10px rgba(216, 216, 216, 0.5);
+   border: solid 8px transparent;
    border-radius: 10px;
-   background-clip: padding-box;
-   border: 1px solid rgba(0, 0, 0, 0);
-   -webkit-box-shadow: inset 0px 11px 0px rgba(0,0,0,1);
-   background-color: rgba(255,255,255,0.4);
  }

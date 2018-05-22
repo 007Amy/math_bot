@@ -46,7 +46,7 @@ class StepControl(rawStepData: RawStepData, lambdas: Lambdas) {
     val finalSpotBool = isFinalSpot(frame)
     val totalDroppedBool = totalDropped(frame, problem)
     val specialParamsBool = checkParams(parameters, activeFuncs, main)
-    val t = 0
+
     finalSpotBool && totalDroppedBool && specialParamsBool
   }
 }

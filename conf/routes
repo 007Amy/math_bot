@@ -22,6 +22,8 @@ GET         /api/stats/unlock/:tokenId                                          
 GET         /api/stats/reset/:tokenId                                              controllers.StatsController.reset(tokenId)
 GET         /api/stats/:tokenId                                                    controllers.StatsController.getStats(tokenId)
 
+# Get game stats
+GET         /api/gameStats/getTokenCount                                           controllers.GameStatsController.getCount
 
 # !! This must be last - and may show an error until prod build !!
 # Map static resources from the /public folder to the file resource path

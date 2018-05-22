@@ -21,7 +21,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  border: 1px solid salmon;
+  /*border: 1px solid salmon;*/
 }
 
 #grid-box {
@@ -30,24 +30,23 @@
   position: relative;
   align-items: center;
   justify-content: flex-start;
-  border: 1px solid yellowgreen;
+  /*border: 1px solid yellowgreen;*/
 }
 
 #edit-main-box {
   display: flex;
-  border: 1px solid mediumvioletred;
+  /*border: 1px solid mediumvioletred;*/
 }
 
 #commands-box {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 1px solid firebrick;
+  /*border: 1px solid firebrick;*/
 }
 
 .filler-box {
   display: flex;
-  flex-grow: 1;
 }
 
 .grow {
@@ -59,7 +58,7 @@
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
   #robot {
-    width: 100vw;
+    width: 80vw;
   }
 }
 
@@ -91,8 +90,11 @@
 
 /* iPad */
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
-
+  #robot {
+    width: 100vw;
+  }
 }
+
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
 
 }

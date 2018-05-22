@@ -1,7 +1,7 @@
 <template>
  <div id="Marketing-top-section" data-aos="zoom-in">
-   <div class="mathbot-header">
-     MATH<span class="line">_</span>BOT
+   <div class="header-wrapper">
+    <mathbot-header></mathbot-header>
    </div>
    <div class="header-content">
      <div class="slogan-box">
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import MathbotHeader from '../Mathbot_header'
 export default {
   name: 'TopSection',
   data () {
@@ -41,6 +42,9 @@ export default {
         'archedLine': 'http://res.cloudinary.com/doohickey/image/upload/v1521989179/Path_2_ggddw3.svg'
       }
     }
+  },
+  components: {
+    MathbotHeader
   },
   props: ['gotosite']
 }
@@ -60,20 +64,10 @@ export default {
     grid-template-rows: [r-header]50px [r-one]auto [r-two]auto [r-three]auto [r-four]auto [r-five]auto [r-six]auto [r-seven]auto [r-eight]auto [r-nine]auto;
   }
 
-  .mathbot-header {
-    font-size: 38px;
-    line-height: 38px;
-    letter-spacing: 4px;
-    color: #FFFFFF;
+  .header-wrapper {
     grid-column: c-two / span 2;
     grid-row: r-header;
-    justify-self: left;
-    z-index: 3;
-  }
-
-  .line {
-    font-weight: bold;
-    color: #B8E986;
+    text-align: left;
   }
 
   .header-content {
@@ -171,12 +165,9 @@ export default {
       padding: 100px 0 100px 0;
     }
 
-    .mathbot-header {
+    .header-wrapper {
       grid-column: c-one / span 2;
       margin-left: 30px;
-      font-size: 30px;
-      line-height: 25px;
-      letter-spacing: 4px;
     }
 
     .header-content {
@@ -226,13 +217,9 @@ export default {
       padding: 20px 0 20px 0;
     }
 
-    .mathbot-header {
+    .header-wrapper {
       grid-column: c-two / span 2;
-      font-size: 20px;
-      line-height: 25px;
-      letter-spacing: 4px;
-      margin: 0;
-      align-self: center;
+      margin-left: 30px;
     }
 
     .header-content {
