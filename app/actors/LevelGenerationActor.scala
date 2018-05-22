@@ -74,10 +74,7 @@ object LevelGenerationActor {
 
   case class UpdateDb(playerToken: PlayerToken, rawStepData: RawStepData)
 
-  case class PrepareStepData(playerToken: PlayerToken,
-                             rawStepData: RawStepData,
-                             preBuiltActiveIds: List[String],
-                             assignedStagedIds: List[String])
+  case class PrepareStepData(playerToken: PlayerToken, rawStepData: RawStepData)
 
   case class ActorFailed(msg: String = "Json did not match any type.")
 
@@ -97,7 +94,6 @@ object LevelGenerationActor {
 
   def createdIdGen(name: String): String = {
     MessageDigest.getInstance("MD5").digest(name.getBytes).mkString("")
-//    prefix + scala.util.Random.alphanumeric.take(6).mkString
   }
 
   def props(reactiveMongoApi: ReactiveMongoApi, logger: MathBotLogger, environment: Environment) =
@@ -127,9 +123,7 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
                       token,
                       rawStepData.copy(activeQty = makeQtyUnlimited(rawStepData.activeQty),
                                        stagedQty = makeQtyUnlimited(rawStepData.stagedQty),
-                                       mainMax = makeQtyUnlimited(rawStepData.mainMax)),
-                      None,
-                      None
+                                       mainMax = makeQtyUnlimited(rawStepData.mainMax))
                     )
 
                   Future { preparedStepData }
@@ -211,90 +205,99 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
         }
       }.pipeTo(self)(sender)
     case UpdateDb(playerToken, rawStepData) =>
-      val assignedStaged =
-        rawStepData.assignedStaged.toList.map { s =>
-          val name = s._1
-          val image = s._2
-          FuncToken(
-            created_id = createdIdGen(name),
-            func = Option(List.empty[FuncToken]),
-            set = Some(false),
-            name = Some(parseCamelCase(name)),
-            image = Some(image),
-            index = Some(playerToken.lambdas.get.stagedFuncs.length),
-            `type` = Some("function"),
-            commandId = Some("function")
-          )
-        }
-
-      val preBuiltActive = rawStepData.preBuiltActive.toList
-        .map { p =>
-          val name = p._1
-          val func = p._2.map { c =>
-            playerToken.lambdas.get.cmds.find(v => v.commandId.contains(c)).get
+      playerToken.stats match {
+        /*
+         * If user has played this level do not update with generated function data
+         * */
+        case Some(stats) if stats.levels(rawStepData.level)(rawStepData.step).timesPlayed > 0 =>
+          for {
+            lambdas <- playerToken.lambdas
+            mainFunc <- lambdas.main.func
+            newMainFunc = if (rawStepData.clearMain) List.empty[FuncToken] else mainFunc
+            newMain = lambdas.main.copy(func = Some(newMainFunc))
+            updatedLambdas = lambdas.copy(main = newMain)
+          } yield {
+            Future { playerToken.copy(lambdas = Some(updatedLambdas)) }
+              .map { PreparedStepData(_, rawStepData) }
+              .pipeTo(self)(sender)
           }
-          models.FuncToken(
-            created_id = createdIdGen(name),
-            func = Some(func),
-            name = Some(parseCamelCase(name)),
-            image = Some("rocket"),
-            index = Some(playerToken.lambdas.get.activeFuncs.length),
-            `type` = Some("function"),
-            commandId = Some("function")
-          )
-        }
+        /*
+         * Else add generated function data
+         * */
+        case _ =>
+          for {
+            lambdas <- playerToken.lambdas
+            activeFuncs = lambdas.activeFuncs
+          } yield {
+            // Create List[FuncToken] of assigned staged
+            val assignedStaged =
+              rawStepData.assignedStaged.toList.map { s =>
+                val name = s._1
+                val image = s._2
+                FuncToken(
+                  created_id = createdIdGen(name),
+                  func = Option(List.empty[FuncToken]),
+                  set = Some(false),
+                  name = Some(parseCamelCase(name)),
+                  image = Some(image),
+                  index = Some(playerToken.lambdas.get.stagedFuncs.length),
+                  `type` = Some("function"),
+                  commandId = Some("function")
+                )
+              }
+            // Create List[FuncToken] of pre built active functions
+            val preBuiltActive = rawStepData.preBuiltActive.toList
+              .map { p =>
+                val name = p._1
+                val func = p._2.map { c =>
+                  playerToken.lambdas.get.cmds.find(v => v.commandId.contains(c)).get
+                }
+                models.FuncToken(
+                  created_id = createdIdGen(name),
+                  func = Some(func),
+                  name = Some(parseCamelCase(name)),
+                  image = Some("rocket"),
+                  index = Some(playerToken.lambdas.get.activeFuncs.length),
+                  `type` = Some("function"),
+                  commandId = Some("function")
+                )
+              }
 
-      playerToken.lambdas match {
-        case Some(lambdas) =>
-          val newStagedAndDefault: Map[String, List[FuncToken]] = {
-            val stagedFuncs = lambdas.stagedFuncs
-            val defaultFuncs = lambdas.defaultFuncs.getOrElse(DefaultCommands.funcs)
-            val qty = rawStepData.stagedQty
+            // Move new staged function between defualt and staged functions
+            val newStagedAndDefault: Map[String, List[FuncToken]] = {
+              val stagedFuncs = lambdas.stagedFuncs
+              val defaultFuncs = lambdas.defaultFuncs.getOrElse(DefaultCommands.funcs)
+              val qty = rawStepData.stagedQty
 
-            val newStaged = assignedStaged ++ defaultFuncs.take(qty)
-            val newDefault = defaultFuncs.filterNot(d => newStaged.exists(_.created_id == d.created_id))
+              val newStaged = assignedStaged ++ defaultFuncs.take(qty)
+              val newDefault = defaultFuncs.filterNot(d => newStaged.exists(_.created_id == d.created_id))
 
-            Map("newStaged" -> newStaged, "newDefault" -> newDefault)
-          }
-///////////
-          val cmds = lambdas.cmds.map(c => c.copy(created_id = c.created_id))
+              Map("newStaged" -> newStaged, "newDefault" -> newDefault)
+            }
 
-          val preBuiltActiveIds = preBuiltActive.map(_.created_id)
+            //  Commands
+            val cmds = lambdas.cmds
 
-          val assignedStagedIds = assignedStaged.map(_.created_id)
-
-          val filteredActive = playerToken.lambdas.get.activeFuncs
-            .filterNot(ft => preBuiltActiveIds.contains(ft.created_id))
-            .filterNot(ft => assignedStagedIds.contains(ft.created_id))
-
-          val l = lambdas.copy(
-            cmds = cmds,
-            stagedFuncs = newStagedAndDefault("newStaged"),
-            defaultFuncs = Some(newStagedAndDefault("newDefault")),
-            activeFuncs = preBuiltActive ::: filteredActive.zipWithIndex
-              .map(d => d._1.copy(index = Some(d._2))),
-            main =
-              if (rawStepData.clearMain) playerToken.lambdas.get.main.copy(func = Some(List.empty[FuncToken]))
-              else playerToken.lambdas.get.main
-          )
-
-          updateToken(playerToken.copy(lambdas = Some(l)))
-            .map(
-              PrepareStepData(_,
-                              rawStepData,
-                              preBuiltActiveIds = preBuiltActiveIds,
-                              assignedStagedIds = assignedStagedIds)
+            // Copy lambdas and update values
+            val l = lambdas.copy(
+              cmds = cmds,
+              stagedFuncs = newStagedAndDefault("newStaged"),
+              defaultFuncs = Some(newStagedAndDefault("newDefault")),
+              activeFuncs = preBuiltActive ::: preBuiltActive ::: activeFuncs.zipWithIndex
+                .map(d => d._1.copy(index = Some(d._2))),
+              main =
+                if (rawStepData.clearMain) playerToken.lambdas.get.main.copy(func = Some(List.empty[FuncToken]))
+                else playerToken.lambdas.get.main
             )
-            .pipeTo(self)(sender)
 
-        case None => Future {}.map(_ => ActorFailed("Unable to update db.")).pipeTo(self)(sender)
+            // Update db with new token
+            updateToken(playerToken.copy(lambdas = Some(l)))
+              .map(
+                PreparedStepData(_, rawStepData)
+              )
+              .pipeTo(self)(sender)
+          }
       }
-
-    case PrepareStepData(playerToken, rawStepData, preBuiltActiveIds, assignedStagedIds) =>
-      val u = PreparedStepData(playerToken, rawStepData, Some(preBuiltActiveIds), Some(assignedStagedIds))
-      Future { u }
-        .map(p => p)
-        .pipeTo(self)(sender)
 
     case gridMap: GridMap =>
       sender ! gridMap

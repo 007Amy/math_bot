@@ -14,6 +14,7 @@ GET         /api/wsPath/:tokenId                                                
 PUT         /api/token/editLambdas                                                 controllers.PlayerController.editLambdas
 POST        /api/token                                                             controllers.PlayerController.addToken
 GET         /api/token/activateFunction/:tokenId/:stagedIndex/:activeIndex         controllers.PlayerController.activateFunction(tokenId, stagedIndex, activeIndex)
+POST        /api/token/test                                                        controllers.PlayerController.test
 
 # Stats
 GET         /api/stats/update/:tokenId                                             controllers.StatsController.advanceStats(tokenId, success: Option[String])
