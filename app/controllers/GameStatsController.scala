@@ -1,25 +1,20 @@
 package controllers
 
-import java.net.URLDecoder
-import javax.inject.Singleton
-
+import actors.GameStatsActor
 import actors.GameStatsActor.GetTokenCount
-import actors.{GameStatsActor, LevelGenerationActor}
-import actors.LevelGenerationActor.{ActorFailed, GetLevel, GetStep}
 import actors.messages._
 import akka.actor.ActorSystem
-
-import scala.concurrent.duration._
-import play.api.mvc.{Action, Controller}
-import play.modules.reactivemongo.ReactiveMongoApi
 import akka.pattern.ask
 import akka.util.Timeout
 import com.google.inject.Inject
+import javax.inject.Singleton
 import loggers.MathBotLogger
 import play.api.Environment
-import play.api.libs.json.{JsString, Json}
+import play.api.mvc.{ Action, Controller }
+import play.modules.reactivemongo.ReactiveMongoApi
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
 
 @Singleton
 class GameStatsController @Inject()(system: ActorSystem,

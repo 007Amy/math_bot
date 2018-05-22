@@ -45,7 +45,7 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
   override def receive: Receive = {
     case CompilerExecute(steps, problem) =>
       currentCompiler match {
-        case Some(_) => self ! CompilerStep(steps, problem)
+        case Some(_) => self ! CompilerContinue(steps, problem)
         case None => self ! CompilerCreate(steps, problem)
 
       }
@@ -69,11 +69,11 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
           currentCompiler = Some(
             ProgramState(stream = stream, iterator = stream.iterator, program = program, grid = grid)
           )
-          self ! CompilerStep(steps, problem)
+          self ! CompilerContinue(steps, problem)
         }
       }
 
-    case CompilerStep(steps, problem) =>
+    case CompilerContinue(steps, problem) =>
       logger.LogInfo(className, s"Stepping compiler for $steps")
       for {
         programState <- currentCompiler
@@ -148,7 +148,7 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
       out ! CompilerHalted()
 
     case Left(_ : StatsDoneUpdating) =>
-      logger.LogResponse(className, s"Stats updated successfully. token_id:$tokenId")
+      logger.LogInfo(className, s"Stats updated successfully. token_id:$tokenId")
 
     case Right(invalidJson: ActorFailed) =>
       logger.LogFailure(className, invalidJson.msg)
