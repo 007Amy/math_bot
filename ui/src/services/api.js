@@ -21,6 +21,14 @@ export default {
       .catch(console.error)
   },
 
+  insertTokenForTesting () {
+    const mToken = require('./mutated_token.json')
+    Vue.http.post('/api/token/test', mToken)
+      .then(res => res.body)
+      .then(console.log)
+      .catch(console.error)
+  },
+
   /*
   * activateFunction moves function token from stagedFunction list to activeFunction list
   * @param tokenId = JWT token_id
