@@ -57,7 +57,7 @@ export default {
       return this.currentStepData.problem.problem
     },
     currentStepData () {
-      return this.$store.getters.getCurrentStepData
+      return this.$store.getters.getStepData
     },
     level () {
       return this.currentStepData.level
@@ -101,7 +101,7 @@ export default {
       return this.$store.getters.getMode
     },
     stepData () {
-      return this.$store.getters.getCurrentStepData
+      return this.$store.getters.getStepData
     }
   },
   data () {

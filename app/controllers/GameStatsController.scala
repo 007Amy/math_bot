@@ -10,7 +10,8 @@ import com.google.inject.Inject
 import javax.inject.Singleton
 import loggers.MathBotLogger
 import play.api.Environment
-import play.api.mvc.{ Action, Controller }
+import play.api.mvc.{Action, Controller}
+
 import play.modules.reactivemongo.ReactiveMongoApi
 
 import scala.concurrent.ExecutionContext.Implicits.global

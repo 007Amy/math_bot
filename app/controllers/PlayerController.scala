@@ -12,6 +12,7 @@ import akka.pattern.ask
 import akka.util.Timeout
 import loggers.MathBotLogger
 import model.PlayerTokenModel
+import model.models.PlayerToken
 import play.api.Environment
 import play.api.mvc._
 import play.api.libs.json._
@@ -56,4 +57,15 @@ class PlayerController @Inject()(system: ActorSystem,
           case Right(invalidJson) => BadRequest(invalidJson.msg)
         }
     }
+
+  def test() = Action.async(parse.json) { implicit request: Request[JsValue] =>
+    request.body.validate[PlayerToken].asOpt match {
+      case Some(playerToken) =>
+        for {
+          deleteToken <- delete(playerToken.token_id)
+          insertMutatedToken <- insert(playerToken)
+        } yield Ok(Json.toJson(insertMutatedToken))
+      case None => Future { BadRequest }
+    }
+  }
 }

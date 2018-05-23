@@ -5,6 +5,10 @@
   height: 100%;
 }
 
+.profile-main {
+  height: 100%;
+}
+
 .profile {
   display: flex;
   flex-direction: column;

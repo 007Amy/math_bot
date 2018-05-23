@@ -10,8 +10,8 @@ class RunCompiled {
       this.$store = this.context.$store
       this.$router = this.context.$router
       this.robot = this.$store.getters.getRobot
-      this.stepData = this.$store.getters.getCurrentStepData
-      this.toolList = this.stepData.toolList
+      this.params = this.$store.getters.getStepData
+      this.toolList = this.params.toolList
 
       this._initiateCompile = this._initiateCompile.bind(this)
       this._initiateCompile()
@@ -19,7 +19,7 @@ class RunCompiled {
   }
 
   clearRobot () {
-    this.stepData.gridMap = _.map(this.stepData.gridMap, (row) => {
+    this.params.gridMap = _.map(this.params.gridMap, (row) => {
       return _.map(row, (square) => {
         square.robotSpot = false
         return square
@@ -50,7 +50,7 @@ class RunCompiled {
     this.animate({ele: '.robot', animation: animation}, () => {
       this.robot.robotFacing = orientation
       this.robot.whereIsRobot = [x, y]
-      this.stepData.gridMap[x][y].robotSpot = true
+      this.params.gridMap[x][y].robotSpot = true
     })
     return 'moveRobot DONE!'
   }
@@ -60,7 +60,7 @@ class RunCompiled {
       const x = cell.location.x
       const y = cell.location.y
       if (y > 0) {
-        this.stepData.gridMap[x][y].tools = _.map(cell.items, item => {
+        this.params.gridMap[x][y].tools = _.map(cell.items, item => {
           return this.toolList[item]
         }).reverse()
       }
@@ -80,7 +80,7 @@ class RunCompiled {
           this.$store.dispatch('showCongrats')
 
           setTimeout(() => {
-            if (this.stepData.step === stepToken.name) {
+            if (this.params.step === stepToken.name) {
               this.$router.push({path: 'profile'})
             } else {
               this.$store.dispatch('initNewGame', this.context)
@@ -123,7 +123,7 @@ class RunCompiled {
     const current = this.frames.shift()
     const robotState = current.robotState
 
-    // console.log('Step Data ', this.stepData);
+    // console.log('Step Data ', this.params);
     // console.log('RobotState ', robotState);
 
     new Promise(resolve => resolve())
@@ -133,12 +133,13 @@ class RunCompiled {
       .then(_ => new Promise(resolve => resolve(this.updateRobotHolding(robotState.holding))))
       .done(_ => {
         const robotSpeed = this.$store.getters.getRobotSpeed
+
         if (!this.frames.length) {
           console.log('[ProgramState, last frame] ', current.programState)
           if (current.programState === 'success') {
             this.win()
-          } else if (current.programState === 'running') {
-            setTimeout(this._initiateCompile, robotSpeed) // Should ask for next 4 frames, instead keeps sending first four frames.
+          } else if (current.programState === 'failure') {
+            // this._initiateCompile() // Should ask for next 4 frames, instead keeps sending first four frames.
           } else {
             this.lost(true)
           }
@@ -152,15 +153,15 @@ class RunCompiled {
   }
 
   _initiateCompile () {
-    api.compilerWebSocket.compileWs({context: this, problem: this.stepData.problem.encryptedProblem}, (compiled) => {
+    api.compilerWebSocket.compileWs({context: this, problem: this.params.problem.encryptedProblem}, (compiled) => {
       const frames = compiled.frames
       console.log('[FRAMES] ', frames)
-      if (frames !== undefined && frames.length) {
-        this.frames = frames
-        this.processFrames()
-      } else {
-        console.log('NO FRAMES')
-      }
+      // if (frames !== undefined && frames.length) {
+      //   this.frames = frames
+      //   this.processFrames()
+      // } else {
+      //   console.log('NO FRAMES')
+      // }
     })
   }
 }

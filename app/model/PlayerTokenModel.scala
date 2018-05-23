@@ -49,6 +49,13 @@ trait PlayerTokenModel extends MongoController with ReactiveMongoComponents with
     }
   }
 
+  def delete(tokenId: String) = {
+    for {
+      db <- collection
+      removeToken <- db.remove(Json.obj("token_id" -> tokenId))
+    } yield removeToken
+  }
+
   def updateToken(token: PlayerToken): Future[PlayerToken] = {
     collection flatMap { v =>
       v.update(Json.obj("token_id" -> token.token_id), token)
