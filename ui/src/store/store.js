@@ -5,6 +5,7 @@ import VueDefaultValue from 'vue-default-value/dist/vue-default-value'
 import permanentImages from '../assets/assets'
 import Message from '../services/Message'
 import AuthService from '../services/AuthService'
+import StepData from '../services/StepData'
 
 Vue.use(Vuex)
 Vue.use(VueDefaultValue)
@@ -72,7 +73,7 @@ export default new Vuex.Store({
     showCongrats: false,
     tryAgainShowing: false,
     compiledDone: false,
-    stepData: {},
+    stepData: {params: null},
     robot: {},
     profileView: 'Arithmetic',
     functionGroupsCalc: null,
@@ -89,8 +90,9 @@ export default new Vuex.Store({
     splashScreenShowing: false
   },
   mutations: {
-    UPDATE_STEP_DATA (state, stepData) {
-      state.stepData = stepData
+    UPDATE_STEP_DATA (state) {
+      state.stepData = new StepData(state.auth.userToken.token_id, state.auth.userToken.stats)
+      state.stepData.getStep(function (lambdas) { state.auth.userToken.lambdas = lambdas })
     },
     UPDATE_SPLASH_SCREEN_SHOWING (state, bool) {
       state.splashScreenShowing = bool
@@ -230,8 +232,8 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    updateStepData ({commit}, stepData) {
-      commit('UPDATE_STEP_DATA', stepData)
+    updateStepData ({commit}) {
+      commit('UPDATE_STEP_DATA')
     },
     updateRobot ({commit}, robot) {
       commit('UPDATE_ROBOT', robot)
@@ -358,14 +360,14 @@ export default new Vuex.Store({
     getTrashVisible: state => state.trashVisible,
     // getFunctionGroups: state => state.functionGroups,
     getGrid: state => state.stepData.params.grid,
-    getRobotDeactivated: state => state.robotDeactivated,
+    getRobotDeactivated: state => state.stepData.robot.robotDeactivated,
     getCurrentEquation: state => state.auth.userToken.stats.currentEquation,
     getCongratsShowing: state => state.showCongrats,
     getTryAgainShowing: state => state.tryAgainShowing,
     getGame: state => state.game,
-    getRobot: state => state.robot,
+    getRobot: state => state.stepData.robot,
     getLevel: state => state.auth.userToken.stats.level,
-    getRobotCarrying: state => state.robot.robotCarrying,
+    getRobotCarrying: state => state.stepData.robot.robotCarrying,
     getPermanentImages: state => state.permanentImages,
     getRandomImages: state => state.auth.userToken.randomImages,
     getCommands: state => state.auth.userToken.lambdas.cmds, // <-- Array

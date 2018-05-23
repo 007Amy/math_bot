@@ -1,6 +1,6 @@
 <template>
   <div class="robot-container" data-aos="fade-in">
-    <splash-screen v-if="!auth.authenticated"></splash-screen>
+    <splash-screen v-if="stepData === null"></splash-screen>
     <div  v-else id="robot" class="row animated">
 
       <div id="control-panel-box">
@@ -41,15 +41,23 @@ import Trash from './Trash'
 import Messages from './Messages'
 import ControlPanel from './Control_panel'
 import SplashScreen from './Splash_screen'
-import StepData from '../services/StepData'
 
 export default {
   mounted () {
-    this.auth.login(() => {
-      this.$store.dispatch('updateStepData', new StepData(this))
-    })
+    setTimeout(() => {
+      this.$store.dispatch('updateStepData')
+    }, 1000)
   },
   computed: {
+    tokenId () {
+      return this.$store.getters.getTokenId
+    },
+    stats () {
+      return this.$store.getters.getStats
+    },
+    stepData () {
+      return this.$store.getters.getStepData
+    },
     auth () {
       return this.$store.getters.getAuth
     },

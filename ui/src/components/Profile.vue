@@ -18,9 +18,6 @@ import Arithmetic from './Arithmetic'
 import UserProfileControls from './User_profile_controls'
 
 export default {
-  mounted () {
-    this.auth.login()
-  },
   computed: {
     auth () {
       return this.$store.getters.getAuth

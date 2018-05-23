@@ -12,12 +12,19 @@ class AuthService {
     this._init()
   }
 
-  login (updateStepData) {
-    if (this._isAuthenticated()) {
-      this._getUserToken(updateStepData)
+  /*
+  * Used in Marketing.vue to login user, or navigate to profile page
+  * */
+  login () {
+    if (this._isAuth()) {
+      this._getUserToken()
     } else {
       this.lock.show()
     }
+  }
+
+  _isAuth () {
+    return !!localStorage.getItem('accessToken')
   }
 
   logout () {
@@ -26,8 +33,17 @@ class AuthService {
     this.authenticated = false
     window.location = '/#/about'
   }
-  _isAuthenticated () {
-    return !!localStorage.getItem('accessToken')
+
+  /*
+  * Used in App.vue to determine if user is already signed in
+  * */
+
+  isAuthenticated () {
+    if (this._isAuth()) {
+      this._getUserToken()
+    } else {
+      this.logout()
+    }
   }
 
   _handleAuth (authResult) {
@@ -48,16 +64,12 @@ class AuthService {
     return JSON.parse(localStorage.getItem('profile'))
   }
 
-  _getUserToken (updateStepData) {
+  _getUserToken () {
     const currentUser = this._getCurrentUser()
     const tokenId = currentUser.user_id || currentUser.sub
-
     api.getUserToken({tokenId: tokenId}, token => {
       this.userToken = token
-      if (updateStepData) updateStepData()
-      setTimeout(() => {
-        this.authenticated = true
-      }, 300)
+      this.authenticated = true
     })
   }
 
