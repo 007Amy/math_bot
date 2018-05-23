@@ -1,5 +1,5 @@
 class InitFocus {
-  constructor (state, stepData) {
+  constructor (stepData) {
     this.initFocusList = stepData.initFocus
     this._iterate = this._iterate.bind(this)
     this._removePulse = this._removePulse.bind(this)

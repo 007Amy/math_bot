@@ -1,16 +1,16 @@
 package actors
 
+import javax.inject.Inject
+
 import actors.LevelGenerationActor.GetGridMap
 import actors.StatsActor.{StatsDoneUpdating, UpdateStats}
 import actors.messages._
 import akka.actor.{Actor, ActorRef, Props}
 import akka.pattern.ask
 import akka.util.Timeout
-import compiler.operations.NoOperation
 import compiler.processor.{Frame, Processor}
 import compiler.{Compiler, GridAndProgram}
 import controllers.MathBotCompiler
-import javax.inject.Inject
 import loggers.MathBotLogger
 import model.PlayerTokenModel
 import model.models.GridMap
@@ -133,6 +133,7 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
             statsActor ! UpdateStats(success = true, tokenId)
           } else {
             out ! CompilerOutput(List(MathBotCompiler.ClientFrame.failure(frame)), problem)
+            statsActor ! UpdateStats(success = false, tokenId)
           }
           currentCompiler = None
         }
