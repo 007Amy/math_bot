@@ -71,33 +71,37 @@ class RunCompiled {
     this.robot.robotCarrying = holding
   }
 
+  _toggleCongrats = bool => this.$store.dispatch('toggleCongrats', bool)
+
   win () {
     api.getStats({tokenId: this.$store.getters.getTokenId}, stats => {
       const stepToken = stats.levels[stats.level][stats.step]
 
       this.$store.dispatch('updateStats', {stats,
         cb: () => {
-          this.$store.dispatch('showCongrats')
+          this._toggleCongrats(true)
 
           setTimeout(() => {
             if (this.params.step === stepToken.name) {
               this.$router.push({path: 'profile'})
             } else {
-              this.$store.dispatch('initNewGame', this.context)
+              this.$store.dispatch('updateStepData')
             }
-            this.$store.dispatch('hideCongrats')
+            this._toggleCongrats(false)
           }, 4000)
         }
       })
     })
   }
 
+  _toggleTryAgain = bool => this.$store.dispatch('toggleTryAgain', bool)
+
   lost (showMessage) {
     const time = showMessage ? 1000 : 100
     setTimeout(() => {
-      if (showMessage) this.$store.dispatch('showTryAgain')
+      if (showMessage) this._toggleTryAgain(true)
       setTimeout(() => {
-        this.$store.dispatch('initNewGame', this.context)
+        this.$store.dispatch('updateStepData')
         this.robot.robotCarrying = []
       }, time)
     }, time)
@@ -138,10 +142,12 @@ class RunCompiled {
           console.log('[ProgramState, last frame] ', current.programState)
           if (current.programState === 'success') {
             this.win()
+            return
           } else if (current.programState === 'failure') {
-            // this._initiateCompile() // Should ask for next 4 frames, instead keeps sending first four frames.
-          } else {
             this.lost(true)
+            return
+          } else {
+            this._initiateCompile()
           }
           this.robot.state = 'home'
           this.$store.dispatch('deactivateRobot')
@@ -156,12 +162,12 @@ class RunCompiled {
     api.compilerWebSocket.compileWs({context: this, problem: this.params.problem.encryptedProblem}, (compiled) => {
       const frames = compiled.frames
       console.log('[FRAMES] ', frames)
-      // if (frames !== undefined && frames.length) {
-      //   this.frames = frames
-      //   this.processFrames()
-      // } else {
-      //   console.log('NO FRAMES')
-      // }
+      if (frames !== undefined && frames.length) {
+        this.frames = frames
+        this.processFrames()
+      } else {
+        console.log('NO FRAMES')
+      }
     })
   }
 }

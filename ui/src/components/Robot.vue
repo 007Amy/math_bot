@@ -44,9 +44,7 @@ import SplashScreen from './Splash_screen'
 
 export default {
   mounted () {
-    setTimeout(() => {
-      this.$store.dispatch('updateStepData')
-    }, 1000)
+    this.$store.dispatch('updateStepData')
   },
   computed: {
     tokenId () {

@@ -42,8 +42,6 @@ class StepData {
       // WIP: going to seprated lambdas from user token
       this.lambdas = this.params.lambdas
       updateLambdas(this.lambdas)
-      // Run init focus
-      this._runInitFocus()
     })
   }
 }

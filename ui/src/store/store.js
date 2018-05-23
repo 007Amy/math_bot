@@ -6,6 +6,7 @@ import permanentImages from '../assets/assets'
 import Message from '../services/Message'
 import AuthService from '../services/AuthService'
 import StepData from '../services/StepData'
+import utils from '../services/utils'
 
 Vue.use(Vuex)
 Vue.use(VueDefaultValue)
@@ -91,8 +92,10 @@ export default new Vuex.Store({
   },
   mutations: {
     UPDATE_STEP_DATA (state) {
-      state.stepData = new StepData(state.auth.userToken.token_id, state.auth.userToken.stats)
-      state.stepData.getStep(function (lambdas) { state.auth.userToken.lambdas = lambdas })
+      utils.watcher(() => !state.auth.authenticated, () => {
+        state.stepData = new StepData(state.auth.userToken.token_id, state.auth.userToken.stats)
+        state.stepData.getStep(function (lambdas) { state.auth.userToken.lambdas = lambdas })
+      })
     },
     UPDATE_SPLASH_SCREEN_SHOWING (state, bool) {
       state.splashScreenShowing = bool
