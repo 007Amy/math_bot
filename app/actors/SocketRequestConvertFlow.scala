@@ -11,7 +11,7 @@ object SocketRequestConvertFlow {
   implicit val sockRequestReads : Reads[SocketRequest] = Json.reads[SocketRequest]
 
   def jsonToCompilerCommand(msg : JsValue) : Any = {
-    println(msg.toString())
+    //println(msg.toString())
     Json.fromJson[SocketRequest](msg).asOpt match {
       case Some(SocketRequest(_, _, Some(true), _)) => CompilerHalt()
       case Some(SocketRequest(Some(steps), Some(problem), _ ,None)) => CompilerExecute(steps, Problem(encryptedProblem = problem))
