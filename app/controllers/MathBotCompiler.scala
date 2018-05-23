@@ -65,6 +65,10 @@ object MathBotCompiler {
   }
 
   case class ClientFrame(robotState: ClientRobotState, programState: String)
+  {
+    def isSuccess() = programState == "success"
+    def isFailure() = programState == "failure"
+  }
 
   object ClientFrame {
     def apply(frame: Frame): ClientFrame = ClientFrame(frame, "running")
