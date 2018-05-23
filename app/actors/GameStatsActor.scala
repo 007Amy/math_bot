@@ -1,16 +1,12 @@
 package actors
 
-import actors.LevelGenerationActor.{makeQtyUnlimited, ActorFailed}
-import actors.messages.{PreparedStepData, RawLevelData, ResponsePlayerToken}
-import akka.actor.{Actor, ActorSystem, Props}
+import actors.messages.ActorFailed
+import akka.actor.{Actor, Props}
 import akka.pattern.pipe
 import loggers.MathBotLogger
-import model.{DefaultCommands, PlayerTokenModel}
-import model.models._
+import model.PlayerTokenModel
 import play.api.Environment
-import play.api.libs.json.{JsPath, JsValue, Json, Reads}
 import play.modules.reactivemongo.ReactiveMongoApi
-import play.api.libs.functional.syntax._
 
 object GameStatsActor {
   final case class GetTokenCount()

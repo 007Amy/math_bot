@@ -1,14 +1,14 @@
 package actors
 
 import actors.LevelGenerationActor.GetGridMap
-import actors.StatsActor.{ StatsDoneUpdating, UpdateStats }
+import actors.StatsActor.{StatsDoneUpdating, UpdateStats}
 import actors.messages._
-import akka.actor.{ Actor, ActorRef, Props }
+import akka.actor.{Actor, ActorRef, Props}
 import akka.pattern.ask
 import akka.util.Timeout
 import compiler.operations.NoOperation
-import compiler.processor.{ Frame, Processor }
-import compiler.{ Compiler, GridAndProgram }
+import compiler.processor.{Frame, Processor}
+import compiler.{Compiler, GridAndProgram}
 import controllers.MathBotCompiler
 import javax.inject.Inject
 import loggers.MathBotLogger
@@ -103,23 +103,24 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
           // Compress the grid to only cells that were changed by a frame.
           val taggedDuplicates = clientFrames
             .map(c => (c.robotState.grid, Set.empty[ClientCell]))
-            .scanLeft((Option(ClientGrid(cells = Set.empty[ClientCell])), Set.empty[ClientCell])) { (previous, current) =>
-              val changes = for {
-                p <- previous._1
-                c <- current._1
-              } yield {
-                val prevDiff = p.cells diff c.cells
-                val currDiff = c.cells diff p.cells
-                val modifiedPart1 = (prevDiff ++ currDiff)
-                  .groupBy(c => c.location)
-                  .filter(g => g._2.size > 1)
-                val modifidePart2 =
-                  c.cells.filter(p => modifiedPart1.contains(p.location))
-                val removed = (prevDiff diff currDiff).filter(p => !modifiedPart1.contains(p.location))
-                val newcells = (currDiff diff prevDiff).filter(p => !modifiedPart1.contains(p.location))
-                removed.map(c => c.copy(items = List.empty[String])) ++ modifidePart2 ++ newcells
-              }
-              (current._1, changes.getOrElse(Set.empty[ClientCell]))
+            .scanLeft((Option(ClientGrid(cells = Set.empty[ClientCell])), Set.empty[ClientCell])) {
+              (previous, current) =>
+                val changes = for {
+                  p <- previous._1
+                  c <- current._1
+                } yield {
+                  val prevDiff = p.cells diff c.cells
+                  val currDiff = c.cells diff p.cells
+                  val modifiedPart1 = (prevDiff ++ currDiff)
+                    .groupBy(c => c.location)
+                    .filter(g => g._2.size > 1)
+                  val modifidePart2 =
+                    c.cells.filter(p => modifiedPart1.contains(p.location))
+                  val removed = (prevDiff diff currDiff).filter(p => !modifiedPart1.contains(p.location))
+                  val newcells = (currDiff diff prevDiff).filter(p => !modifiedPart1.contains(p.location))
+                  removed.map(c => c.copy(items = List.empty[String])) ++ modifidePart2 ++ newcells
+                }
+                (current._1, changes.getOrElse(Set.empty[ClientCell]))
             }
           val deduped = taggedDuplicates.tail
             .zip(clientFrames)
@@ -128,7 +129,7 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
                 v._2.copy(
                   robotState = v._2.robotState
                     .copy(grid = Some(ClientGrid(cells = v._1._2)))
-                )
+              )
             )
 
           if (lastFrame.exists(_.programState == "success"))
@@ -142,13 +143,13 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
         }
       }
 
-    case _ : CompilerHalt =>
+    case _: CompilerHalt =>
       logger.LogInfo(className, "Compiler halted")
       currentCompiler = None
       out ! CompilerHalted()
 
-    case Left(_ : StatsDoneUpdating) =>
-      logger.LogResponse(className, s"Stats updated successfully. token_id:$tokenId")
+    case Left(_: StatsDoneUpdating) =>
+      logger.LogInfo(className, s"Stats updated successfully. token_id:$tokenId")
 
     case Right(invalidJson: ActorFailed) =>
       logger.LogFailure(className, invalidJson.msg)
