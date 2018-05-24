@@ -4,7 +4,7 @@ import urlEncode from 'urlencode'
 class CompilerSocket extends Ws {
   constructor () {
     super()
-    this._compilerTake = 40
+    this._compilerTake = 4
   }
 
   /*

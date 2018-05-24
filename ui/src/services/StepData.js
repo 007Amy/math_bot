@@ -37,7 +37,7 @@ class StepData {
       // We must reverse the order of the tools for rendering
       this.params.gridMap = this._reverseTools(this.params.gridMap)
       // Reset robot in the state
-      this.robot = new Robot({orientation: this.params.robotOrientation})
+      this.robot = new Robot({robotFacing: this.params.robotOrientation})
       // store lambdas so state can replace the ones in the user token
       // WIP: going to seprated lambdas from user token
       this.lambdas = this.params.lambdas

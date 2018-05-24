@@ -235,7 +235,7 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
               cmds = cmds,
               stagedFuncs = newStagedAndDefault("newStaged"),
               defaultFuncs = Some(newStagedAndDefault("newDefault")),
-              activeFuncs = preBuiltActive ::: preBuiltActive ::: activeFuncs.zipWithIndex
+              activeFuncs = preBuiltActive ::: activeFuncs.zipWithIndex
                 .map(d => d._1.copy(index = Some(d._2))),
               main =
                 if (rawStepData.clearMain) playerToken.lambdas.get.main.copy(func = Some(List.empty[FuncToken]))
