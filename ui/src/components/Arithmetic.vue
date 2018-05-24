@@ -76,7 +76,7 @@ export default {
     },
     selectLevel (level, step) {
       api.switchLevel({tokenId: this.tokenId, level: level, step: step}, (res) => {
-        this.$store.dispatch('updateStats', {stats: res.body})
+        this.$store.dispatch('updateStats', res.body)
         this.selectedLevel = level
       })
     },
@@ -85,10 +85,8 @@ export default {
     },
     goToRobot (level, step) {
       api.switchLevel({tokenId: this.tokenId, level: level, step: step}, (res) => {
-        this.$store.dispatch('updateStats', {stats: res.body,
-          cb: () => {
-            this.$router.push({path: '/robot'})
-          }})
+        this.$store.dispatch('updateStats', res.body)
+        this.$router.push({path: '/robot'})
       })
     }
   },
