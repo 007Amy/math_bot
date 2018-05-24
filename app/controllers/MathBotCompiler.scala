@@ -3,13 +3,15 @@ package controllers
 import java.net.URLDecoder
 
 import actors._
-import akka.actor.{ Actor, ActorSystem, Props }
+import akka.actor.{Actor, ActorSystem, Props}
 import akka.pattern.ask
 import akka.stream.Materializer
 import akka.util.Timeout
-import compiler.processor.{ AnimationType, Frame }
-import compiler.{ Cell, Point }
+import compiler.processor.{AnimationType, Frame}
+import compiler.{Cell, Point}
 import javax.inject.Inject
+
+import actors.messages.PreparedStepData
 import loggers.MathBotLogger
 import model.PlayerTokenModel
 import model.models._
@@ -64,24 +66,35 @@ object MathBotCompiler {
 
   }
 
-  case class ClientFrame(robotState: ClientRobotState, programState: String)
-  {
+  case class ClientFrame(robotState: ClientRobotState,
+                         programState: String,
+                         stats: Option[Stats],
+                         stepData: Option[PreparedStepData]) {
     def isSuccess() = programState == "success"
     def isFailure() = programState == "failure"
   }
 
   object ClientFrame {
-    def apply(frame: Frame): ClientFrame = ClientFrame(frame, "running")
+    def apply(frame: Frame, stats: Option[Stats] = None, stepData: Option[PreparedStepData] = None): ClientFrame =
+      ClientFrame(frame, "running", stats, stepData)
 
-    def success(frame: Frame): ClientFrame = ClientFrame(frame, "success")
+    def success(frame: Frame, stats: Stats, stepData: PreparedStepData): ClientFrame =
+      ClientFrame(frame, "success", Some(stats), Some(stepData))
 
-    def failure(frame: Frame): ClientFrame = ClientFrame(frame, "failure")
+    def failure(frame: Frame, stats: Stats, stepData: PreparedStepData): ClientFrame =
+      ClientFrame(frame, "failure", Some(stats), Some(stepData))
 
-    def apply(frame: Frame, programState: String): ClientFrame =
-      ClientFrame(ClientRobotState(frame), programState)
+    def apply(frame: Frame,
+              programState: String,
+              stats: Option[Stats],
+              stepData: Option[PreparedStepData]): ClientFrame =
+      ClientFrame(ClientRobotState(frame), programState, stats, stepData)
   }
 
-  case class ClientResponse(frames : List[ClientFrame] = List.empty[ClientFrame], problem : Option[Problem] = None, halted : Option[Boolean] = None, error : Option[String] = None)
+  case class ClientResponse(frames: List[ClientFrame] = List.empty[ClientFrame],
+                            problem: Option[Problem] = None,
+                            halted: Option[Boolean] = None,
+                            error: Option[String] = None)
 
 }
 
@@ -104,23 +117,24 @@ class MathBotCompiler @Inject()(val reactiveMongoApi: ReactiveMongoApi)(implicit
     Ok(changeSsl)
   }
 
-
   def compileWs(encodedTokenId: String): WebSocket =
     WebSocket.accept[JsValue, JsValue] {
       case rh if sameOriginCheck(rh) =>
         SocketRequestConvertFlow()
           .via(
-          ActorFlow.actorRef(
-          out =>
-            CompilerActor.props(out,
-                                URLDecoder.decode(encodedTokenId, "UTF-8"),
-                                reactiveMongoApi,
-                                statsActor,
-                                levelActor,
-                                mathBotLogger)
-        )).via(
-          SocketResponseConvertFlow()
-        )
+            ActorFlow.actorRef(
+              out =>
+                CompilerActor.props(out,
+                                    URLDecoder.decode(encodedTokenId, "UTF-8"),
+                                    reactiveMongoApi,
+                                    statsActor,
+                                    levelActor,
+                                    mathBotLogger)
+            )
+          )
+          .via(
+            SocketResponseConvertFlow()
+          )
       case rejected =>
         ActorFlow.actorRef(out => {
           SameOriginFailedActor.props(out, mathBotLogger)
@@ -146,23 +160,19 @@ class MathBotCompiler @Inject()(val reactiveMongoApi: ReactiveMongoApi)(implicit
 
         val compilerProps =
           CompilerActor.props(fakeActor,
-            URLDecoder.decode(encodedTokenId, "UTF-8"),
-            reactiveMongoApi,
-            statsActor,
-            levelActor,
-            mathBotLogger)
+                              URLDecoder.decode(encodedTokenId, "UTF-8"),
+                              reactiveMongoApi,
+                              statsActor,
+                              levelActor,
+                              mathBotLogger)
         val compiler = system.actorOf(compilerProps)
 
-        (compiler ? sr).map(SocketResponseConvertFlow.compilerResponseToJson)
+        (compiler ? sr)
+          .map(SocketResponseConvertFlow.compilerResponseToJson)
           .map(Ok(_))
       case _ =>
         Future(NoContent)
     }
 
-
-
-
   }
 }
-
-

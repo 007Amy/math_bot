@@ -24,13 +24,17 @@ class RunCompiled {
 
   _success (frame) {
     return new Promise(resolve => {
-      resolve(() => console.log('[SUCCESS]', frame))
+      api.compilerWebSocket.haltProgram(() => {
+        resolve(() => console.log('[SUCCESS]', frame))
+      })
     })
   }
 
   _failure (frame) {
     return new Promise(resolve => {
-      resolve(() => console.log('[FAILURE]', frame))
+      api.compilerWebSocket.haltProgram(() => {
+        resolve(() => console.log('[FAILURE]', frame))
+      })
     })
   }
 

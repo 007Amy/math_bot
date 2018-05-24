@@ -10,6 +10,8 @@ import loggers.MathBotLogger
 import model.models.{Stats, StepToken}
 import play.modules.reactivemongo.ReactiveMongoApi
 
+import scala.concurrent.Future
+
 object StatsActor {
 
   case class ChangeLevel(tokenId: String, level: String, step: String)
@@ -126,20 +128,18 @@ class StatsActor @Inject()(val system: ActorSystem, val reactiveMongoApi: Reacti
         }
         .pipeTo(self)(sender)
     case UpdateStats(success, tokenId) =>
-      if (success) {
-        getToken(tokenId)
-          .map {
-            case Some(token) =>
-              token.stats match {
-                case Some(stats) =>
-                  val updatedStats = updateStats(stats)
-                  UpdatePlayerToken(token.copy(stats = Some(updatedStats)))
-                case None => ActorFailed("No stats with this player token.")
-              }
-            case None => ActorFailed(s"No token found with token_id $tokenId.")
-          }
-          .pipeTo(self)(sender)
-      } else sender ! Right(ActorFailed("Nothing to update."))
+      getToken(tokenId)
+        .map {
+          case Some(token) =>
+            token.stats match {
+              case Some(stats) =>
+                val updatedStats = if (success) updateStats(stats) else stats
+                UpdatePlayerToken(token.copy(stats = Some(updatedStats)))
+              case None => ActorFailed("No stats with this player token.")
+            }
+          case None => ActorFailed(s"No token found with token_id $tokenId.")
+        }
+        .pipeTo(self)(sender)
     case ChangeLevel(tokenId, level, step) =>
       getToken(tokenId)
         .map {
@@ -198,7 +198,7 @@ class StatsActor @Inject()(val system: ActorSystem, val reactiveMongoApi: Reacti
         .pipeTo(self)(sender)
     case doneUpdating: StatsDoneUpdating =>
       logger.LogDebug(className, s"Stats updated successfully. token_id: ${doneUpdating.tokenId}")
-      sender ! Left(doneUpdating)
+      sender ! Left(doneUpdating.stats)
     case actorFailed: ActorFailed =>
       logger.LogFailure(className, actorFailed.msg)
       sender ! Right(actorFailed)
