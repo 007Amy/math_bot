@@ -21,8 +21,8 @@ case class PreparedStepData(
     problem: Problem,
     prevStep: String,
     nextStep: String,
-    preBuiltActiveIds: Option[List[String]],
-    assignedStagedIds: Option[List[String]],
+//    preBuiltActiveIds: Option[List[String]],
+//    assignedStagedIds: Option[List[String]],
     initFocus: List[String],
     stepControl: StepControl
 )
@@ -32,9 +32,10 @@ object PreparedStepData {
   import model.models.Problem._
 
   def apply(playerToken: PlayerToken,
-            rawStepData: RawStepData,
-            preBuiltActiveIds: Option[List[String]],
-            assignedStagedIds: Option[List[String]]): PreparedStepData = new PreparedStepData(
+            rawStepData: RawStepData
+//            preBuiltActiveIds: Option[List[String]],
+//            assignedStagedIds: Option[List[String]]
+  ): PreparedStepData = new PreparedStepData(
     tokenId = playerToken.token_id,
     level = rawStepData.level,
     step = rawStepData.step,
@@ -50,8 +51,8 @@ object PreparedStepData {
     problem = problemGen(rawStepData),
     prevStep = rawStepData.prevStep,
     nextStep = rawStepData.nextStep,
-    preBuiltActiveIds = preBuiltActiveIds,
-    assignedStagedIds = assignedStagedIds,
+//    preBuiltActiveIds = preBuiltActiveIds,
+//    assignedStagedIds = assignedStagedIds,
     initFocus = createInitFocus(rawStepData.initFocus),
     stepControl = new StepControl(rawStepData, prepareLambdas(playerToken, rawStepData))
   )
@@ -123,10 +124,8 @@ object PreparedStepData {
 
   val stepDataReads: Reads[PreparedStepData] = (
     (JsPath \ "playerToken").read[PlayerToken] and
-    (JsPath \ "rawStepData").read[RawStepData] and
-    (JsPath \ "preBuiltActiveIds").readNullable[List[String]] and
-    (JsPath \ "assignedStagedIds").readNullable[List[String]]
-  )(PreparedStepData(_, _, _, _))
+    (JsPath \ "rawStepData").read[RawStepData]
+  )(PreparedStepData(_, _))
 
   val stepDataWrites: Writes[PreparedStepData] = (
     (JsPath \ "tokenId").write[String] and
@@ -144,8 +143,6 @@ object PreparedStepData {
     (JsPath \ "problem").write[Problem] and
     (JsPath \ "prevStep").write[String] and
     (JsPath \ "nextStep").write[String] and
-    (JsPath \ "preBuiltActiveIds").writeNullable[List[String]] and
-    (JsPath \ "assignedStagedIds").writeNullable[List[String]] and
     (JsPath \ "initFocus").write[List[String]] and
     OWrites[StepControl](_ => Json.obj())
   )(unlift(PreparedStepData.unapply))

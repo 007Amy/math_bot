@@ -1,7 +1,7 @@
 <template>
   <div class="robot-container" data-aos="fade-in">
-    <splash-screen v-if="splashScreenShowing"></splash-screen>
-    <div id="robot" class="row animated" v-else>
+    <splash-screen v-if="stepData === null"></splash-screen>
+    <div  v-else id="robot" class="row animated">
 
       <div id="control-panel-box">
         <control-panel></control-panel>
@@ -39,17 +39,28 @@ import Editmain from './Edit_main'
 import Editfunction from './Edit_function'
 import Trash from './Trash'
 import Messages from './Messages'
-import AuthService from '../services/AuthService'
 import ControlPanel from './Control_panel'
 import SplashScreen from './Splash_screen'
 
 export default {
   mounted () {
-    const auth = new AuthService(this)
-    auth.createLock()
-    auth.init()
+    setTimeout(() => {
+      this.$store.dispatch('updateStepData')
+    }, 1000)
   },
   computed: {
+    tokenId () {
+      return this.$store.getters.getTokenId
+    },
+    stats () {
+      return this.$store.getters.getStats
+    },
+    stepData () {
+      return this.$store.getters.getStepData
+    },
+    auth () {
+      return this.$store.getters.getAuth
+    },
     splashScreenShowing () {
       return this.$store.getters.getSplashScreenShowing
     },
@@ -111,7 +122,7 @@ export default {
       return this.$store.getters.getActiveFunctionGroups
     },
     currentStepData () {
-      return this.$store.getters.getCurrentStepData
+      return this.$store.getters.getStepData
     }
   },
   methods: {

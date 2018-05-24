@@ -153,7 +153,7 @@ module.exports = {
   gridSpace: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522346735/misc/Space_background.jpg',
   profileSpace: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522347137/misc/profileSpace.png',
   blackHole: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg',
-  returnToProfile: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522347515/misc/NavToOverview_y7ov4y.svg',
+  returnToProfile: 'http://res.cloudinary.com/doohickey/image/upload/v1527001471/NavToOverview_y7ov4y_q0w2jd.svg',
   instructionsRobot: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522347656/misc/instructionsRobot_bg7561.svg',
   speechBubble: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522347745/misc/speechBubble.png',
   gridMesh: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522345998/misc/grid-mesh_auu3wh.svg',

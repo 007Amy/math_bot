@@ -1,5 +1,6 @@
 <template>
   <div class="arithmetic">
+    <!--<button @click="addMutatedData">Add Mutated bs</button>-->
     <space :levels="levels" :is-level-active="isLevelActive" :permanent-images="permanentImages" :select-level="selectLevel" :selected-level="selectedLevel" :first-step="firstStep"></space>
     <steps :level="level" :steps="steps" :permanent-images="permanentImages" :go-to-robot="goToRobot"></steps>
   </div>
@@ -58,6 +59,9 @@ export default {
   },
   methods: {
     parseCamelCase: utils.parseCamelCase,
+    addMutatedData () {
+      api.insertTokenForTesting()
+    },
     isLevelActive (l) {
       const level = l.level
       return Object.keys(level).reduce((bool, step) => {

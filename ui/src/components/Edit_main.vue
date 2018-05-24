@@ -75,7 +75,7 @@ export default {
       return this.robot.getSpeed().display
     },
     stepData () {
-      return this.$store.getters.getCurrentStepData
+      return this.$store.getters.getStepData
     },
     currentColor () {
       return this.$store.getters.getColorSelected

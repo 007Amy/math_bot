@@ -29,7 +29,7 @@ export default {
       return new Array(this.stepData.mainMax)
     },
     stepData () {
-      return this.$store.getters.getCurrentStepData
+      return this.$store.getters.getStepData
     }
   },
   watch: {

@@ -142,7 +142,6 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
       for {
         programState <- currentCompiler
       } yield {
-
         // filter out non-robot frames (eg function calls and program start)
         val robotFrames = programState.iterator.filter(f => f.robotLocation.isDefined).take(steps).toList
 
@@ -194,12 +193,12 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
         }
       }
 
-    case _ : CompilerHalt =>
+    case _: CompilerHalt =>
       logger.LogInfo(className, "Compiler halted")
       currentCompiler = None
       out ! CompilerHalted()
 
-    case Left(_ : StatsDoneUpdating) =>
+    case Left(_: StatsDoneUpdating) =>
       logger.LogInfo(className, s"Stats updated successfully. token_id:$tokenId")
 
     case Right(invalidJson: ActorFailed) =>

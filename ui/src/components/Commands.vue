@@ -53,7 +53,7 @@
     <img
       id="open-staged"
       class="dialog-button"
-      v-if="this.currentStepData.stagedEnabled"
+      v-if="this.stepData.stagedEnabled"
       :class="functionAreaShowing === 'addFunction' ? 'rotate-to-x' : 'rotate-to-plus'"
       @click="toggleFunctionAdd"
       :src="permanentImages.buttons.plusButton"
@@ -78,8 +78,11 @@ export default {
     })
   },
   computed: {
+    stepData () {
+      return this.$store.getters.getStepData
+    },
     currentStepData () {
-      return this.$store.getters.getCurrentStepData
+      return this.$store.getters.getStepData
     },
     token () {
       return this.$store.getters.getToken

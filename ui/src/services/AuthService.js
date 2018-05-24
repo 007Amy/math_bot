@@ -5,15 +5,50 @@ import images from '../assets/assets'
 import { AUTH0_DOMAIN, AUTH0_ID } from '../keys'
 
 class AuthService {
-  constructor (context) {
-    this.context = context
+  constructor () {
     this.lock = null
+    this.authenticated = false
+    this.userToken = null
+    this._init()
+  }
+
+  /*
+  * Used in Marketing.vue to login user, or navigate to profile page
+  * */
+  login () {
+    if (this._isAuth()) {
+      this._getUserToken()
+    } else {
+      this.lock.show()
+    }
+  }
+
+  _isAuth () {
+    return !!localStorage.getItem('accessToken')
+  }
+
+  logout () {
+    localStorage.clear()
+    this.userToken = null
+    this.authenticated = false
+    window.location = '/#/about'
+  }
+
+  /*
+  * Used in App.vue to determine if user is already signed in
+  * */
+
+  isAuthenticated () {
+    if (this._isAuth()) {
+      this._getUserToken()
+    } else {
+      this.logout()
+    }
   }
 
   _handleAuth (authResult) {
-    const dis = this
     // Use the token in authResult to getUserInfo() and save it to localStorage
-    this.lock.getUserInfo(authResult.accessToken, function (error, profile) {
+    this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
       if (error) {
         // Handle error
         console.log('Error Retrieving Profile')
@@ -21,45 +56,24 @@ class AuthService {
       }
       localStorage.setItem('accessToken', authResult.accessToken)
       localStorage.setItem('profile', JSON.stringify(profile))
-      dis.login()
-      dis.context.$router.push({path: '/profile'})
+      this._getUserToken()
     })
-  }
-
-  _isLoggedIn () {
-    return !!localStorage.getItem('profile')
   }
 
   _getCurrentUser () {
     return JSON.parse(localStorage.getItem('profile'))
   }
 
-  _startSplashScreen () {
-    this.context.$store.dispatch('updateSplashScreenShowing', true)
-  }
-
-  _stopSplashScreen () {
-    this.context.$store.dispatch('updateSplashScreenShowing', false)
-  }
-
-  login () {
+  _getUserToken () {
     const currentUser = this._getCurrentUser()
     const tokenId = currentUser.user_id || currentUser.sub
-
     api.getUserToken({tokenId: tokenId}, token => {
-      token.userInfo = this._getCurrentUser()
-      this.context.$store.dispatch('updateToken', [token, () => {
-        const path = this.context.$route.path
-        if (path === '/robot') { // If path is robot, initialize a new game
-          this.context.$store.dispatch('initNewGame', this.context)
-        }
-        localStorage.setItem('LAST_PATH', this.context.$route.path)
-        this._stopSplashScreen()
-      }])
+      this.userToken = token
+      this.authenticated = true
     })
   }
 
-  createLock () {
+  _createLock () {
     this.lock = new Auth0Lock(
       AUTH0_ID,
       AUTH0_DOMAIN,
@@ -80,32 +94,13 @@ class AuthService {
     )
   }
 
-  logout () {
-    localStorage.clear()
-
-    this.context.$router.push({path: '/about'})
-
-    setTimeout(_ => location.reload())
-
-    setTimeout(() => {
-      location.reload()
-    }, 1500)
-  }
-
-  init () {
-    this._startSplashScreen()
+  _init () {
+    this._createLock()
 
     // Listening for the authenticated event
     this.lock.on('authenticated', (authResult) => {
       this._handleAuth(authResult)
-      this._stopSplashScreen()
     })
-
-    if (this._isLoggedIn()) {
-      this.login()
-    } else {
-      this.lock.show()
-    }
   }
 }
 
