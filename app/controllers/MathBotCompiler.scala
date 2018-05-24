@@ -78,9 +78,11 @@ object MathBotCompiler {
     def apply(frame: Frame, stats: Option[Stats] = None, stepData: Option[PreparedStepData] = None): ClientFrame =
       ClientFrame(frame, "running", stats, stepData)
 
+    // stepData is the step data to render at this point
     def success(frame: Frame, stats: Stats, stepData: PreparedStepData): ClientFrame =
       ClientFrame(frame, "success", Some(stats), Some(stepData))
 
+    // stepData is the step data to render at this point
     def failure(frame: Frame, stats: Stats, stepData: PreparedStepData): ClientFrame =
       ClientFrame(frame, "failure", Some(stats), Some(stepData))
 

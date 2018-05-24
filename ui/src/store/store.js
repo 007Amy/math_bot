@@ -5,8 +5,6 @@ import VueDefaultValue from 'vue-default-value/dist/vue-default-value'
 import permanentImages from '../assets/assets'
 import Message from '../services/Message'
 import AuthService from '../services/AuthService'
-import StepData from '../services/StepData'
-import utils from '../services/utils'
 
 Vue.use(Vuex)
 Vue.use(VueDefaultValue)
@@ -74,7 +72,7 @@ export default new Vuex.Store({
     showCongrats: false,
     tryAgainShowing: false,
     compiledDone: false,
-    stepData: {params: null},
+    stepData: {},
     robot: {},
     profileView: 'Arithmetic',
     functionGroupsCalc: null,
@@ -91,11 +89,17 @@ export default new Vuex.Store({
     splashScreenShowing: false
   },
   mutations: {
-    UPDATE_STEP_DATA (state) {
-      utils.watcher(() => !state.auth.authenticated, () => {
-        state.stepData = new StepData(state.auth.userToken.token_id, state.auth.userToken.stats)
-        state.stepData.getStep(function (lambdas) { state.auth.userToken.lambdas = lambdas })
-      })
+    UPDATE_STEP_DATA (state, stepData) {
+      function reverseTools (stepData) {
+        stepData.gridMap = stepData.gridMap.map(row => {
+          return row.map(cell => {
+            cell.tools = cell.tools.reverse()
+            return cell
+          })
+        })
+        return stepData
+      }
+      state.stepData = reverseTools(stepData)
     },
     UPDATE_SPLASH_SCREEN_SHOWING (state, bool) {
       state.splashScreenShowing = bool
@@ -129,7 +133,7 @@ export default new Vuex.Store({
     UPDATE_ROBOT (state, robot) {
       state.robot = robot
     },
-    UPDATE_LAMBDAS (state, {lambdas}) {
+    UPDATE_LAMBDAS (state, lambdas) {
       state.auth.userToken.lambdas = lambdas
     },
     UPDATE_STATS (state, {stats, cb}) {
@@ -177,7 +181,7 @@ export default new Vuex.Store({
       state.auth.userToken.u_id = userData._id
     },
     CHANGE_ROBOT_SPEED (state) {
-      state.stepData.robot.adjustSpeed()
+      state.robot.adjustSpeed()
     },
     CHANGE_FULLSCREEN (state) {
       state.fullscreen = !state.fullscreen
@@ -235,8 +239,8 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    updateStepData ({commit}) {
-      commit('UPDATE_STEP_DATA')
+    updateStepData ({commit}, stepData) {
+      commit('UPDATE_STEP_DATA', stepData)
     },
     updateRobot ({commit}, robot) {
       commit('UPDATE_ROBOT', robot)
@@ -307,8 +311,8 @@ export default new Vuex.Store({
     changeFullscreen ({commit}) {
       commit('CHANGE_FULLSCREEN')
     },
-    updateLambdas ({commit}, {lambdas}) {
-      commit('UPDATE_LAMBDAS', {lambdas})
+    updateLambdas ({commit}, lambdas) {
+      commit('UPDATE_LAMBDAS', lambdas)
     },
     createLock ({commit}) {
       commit('CREATE_LOCK')
@@ -354,7 +358,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    getStepData: state => state.stepData.params,
+    getStepData: state => state.stepData,
     getSplashScreenShowing: state => state.splashScreenShowing,
     getPointerPosition: state => state.pointerPosition,
     getShowMesh: state => state.showMesh,
@@ -362,15 +366,15 @@ export default new Vuex.Store({
     getTokenId: state => state.auth.userToken.token_id,
     getTrashVisible: state => state.trashVisible,
     // getFunctionGroups: state => state.functionGroups,
-    getGrid: state => state.stepData.params.grid,
-    getRobotDeactivated: state => state.stepData.robot.robotDeactivated,
+    getGrid: state => state.stepData.grid,
+    getRobotDeactivated: state => state.robot.robotDeactivated,
     getCurrentEquation: state => state.auth.userToken.stats.currentEquation,
     getCongratsShowing: state => state.showCongrats,
     getTryAgainShowing: state => state.tryAgainShowing,
     getGame: state => state.game,
-    getRobot: state => state.stepData.robot,
+    getRobot: state => state.robot,
     getLevel: state => state.auth.userToken.stats.level,
-    getRobotCarrying: state => state.stepData.robot.robotCarrying,
+    getRobotCarrying: state => state.robot.robotCarrying,
     getPermanentImages: state => state.permanentImages,
     getRandomImages: state => state.auth.userToken.randomImages,
     getCommands: state => state.auth.userToken.lambdas.cmds, // <-- Array

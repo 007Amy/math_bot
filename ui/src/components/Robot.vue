@@ -1,6 +1,6 @@
 <template>
   <div class="robot-container" data-aos="fade-in">
-    <splash-screen v-if="stepData === null"></splash-screen>
+    <splash-screen v-if="!Object.keys(stepData).length"></splash-screen>
     <div  v-else id="robot" class="row animated">
 
       <div id="control-panel-box">
@@ -41,10 +41,13 @@ import Trash from './Trash'
 import Messages from './Messages'
 import ControlPanel from './Control_panel'
 import SplashScreen from './Splash_screen'
+import api from '../services/api'
+import utils from '../services/utils'
+import Robot from '../services/Robot'
 
 export default {
   mounted () {
-    this.$store.dispatch('updateStepData')
+    this.initializeRobot()
   },
   computed: {
     tokenId () {
@@ -124,6 +127,16 @@ export default {
     }
   },
   methods: {
+    initializeRobot () {
+      utils.watcher(() => !this.auth.authenticated, () => {
+        api.getStep({tokenId: this.tokenId, level: this.stats.level, step: this.stats.step}, res => {
+          const stepData = res.body
+          this.$store.dispatch('updateStepData', stepData)
+          this.$store.dispatch('updateLambdas', stepData.lambdas)
+          this.$store.dispatch('updateRobot', new Robot({robotFacing: stepData.robotOrientation}))
+        })
+      })
+    },
     showProgramPanel () {
       this.$store.dispatch('controlProgramPanelShowing')
     },

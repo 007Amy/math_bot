@@ -1,4 +1,5 @@
 import api from './api'
+import Robot from './Robot'
 
 class RunCompiled {
   constructor ({context}) {
@@ -22,10 +23,20 @@ class RunCompiled {
   * Below here for new ask compiler
   * */
 
+  _initializeStep (frame) {
+    this.$store.dispatch('updateStats', frame.stats)
+    this.$store.dispatch('updateStepData', frame.stepData)
+    this.$store.dispatch('updateLambdas', frame.stepData.lambdas)
+    this.$store.dispatch('updateRobot', new Robot({robotFacing: frame.stepData.robotOrientation}))
+  }
+
   _success (frame) {
     return new Promise(resolve => {
       api.compilerWebSocket.haltProgram(() => {
-        resolve(() => console.log('[SUCCESS]', frame))
+        resolve(() => {
+          this._initializeStep(frame)
+          console.log('[SUCCESS]', frame)
+        })
       })
     })
   }
@@ -33,6 +44,7 @@ class RunCompiled {
   _failure (frame) {
     return new Promise(resolve => {
       api.compilerWebSocket.haltProgram(() => {
+        this._initializeStep(frame)
         resolve(() => console.log('[FAILURE]', frame))
       })
     })
