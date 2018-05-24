@@ -136,9 +136,8 @@ export default new Vuex.Store({
     UPDATE_LAMBDAS (state, lambdas) {
       state.auth.userToken.lambdas = lambdas
     },
-    UPDATE_STATS (state, {stats, cb}) {
+    UPDATE_STATS (state, stats) {
       state.auth.userToken.stats = stats
-      if (cb) cb()
     },
     CREATE_LOCK (state) {
 
@@ -260,8 +259,8 @@ export default new Vuex.Store({
     updateFunctionGroups ({commit}) {
       commit('UPDATE_FUNCTION_GROUPS')
     },
-    updateStats ({commit}, {stats, cb}) {
-      commit('UPDATE_STATS', {stats, cb})
+    updateStats ({commit}, stats) {
+      commit('UPDATE_STATS', stats)
     },
     clearCurrentFunction ({commit}) {
       commit('CLEAR_CURRENT_FUNCTION')

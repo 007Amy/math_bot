@@ -40,7 +40,7 @@ export default {
       const tokenId = this.$store.getters.getToken.token_id
       this.$http.get('/api/stats/unlock/' + tokenId)
         .then(res => {
-          this.$store.dispatch('updateStats', {stats: res.body})
+          this.$store.dispatch('updateStats', res.body)
         })
         .catch(err => console.error(err.message))
     },
@@ -48,7 +48,7 @@ export default {
       const tokenId = this.$store.getters.getToken.token_id
       this.$http.get('/api/stats/reset/' + tokenId)
         .then(res => {
-          this.$store.dispatch('updateStats', {stats: res.body})
+          this.$store.dispatch('updateStats', res.body)
         })
         .catch(err => console.error(err.message))
     }
