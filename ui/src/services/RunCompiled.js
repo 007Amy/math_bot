@@ -1,8 +1,10 @@
 import api from './api'
-import Robot from './Robot'
+import Robot from './RobotState'
+import GridAnimator from './GridAnimator'
 
-class RunCompiled {
+class RunCompiled extends GridAnimator {
   constructor ({context}) {
+    super()
     if (context) {
       this.context = context
       this.robotFrames = []
@@ -12,9 +14,14 @@ class RunCompiled {
       this.params = this.$store.getters.getStepData
       this.toolList = this.params.toolList
 
+      console.clear()
+
       this._askCompiler = this._askCompiler.bind(this)
-      this._askCompiler()
       this._processFrames = this._processFrames.bind(this)
+      this._initializeStep = this._initializeStep.bind(this)
+      this._showBridgeScreen = this._showBridgeScreen.bind(this)
+
+      this._askCompiler()
       setTimeout(this._processFrames, 500)
     }
   }
@@ -27,37 +34,42 @@ class RunCompiled {
     this.$store.dispatch('updateStats', frame.stats)
     this.$store.dispatch('updateStepData', frame.stepData)
     this.$store.dispatch('updateLambdas', frame.stepData.lambdas)
-    this.$store.dispatch('updateRobot', new Robot({robotFacing: frame.stepData.robotOrientation}))
+    this.$store.dispatch('updateRobot', new Robot(frame.stepData.initialRobotState))
+  }
+
+  _toggleBridge = (which, bool) => this.$store.dispatch(`toggle${which}`, bool)
+
+  _showBridgeScreen (frame) {
+    return new Promise(resolve => {
+      if (frame.programState === 'failure') this._toggleBridge('TryAgain', true)
+      else this._toggleBridge('Congrats', true)
+      setTimeout(() => {
+        this._toggleBridge('Congrats', false)
+        this._toggleBridge('TryAgain', false)
+        resolve()
+      }, 3000)
+    })
   }
 
   _success (frame) {
-    return new Promise(resolve => {
-      api.compilerWebSocket.haltProgram(() => {
-        resolve(() => {
-          this._initializeStep(frame)
-          console.log('[SUCCESS]', frame)
-        })
-      })
+    return this.initializeAnimation(this.$store, frame, async () => {
+      await this._showBridgeScreen(frame)
+      this._initializeStep(frame)
     })
   }
 
   _failure (frame) {
-    return new Promise(resolve => {
-      api.compilerWebSocket.haltProgram(() => {
-        this._initializeStep(frame)
-        resolve(() => console.log('[FAILURE]', frame))
-      })
+    return this.initializeAnimation(this.$store, frame, async () => {
+      await this._showBridgeScreen(frame)
+      this._initializeStep(frame)
     })
   }
 
   _running (frame) {
-    return new Promise(resolve => {
-      console.log('[RUNNING]', frame)
-      setTimeout(() => resolve(this._processFrames), 1000)
-    })
+    return this.initializeAnimation(this.$store, frame, this._processFrames)
   }
 
-  async _processFrames () {
+  async _processFrames (_) {
     const current = this.robotFrames.shift()
     const last = this.robotFrames[this.robotFrames.length - 1]
 
@@ -66,7 +78,7 @@ class RunCompiled {
     }
 
     const run = await this[`_${current.programState}`](current)
-    run()
+    run(current)
   }
 
   _askCompiler () {

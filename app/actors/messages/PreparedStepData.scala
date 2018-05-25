@@ -1,6 +1,7 @@
 package actors.messages
 
 import actors.LevelGenerationActor.createdIdGen
+import actors.messages.PreparedStepData.InitialRobotState
 import model.models.{ToolList, _}
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -12,7 +13,7 @@ case class PreparedStepData(
     gridMap: List[List[GridPart]],
     description: String,
     mainMax: Int,
-    robotOrientation: Int,
+    initialRobotState: InitialRobotState,
     stagedEnabled: Boolean,
     activeEnabled: Boolean,
     lambdas: ResponseLambdas,
@@ -21,28 +22,21 @@ case class PreparedStepData(
     problem: Problem,
     prevStep: String,
     nextStep: String,
-//    preBuiltActiveIds: Option[List[String]],
-//    assignedStagedIds: Option[List[String]],
     initFocus: List[String],
     stepControl: StepControl
 )
 
 object PreparedStepData {
-
   import model.models.Problem._
 
-  def apply(playerToken: PlayerToken,
-            rawStepData: RawStepData
-//            preBuiltActiveIds: Option[List[String]],
-//            assignedStagedIds: Option[List[String]]
-  ): PreparedStepData = new PreparedStepData(
+  def apply(playerToken: PlayerToken, rawStepData: RawStepData): PreparedStepData = new PreparedStepData(
     tokenId = playerToken.token_id,
     level = rawStepData.level,
     step = rawStepData.step,
     gridMap = buildGrid(rawStepData.gridMap),
     description = makeDescription(rawStepData),
     mainMax = rawStepData.mainMax,
-    robotOrientation = rawStepData.robotOrientation,
+    initialRobotState = setInitialRobot(rawStepData),
     stagedEnabled = rawStepData.stagedEnabled,
     activeEnabled = rawStepData.activeEnabled,
     lambdas = ResponseLambdas(prepareLambdas(playerToken, rawStepData)),
@@ -51,13 +45,24 @@ object PreparedStepData {
     problem = problemGen(rawStepData),
     prevStep = rawStepData.prevStep,
     nextStep = rawStepData.nextStep,
-//    preBuiltActiveIds = preBuiltActiveIds,
-//    assignedStagedIds = assignedStagedIds,
     initFocus = createInitFocus(rawStepData.initFocus),
     stepControl = new StepControl(rawStepData, prepareLambdas(playerToken, rawStepData))
   )
 
+  case class InitialRobotState(location: Map[String, Int], orientation: String, holding: List[String])
+
   import model.DefaultCommands._
+
+  def findRobotCoords(grid: List[String], coords: Map[String, Int] = Map("x" -> 0, "y" -> 0)): Map[String, Int] =
+    grid match {
+      case r :: _ if r contains "(R)" => Map("x" -> coords("x"), "y" -> prepRow(r).indexOf("(R)"))
+      case _ :: rest => findRobotCoords(rest, Map("x" -> (coords("x") + 1), "y" -> 0))
+    }
+
+  def setInitialRobot(rawStepData: RawStepData): InitialRobotState =
+    InitialRobotState(location = findRobotCoords(rawStepData.gridMap),
+                      orientation = rawStepData.robotOrientation.toString,
+                      holding = List.empty[String])
 
   def createInitFocus(initFocus: List[String]): List[String] = initFocus.map { a =>
     cmds.find(_.name.getOrElse("") == a) match {
@@ -97,10 +102,11 @@ object PreparedStepData {
     s"</p>"
   }
 
+  private def prepRow(row: String): List[String] = row.split(" ").toList.filterNot(_ == "")
+
   def buildGrid(gridMap: List[String]): List[List[GridPart]] = {
     gridMap map { row =>
-      val r = row.split(" ").toList.filterNot(_ == "")
-      r map { key =>
+      prepRow(row) map { key =>
         GridPart.apply(key)
       }
     }
@@ -122,6 +128,12 @@ object PreparedStepData {
     }
   }
 
+  implicit val initialRobotStateWrites: Writes[InitialRobotState] = (
+    (JsPath \ "location").write[Map[String, Int]] and
+    (JsPath \ "orientation").write[String] and
+    (JsPath \ "holding").write[List[String]]
+  )(unlift(InitialRobotState.unapply))
+
   val stepDataReads: Reads[PreparedStepData] = (
     (JsPath \ "playerToken").read[PlayerToken] and
     (JsPath \ "rawStepData").read[RawStepData]
@@ -134,7 +146,7 @@ object PreparedStepData {
     (JsPath \ "gridMap").write[List[List[GridPart]]] and
     (JsPath \ "description").write[String] and
     (JsPath \ "mainMax").write[Int] and
-    (JsPath \ "robotOrientation").write[Int] and
+    (JsPath \ "initialRobotState").write[InitialRobotState] and
     (JsPath \ "stagedEnabled").write[Boolean] and
     (JsPath \ "activeEnabled").write[Boolean] and
     (JsPath \ "lambdas").write[ResponseLambdas] and

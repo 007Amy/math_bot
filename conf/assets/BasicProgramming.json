@@ -155,7 +155,7 @@
         "functionRequired"
       ],
       "problem": "0",
-      "clearMain": true,
+      "clearMain": false,
       "initFocus": ["rocket"],
       "prevStep": "WalkFourWithFunction",
       "nextStep": "TurnRight"
