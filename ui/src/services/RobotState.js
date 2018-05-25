@@ -1,10 +1,11 @@
 import { robotImages } from '../assets/assets'
 
 class Robot {
-  constructor ({state, robotCarrying, robotFacing}) {
+  constructor ({state, holding, orientation, location}) {
     this.state = state || 'home'
-    this.robotCarrying = robotCarrying || []
-    this.robotFacing = robotFacing || 0
+    this.robotCarrying = holding || []
+    this.robotFacing = orientation || 0
+    this.robotLocation = location || {x: 2, y: 2}
 
     this.trash = []
   }
@@ -40,6 +41,10 @@ class Robot {
 
   getSpeed () {
     return this._robotSpeeds[this._robotSpeed]
+  }
+
+  updateRobot (robotState) {
+    this.constructor(robotState)
   }
 }
 

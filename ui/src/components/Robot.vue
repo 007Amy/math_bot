@@ -43,7 +43,7 @@ import ControlPanel from './Control_panel'
 import SplashScreen from './Splash_screen'
 import api from '../services/api'
 import utils from '../services/utils'
-import Robot from '../services/Robot'
+import Robot from '../services/RobotState'
 
 export default {
   mounted () {
@@ -133,7 +133,7 @@ export default {
           const stepData = res.body
           this.$store.dispatch('updateStepData', stepData)
           this.$store.dispatch('updateLambdas', stepData.lambdas)
-          this.$store.dispatch('updateRobot', new Robot({robotFacing: stepData.robotOrientation}))
+          this.$store.dispatch('updateRobot', new Robot(stepData.initialRobotState))
         })
       })
     },

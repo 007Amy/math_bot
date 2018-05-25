@@ -34,7 +34,7 @@
               :src="toolImages[tool.image]" />
             <img
               class="robot animated"
-              v-if="space.robotSpot"
+              v-if="robot.robotLocation.x === rInd && robot.robotLocation.y === sInd"
               :key="'ROBOT'"
               :src="robot._robotDirections[robotOrientation]" />
           </div>

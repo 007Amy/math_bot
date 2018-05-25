@@ -1,5 +1,5 @@
 import api from './api'
-import Robot from './Robot'
+import Robot from './RobotState'
 import GridAnimator from './GridAnimator'
 
 class RunCompiled extends GridAnimator {
@@ -33,22 +33,22 @@ class RunCompiled extends GridAnimator {
     this.$store.dispatch('updateStats', frame.stats)
     this.$store.dispatch('updateStepData', frame.stepData)
     this.$store.dispatch('updateLambdas', frame.stepData.lambdas)
-    this.$store.dispatch('updateRobot', new Robot({robotFacing: frame.stepData.robotOrientation}))
+    this.$store.dispatch('updateRobot', new Robot(frame.stepData.initialRobotState))
   }
 
   _success (frame) {
     console.log('[SUCCESS]', frame)
-    return this.initializeAnimation(frame, this._initializeStep)
+    return this.initializeAnimation(this.$store, frame, this._initializeStep)
   }
 
   _failure (frame) {
     console.log('[FAILURE]', frame)
-    return this.initializeAnimation(frame, this._initializeStep)
+    return this.initializeAnimation(this.$store, frame, this._initializeStep)
   }
 
   _running (frame) {
     console.log('[RUNNING]', frame)
-    return this.initializeAnimation(frame, this._processFrames)
+    return this.initializeAnimation(this.$store, frame, this._processFrames)
   }
 
   async _processFrames (_) {
