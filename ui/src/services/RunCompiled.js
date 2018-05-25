@@ -1,8 +1,10 @@
 import api from './api'
 import Robot from './Robot'
+import GridAnimator from './GridAnimator'
 
-class RunCompiled {
+class RunCompiled extends GridAnimator {
   constructor ({context}) {
+    super()
     if (context) {
       this.context = context
       this.robotFrames = []
@@ -15,8 +17,10 @@ class RunCompiled {
       console.clear()
 
       this._askCompiler = this._askCompiler.bind(this)
-      this._askCompiler()
       this._processFrames = this._processFrames.bind(this)
+      this._initializeStep = this._initializeStep.bind(this)
+
+      this._askCompiler()
       setTimeout(this._processFrames, 500)
     }
   }
@@ -33,33 +37,21 @@ class RunCompiled {
   }
 
   _success (frame) {
-    return new Promise(resolve => {
-      api.compilerWebSocket.haltProgram(() => {
-        resolve(() => {
-          this._initializeStep(frame)
-          console.log('[SUCCESS]', frame)
-        })
-      })
-    })
+    console.log('[SUCCESS]', frame)
+    return this.initializeAnimation(frame, this._initializeStep)
   }
 
   _failure (frame) {
-    return new Promise(resolve => {
-      api.compilerWebSocket.haltProgram(() => {
-        this._initializeStep(frame)
-        resolve(() => console.log('[FAILURE]', frame))
-      })
-    })
+    console.log('[FAILURE]', frame)
+    return this.initializeAnimation(frame, this._initializeStep)
   }
 
   _running (frame) {
-    return new Promise(resolve => {
-      console.log('[RUNNING]', frame)
-      setTimeout(() => resolve(this._processFrames), 500)
-    })
+    console.log('[RUNNING]', frame)
+    return this.initializeAnimation(frame, this._processFrames)
   }
 
-  async _processFrames () {
+  async _processFrames (_) {
     const current = this.robotFrames.shift()
     const last = this.robotFrames[this.robotFrames.length - 1]
 
@@ -68,7 +60,7 @@ class RunCompiled {
     }
 
     const run = await this[`_${current.programState}`](current)
-    run()
+    run(current)
   }
 
   _askCompiler () {
