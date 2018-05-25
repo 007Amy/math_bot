@@ -12,6 +12,8 @@ class RunCompiled {
       this.params = this.$store.getters.getStepData
       this.toolList = this.params.toolList
 
+      console.clear()
+
       this._askCompiler = this._askCompiler.bind(this)
       this._askCompiler()
       this._processFrames = this._processFrames.bind(this)
@@ -53,7 +55,7 @@ class RunCompiled {
   _running (frame) {
     return new Promise(resolve => {
       console.log('[RUNNING]', frame)
-      setTimeout(() => resolve(this._processFrames), 1000)
+      setTimeout(() => resolve(this._processFrames), 500)
     })
   }
 

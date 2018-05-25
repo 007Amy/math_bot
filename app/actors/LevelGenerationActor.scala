@@ -158,13 +158,13 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
     case UpdateDb(playerToken, rawStepData) =>
       playerToken.lambdas match {
         /*
-         * If user has played this level do not update with generated function data
-         * Just reset main func if step requires it
+         * If this lambdas contain the pre built active image name or assigned staged image name
+         * only reset main func if step requires it
          * */
-        case Some(lambdas)
-            if lambdas.activeFuncs.exists(
-              ft => rawStepData.preBuiltActive.keys.toList.contains(ft.name.getOrElse(""))
-            ) =>
+        case Some(lambdas) if lambdas.activeFuncs.exists { ft =>
+              (rawStepData.preBuiltActive.keys.toList ::: rawStepData.assignedStaged.values.toList)
+                .contains(ft.image.getOrElse(""))
+            } =>
           for {
             lambdas <- playerToken.lambdas
             mainFunc <- lambdas.main.func
@@ -172,7 +172,7 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
             newMain = lambdas.main.copy(func = Some(newMainFunc))
             updatedLambdas = lambdas.copy(main = newMain)
           } yield {
-            Future { playerToken.copy(lambdas = Some(updatedLambdas)) }
+            updateToken(playerToken.copy(lambdas = Some(updatedLambdas)))
               .map { PreparedStepData(_, rawStepData) }
               .pipeTo(self)(sender)
           }

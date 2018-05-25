@@ -78,6 +78,9 @@ export default {
     })
   },
   computed: {
+    mainFunctionFunc () {
+      return this.$store.getters.getMainFunction.func
+    },
     stepData () {
       return this.$store.getters.getStepData
     },
@@ -199,6 +202,14 @@ export default {
     start () {
       if (this.functionAreaShowing === 'editMain') {
         this.$store.dispatch('toggleShowMesh', true)
+        // If main is full apply message letting the user know
+        if (this.mainFunctionFunc.length >= this.stepData.mainMax) {
+          const messageBuilder = {
+            type: 'warn',
+            msg: `Main full`
+          }
+          this.$store.dispatch('addMessage', messageBuilder)
+        }
       }
     },
     end () {
