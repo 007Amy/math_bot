@@ -72,7 +72,7 @@ export default {
       return this.$store.getters.getRobot
     },
     robotSpeedDisplay () {
-      return this.robot.getSpeed().display
+      return this.robot.robotSpeed.display
     },
     stepData () {
       return this.$store.getters.getStepData

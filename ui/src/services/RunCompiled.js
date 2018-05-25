@@ -19,6 +19,7 @@ class RunCompiled extends GridAnimator {
       this._askCompiler = this._askCompiler.bind(this)
       this._processFrames = this._processFrames.bind(this)
       this._initializeStep = this._initializeStep.bind(this)
+      this._showBridgeScreen = this._showBridgeScreen.bind(this)
 
       this._askCompiler()
       setTimeout(this._processFrames, 500)
@@ -36,18 +37,35 @@ class RunCompiled extends GridAnimator {
     this.$store.dispatch('updateRobot', new Robot(frame.stepData.initialRobotState))
   }
 
+  _toggleBridge = (which, bool) => this.$store.dispatch(`toggle${which}`, bool)
+
+  _showBridgeScreen (frame) {
+    return new Promise(resolve => {
+      if (frame.programState === 'failure') this._toggleBridge('TryAgain', true)
+      else this._toggleBridge('Congrats', true)
+      setTimeout(() => {
+        this._toggleBridge('Congrats', false)
+        this._toggleBridge('TryAgain', false)
+        resolve()
+      }, 3000)
+    })
+  }
+
   _success (frame) {
-    console.log('[SUCCESS]', frame)
-    return this.initializeAnimation(this.$store, frame, this._initializeStep)
+    return this.initializeAnimation(this.$store, frame, async () => {
+      await this._showBridgeScreen(frame)
+      this._initializeStep(frame)
+    })
   }
 
   _failure (frame) {
-    console.log('[FAILURE]', frame)
-    return this.initializeAnimation(this.$store, frame, this._initializeStep)
+    return this.initializeAnimation(this.$store, frame, async () => {
+      await this._showBridgeScreen(frame)
+      this._initializeStep(frame)
+    })
   }
 
   _running (frame) {
-    console.log('[RUNNING]', frame)
     return this.initializeAnimation(this.$store, frame, this._processFrames)
   }
 

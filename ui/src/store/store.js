@@ -365,7 +365,7 @@ export default new Vuex.Store({
     getTokenId: state => state.auth.userToken.token_id,
     getTrashVisible: state => state.trashVisible,
     // getFunctionGroups: state => state.functionGroups,
-    getGrid: state => state.stepData.grid,
+    getGrid: state => state.stepData.gridMap,
     getRobotDeactivated: state => state.robot.robotDeactivated,
     getCurrentEquation: state => state.auth.userToken.stats.currentEquation,
     getCongratsShowing: state => state.showCongrats,

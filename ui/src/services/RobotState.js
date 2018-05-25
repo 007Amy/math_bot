@@ -1,11 +1,12 @@
 import { robotImages } from '../assets/assets'
 
 class Robot {
-  constructor ({state, holding, orientation, location}) {
+  constructor ({state, holding, orientation, location, robotSpeed}) {
     this.state = state || 'home'
     this.robotCarrying = holding || []
     this.robotFacing = orientation || 0
     this.robotLocation = location || {x: 2, y: 2}
+    this.robotSpeed = robotSpeed || this._robotSpeeds[0]
 
     this.trash = []
   }
@@ -17,7 +18,7 @@ class Robot {
     '270': robotImages.robotLeft
   }
 
-  _robotSpeed = 0
+  _robotSpeedIndex = 0
 
   _robotSpeeds = [
     {
@@ -35,16 +36,17 @@ class Robot {
   ]
 
   adjustSpeed () {
-    if (this._robotSpeed === this._robotSpeeds.length - 1) this._robotSpeed = 0
-    else this._robotSpeed++
+    if (this._robotSpeedIndex === this._robotSpeeds.length - 1) this._robotSpeedIndex = 0
+    else this._robotSpeedIndex++
+    this.robotSpeed = this._robotSpeeds[this._robotSpeedIndex]
   }
 
-  getSpeed () {
-    return this._robotSpeeds[this._robotSpeed]
-  }
-
+  /*
+  * While robot is animating use this function
+  * 'initialRobotState' and 'robotState' can be desctructured into this app
+  * */
   updateRobot (robotState) {
-    this.constructor(robotState)
+    this.constructor(Object.assign({robotSpeed: this.robotSpeed}, robotState))
   }
 }
 
