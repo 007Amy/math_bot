@@ -195,4 +195,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/editMain.css"></style>
+<style scoped src="../css/scoped/editMain.scss" lang="scss"></style>

@@ -63,4 +63,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/functionBox.css"></style>
+<style scoped src="../css/scoped/functionBox.scss" lang="scss"></style>

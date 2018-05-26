@@ -64,4 +64,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/popoverBucket.css"></style>
+<style scoped src="../css/scoped/popoverBucket.scss" lang="scss"></style>

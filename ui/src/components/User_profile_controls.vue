@@ -44,4 +44,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/userProfileControls.css"></style>
+<style scoped src="../css/scoped/userProfileControls.scss" lang="scss"></style>

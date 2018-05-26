@@ -28,11 +28,23 @@ img {
   border-right: 1px solid rgba(255, 255, 255, 0.2);
   text-align: center;
   vertical-align: middle;
-  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .grid-space-empty-space {
-  background: rgba(0, 0, 0, 0.7);
+}
+
+.grid-space-wall {
+  height: 100px;
+  width: 100px;
+  box-shadow: 0 0 30px 0 rgba(0,0,0,0.5);
+  background: repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.3),
+      rgba(0, 0, 0, 0.3) 21px,
+      rgba(74, 74, 74, 0.5) 21px,
+      rgba(74, 74, 74, 0.5) 24px
+  )
 }
 
 .grid-row:nth-child(5n+0) .grid-space {

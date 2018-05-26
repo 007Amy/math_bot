@@ -65,7 +65,6 @@ export default {
       return this.currentStepData.step
     },
     gridMap () {
-      console.log(this.currentStepData.gridMap)
       return this.currentStepData.gridMap
     },
     robotOrientation () {

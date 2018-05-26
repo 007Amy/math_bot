@@ -48,4 +48,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/steps.css"></style>
+<style scoped src="../css/scoped/steps.scss" lang="scss"></style>
