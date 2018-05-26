@@ -132,7 +132,8 @@ export default {
         api.getStep({tokenId: this.tokenId, level: this.stats.level, step: this.stats.step}, stepData => {
           this.$store.dispatch('updateStepData', stepData)
           this.$store.dispatch('updateLambdas', stepData.lambdas)
-          this.$store.dispatch('updateRobot', new Robot(JSON.parse(JSON.stringify(stepData.initialRobotState))))
+          stepData.initialRobotState.context = this
+          this.$store.dispatch('updateRobot', new Robot(stepData.initialRobotState))
         })
       })
     },

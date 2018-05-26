@@ -19,18 +19,18 @@
         v-if="runCompiled.robot.state === 'home' || runCompiled.robot.state === 'paused'"
         class="play noDrag dialog-button"
         :src="permanentImages.buttons.playButton"
-        alt="Play button" @click="runCompiled.start"
+        alt="Play button" @click="[runCompiled.start(), togglePut(true)]"
         data-toggle="tooltip" title="Run program" />
 
       <img
-        v-else
+        v-else-if="runCompiled.robot.state === 'running'"
         class="play noDrag dialog-button"
         :src="permanentImages.buttons.pauseButton"
         alt="Pause button" @click="runCompiled.pause"
         data-toggle="tooltip" title="Pause program" />
 
       <img
-        v-if="robot.state === 'running'"
+        v-if="runCompiled.robot.state === 'running'"
         class="stop button noDrag dialog-button"
         :src="permanentImages.buttons.stopButton"
         alt="Stop button" @click="runCompiled.stop"
@@ -127,8 +127,6 @@ export default {
         const ind = evt.hasOwnProperty('added') ? evt.added.newIndex : evt.moved.newIndex
         buildUtils.updateFunctionsOnChange({context: this, currentFunction: buildUtils.currentFunc(this), addedFunction: command, newIndex: ind, override: evt.hasOwnProperty('moved')})
       }
-
-      // Main func length is equal to main max, make put false (preventing unneeded api call)
       this.togglePut(this.mainFunctionFunc.length < this.stepData.mainMax)
     },
     toggleFunctionEdit (func, ind) {

@@ -33,23 +33,23 @@ class RunCompiled extends GridAnimator {
     if (!mainFunction.length) {
       this._mainEmptyMessage()
     } else if (this.robot.state !== 'paused') {
-      this.robot.state = 'running'
+      this.robot.setState('running')
       this._askCompiler()
       utils.watcher(() => !this.robotFrames.length, this._processFrames)
     } else {
-      this.robot.state = 'running'
+      this.robot.setState('running')
       this._processFrames()
     }
   }
 
   pause () {
     this._pausedMessage()
-    this.robot.state = 'paused'
+    this.robot.setState('paused')
   }
 
   stop () {
     this._stopMessage()
-    this.robot.state = 'stopped'
+    this.robot.setState('stopped')
   }
 
   _stopMessage () {
@@ -98,7 +98,9 @@ class RunCompiled extends GridAnimator {
   _initializeStep (stepData) {
     this.$store.dispatch('updateStepData', stepData)
     this.$store.dispatch('updateLambdas', stepData.lambdas)
+    stepData.initialRobotState.context = this.context
     this.$store.dispatch('updateRobot', new Robot(stepData.initialRobotState))
+    this.constructor(this.context)
   }
 
   _updateStats (stats) {
@@ -113,7 +115,6 @@ class RunCompiled extends GridAnimator {
   _resetStep (res) {
     api.getStep({tokenId: this.tokenId, level: this.stats.level, step: this.stats.step}, stepData => {
       this._initializeStep(stepData)
-      this.constructor(this.context)
     })
   }
 
