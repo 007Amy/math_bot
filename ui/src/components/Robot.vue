@@ -129,11 +129,10 @@ export default {
   methods: {
     initializeRobot () {
       utils.watcher(() => !this.auth.authenticated, () => {
-        api.getStep({tokenId: this.tokenId, level: this.stats.level, step: this.stats.step}, res => {
-          const stepData = res.body
+        api.getStep({tokenId: this.tokenId, level: this.stats.level, step: this.stats.step}, stepData => {
           this.$store.dispatch('updateStepData', stepData)
           this.$store.dispatch('updateLambdas', stepData.lambdas)
-          this.$store.dispatch('updateRobot', new Robot(stepData.initialRobotState))
+          this.$store.dispatch('updateRobot', new Robot(JSON.parse(JSON.stringify(stepData.initialRobotState))))
         })
       })
     },

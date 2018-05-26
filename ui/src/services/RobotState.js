@@ -46,7 +46,7 @@ class Robot {
   * 'initialRobotState' and 'robotState' can be desctructured into this app
   * */
   updateRobot (robotState) {
-    this.constructor(Object.assign({robotSpeed: this.robotSpeed}, robotState))
+    this.constructor(Object.assign({robotSpeed: this.robotSpeed, state: this.state}, robotState))
   }
 }
 

@@ -103,7 +103,8 @@ export default {
   * */
   getStep ({tokenId, level, step}, cb) {
     Vue.http.get('/api/levels/getStep/' + level + '/' + step, {params: {tokenId: tokenId}})
-      .then(res => cb(res))
+      .then(res => res.body)
+      .then(stepData => cb(stepData))
       .catch(console.error)
   }
 }

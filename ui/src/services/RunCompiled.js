@@ -1,40 +1,124 @@
 import api from './api'
 import Robot from './RobotState'
 import GridAnimator from './GridAnimator'
+import utils from './utils'
 
 class RunCompiled extends GridAnimator {
-  constructor ({context}) {
+  constructor (context) {
     super()
     if (context) {
       this.context = context
       this.robotFrames = []
       this.$store = this.context.$store
       this.$router = this.context.$router
+      this.tokenId = this.$store.getters.getTokenId
+      this.stats = this.$store.getters.getStats
       this.robot = this.$store.getters.getRobot
-      this.params = this.$store.getters.getStepData
-      this.toolList = this.params.toolList
-
-      console.clear()
+      this.stepData = this.$store.getters.getStepData
+      this.toolList = this.stepData.toolList
 
       this._askCompiler = this._askCompiler.bind(this)
       this._processFrames = this._processFrames.bind(this)
       this._initializeStep = this._initializeStep.bind(this)
       this._showBridgeScreen = this._showBridgeScreen.bind(this)
-
-      this._askCompiler()
-      setTimeout(this._processFrames, 500)
+      this.start = this.start.bind(this)
+      this.pause = this.pause.bind(this)
+      this.stop = this.stop.bind(this)
+      this._resetStep = this._resetStep.bind(this)
     }
   }
 
-  /*
-  * Below here for new ask compiler
-  * */
+  start () {
+    const mainFunction = this.$store.getters.getMainFunction.func
+    if (!mainFunction.length) {
+      this._mainEmptyMessage()
+    } else if (this.robot.state !== 'paused') {
+      this.robot.state = 'running'
+      this._askCompiler()
+      utils.watcher(() => !this.robotFrames.length, this._processFrames)
+    } else {
+      this.robot.state = 'running'
+      this._processFrames()
+    }
+  }
 
-  _initializeStep (frame) {
-    this.$store.dispatch('updateStats', frame.stats)
-    this.$store.dispatch('updateStepData', frame.stepData)
-    this.$store.dispatch('updateLambdas', frame.stepData.lambdas)
-    this.$store.dispatch('updateRobot', new Robot(frame.stepData.initialRobotState))
+  pause () {
+    this._pausedMessage()
+    this.robot.state = 'paused'
+  }
+
+  stop () {
+    this._stopMessage()
+    this.robot.state = 'stopped'
+  }
+
+  _stopMessage () {
+    const messageBuilder = {
+      type: 'warn',
+      msg: 'Program stopped'
+    }
+
+    this._addMessage(messageBuilder)
+  }
+
+  _pausedMessage () {
+    const messageBuilder = {
+      type: 'success',
+      msg: 'Program paused'
+    }
+
+    this._addMessage(messageBuilder)
+  }
+
+  _mainEmptyMessage () {
+    const messageBuilder = {
+      type: 'warn',
+      msg: 'Main is empty',
+      handlers () {
+        const $bar = $('.bar')
+
+        return {
+          runBeforeAppend () {
+            $bar.addClass('red-bar')
+          },
+          runOnDelete () {
+            $bar.removeClass('red-bar')
+          }
+        }
+      }
+    }
+
+    this._addMessage(messageBuilder)
+  }
+
+  _addMessage (messageBuilder) {
+    this.$store.dispatch('addMessage', messageBuilder)
+  }
+
+  _initializeStep (stepData) {
+    this.$store.dispatch('updateStepData', stepData)
+    this.$store.dispatch('updateLambdas', stepData.lambdas)
+    this.$store.dispatch('updateRobot', new Robot(stepData.initialRobotState))
+  }
+
+  _updateStats (stats) {
+    this.$store.dispatch('updateStats', stats)
+  }
+
+  _initializeOnLastFrame (frame) {
+    this._updateStats(frame.stats)
+    this._initializeStep(frame.stepData)
+  }
+
+  _resetStep (res) {
+    api.getStep({tokenId: this.tokenId, level: this.stats.level, step: this.stats.step}, stepData => {
+      this._initializeStep(stepData)
+      this.constructor(this.context)
+    })
+  }
+
+  _stopRobot () {
+    api.compilerWebSocket.haltProgram(this._resetStep)
   }
 
   _toggleBridge = (which, bool) => this.$store.dispatch(`toggle${which}`, bool)
@@ -54,19 +138,25 @@ class RunCompiled extends GridAnimator {
   _success (frame) {
     return this.initializeAnimation(this.$store, frame, async () => {
       await this._showBridgeScreen(frame)
-      this._initializeStep(frame)
+      this._initializeOnLastFrame(frame)
     })
   }
 
   _failure (frame) {
     return this.initializeAnimation(this.$store, frame, async () => {
       await this._showBridgeScreen(frame)
-      this._initializeStep(frame)
+      this._initializeOnLastFrame(frame)
     })
   }
 
   _running (frame) {
-    return this.initializeAnimation(this.$store, frame, this._processFrames)
+    return this.initializeAnimation(this.$store, frame, () => {
+      if (this.robot.state === 'running') {
+        this._processFrames()
+      } else if (this.robot.state === 'stopped') {
+        this._stopRobot()
+      }
+    })
   }
 
   async _processFrames (_) {
@@ -82,7 +172,7 @@ class RunCompiled extends GridAnimator {
   }
 
   _askCompiler () {
-    api.compilerWebSocket.compileWs({context: this, problem: this.params.problem.encryptedProblem}, (compiled) => {
+    api.compilerWebSocket.compileWs({context: this, problem: this.stepData.problem.encryptedProblem}, (compiled) => {
       this.robotFrames = this.robotFrames.concat(compiled.frames)
     })
   }
