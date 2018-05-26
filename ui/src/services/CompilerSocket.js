@@ -48,7 +48,7 @@ class CompilerSocket extends Ws {
 
   haltProgram (cb) {
     this._wsOnMessage(cb)
-    this._compilerSend(0, '', true)
+    this._compilerSend('0', true)
   }
 
   _compilerSend (problem, halt) {

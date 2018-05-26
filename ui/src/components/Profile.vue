@@ -61,4 +61,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/profile.css"></style>
+<style scoped src="../css/scoped/profile.scss" lang="scss"></style>

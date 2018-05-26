@@ -76,4 +76,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/functionDrop.css"></style>
+<style scoped src="../css/scoped/functionDrop.scss" lang="scss"></style>

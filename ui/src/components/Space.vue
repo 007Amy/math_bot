@@ -19,4 +19,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/space.css"></style>
+<style scoped src="../css/scoped/space.scss" lang="scss"></style>

@@ -14,16 +14,33 @@
       <main-placeholder></main-placeholder>
       <img class="trash noDrag dialog-button" :src="permanentImages.buttons.trashButton"  @click="wipeFunction" data-toggle="tooltip" title="Clear main" />
       <div class="speed dialog-button" @click="adjustSpeed" data-toggle="tooltip" title="Adjust speed"> {{ robotSpeedDisplay }}</div>
-      <img class="play noDrag dialog-button" v-if="robot.state === 'home' || robot.state === 'paused'" :src="permanentImages.buttons.playButton" @click="compileMain" data-toggle="tooltip" title="Run program" />
-      <img v-else class="play noDrag dialog-button" :src="permanentImages.buttons.pauseButton" @click="pause" data-toggle="tooltip" title="Pause program" />
-      <img v-if="robot.state === 'running'" class="stop button noDrag dialog-button" :src="permanentImages.buttons.stopButton" @click="stop" data-toggle="tooltip" title="Stop program" />
+
+      <img
+        v-if="runCompiled.robot.state === 'home' || runCompiled.robot.state === 'paused'"
+        class="play noDrag dialog-button"
+        :src="permanentImages.buttons.playButton"
+        alt="Play button" @click="runCompiled.start"
+        data-toggle="tooltip" title="Run program" />
+
+      <img
+        v-else
+        class="play noDrag dialog-button"
+        :src="permanentImages.buttons.pauseButton"
+        alt="Pause button" @click="runCompiled.pause"
+        data-toggle="tooltip" title="Pause program" />
+
+      <img
+        v-if="robot.state === 'running'"
+        class="stop button noDrag dialog-button"
+        :src="permanentImages.buttons.stopButton"
+        alt="Stop button" @click="runCompiled.stop"
+        data-toggle="tooltip" title="Stop program"/>
     </div>
   </div>
 </template>
 
 <script>
 import {_} from 'underscore'
-import uid from 'uid'
 import utils from '../services/utils'
 import buildUtils from '../services/build_function_utils'
 import draggable from 'vuedraggable'
@@ -65,9 +82,6 @@ export default {
     currentFunc () {
       return this.$store.getters.getFunctions[this.$store.getters.getCurrentFunction]
     },
-    wipeFunctionShowing () {
-      return this.$store.getters.getWipeFunctionShowing
-    },
     robot () {
       return this.$store.getters.getRobot
     },
@@ -99,55 +113,13 @@ export default {
         chosenClass: 'chosen',
         filter: '.noDrag',
         dragClass: 'dragging'
-      }
+      },
+      runCompiled: new RunCompiled(this)
     }
   },
   methods: {
-    stop () {
-      this.robot.state = 'stop'
-    },
-    pause () {
-      this.robot.state = 'paused'
-    },
     togglePut (bool) {
       this.mainDraggableOptions.group.put = bool
-    },
-    compileMain () {
-      const scripts = this.$store.getters.getMainFunction.func
-
-      // Ensure draggable put is true for next level
-      this.togglePut(true)
-
-      if (this.robot.state !== 'paused') {
-        if (scripts.length) {
-          // Delete all existing messages
-          this.$store.dispatch('deleteMessages')
-          // Compile robot
-          this.runCompiled = new RunCompiled({context: this})
-        } else {
-          const messageBuilder = {
-            type: 'warn',
-            msg: 'Main is empty',
-            handlers () {
-              const $bar = $('.bar')
-
-              return {
-                runBeforeAppend () {
-                  $bar.addClass('red-bar')
-                },
-                runOnDelete () {
-                  $bar.removeClass('red-bar')
-                }
-              }
-            }
-          }
-
-          this.$store.dispatch('addMessage', messageBuilder)
-        }
-      } else {
-        this.robot.state = 'running'
-        this.runCompiled.processFrames()
-      }
     },
     copyCommand (evt) {
       if (!evt.hasOwnProperty('removed')) {
@@ -163,12 +135,6 @@ export default {
       if (func.name) {
         utils.toggleFunctionEdit(this, func, ind, 'editMain')
       }
-    },
-    uID () {
-      return uid(7)
-    },
-    scrollEm (evt, dir) {
-      utils.scroll(evt, dir, 'function-drop')
     },
     wipeFunction () {
       this.$store.dispatch('clearCurrentFunction')
@@ -195,4 +161,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/editMain.css"></style>
+<style scoped src="../css/scoped/editMain.scss" lang="scss"></style>

@@ -261,4 +261,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/commands.css"></style>
+<style scoped src="../css/scoped/commands.scss" lang="scss"></style>

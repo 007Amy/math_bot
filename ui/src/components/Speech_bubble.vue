@@ -11,5 +11,5 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/speechBubble.css"></style>
+<style scoped src="../css/scoped/speechBubble.scss" lang="scss"></style>
 <style src="../css/global/speechBubble.css"></style>

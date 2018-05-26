@@ -81,4 +81,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/mainPlaceholder.css"></style>
+<style scoped src="../css/scoped/mainPlaceholder.scss" lang="scss"></style>
