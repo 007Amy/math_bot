@@ -1,7 +1,9 @@
 import { robotImages } from '../assets/assets'
 
 class Robot {
-  constructor ({state, holding, orientation, location, robotSpeed}) {
+  constructor ({context, state, holding, orientation, location, robotSpeed}) {
+    this.context = context
+    this.$store = this.context.$store
     this.state = state || 'home'
     this.robotCarrying = holding || []
     this.robotFacing = orientation || 0
@@ -35,6 +37,15 @@ class Robot {
     }
   ]
 
+  _updateSelf () {
+    this.$store.dispatch('updateRobot', this)
+  }
+
+  setState (state) {
+    this.state = state
+    this._updateSelf()
+  }
+
   adjustSpeed () {
     if (this._robotSpeedIndex === this._robotSpeeds.length - 1) this._robotSpeedIndex = 0
     else this._robotSpeedIndex++
@@ -46,7 +57,9 @@ class Robot {
   * 'initialRobotState' and 'robotState' can be desctructured into this app
   * */
   updateRobot (robotState) {
-    this.constructor(Object.assign({robotSpeed: this.robotSpeed, state: this.state}, robotState))
+    this.robotLocation = robotState.location
+    this.robotCarrying = robotState.holding
+    this.robotFacing = robotState.orientation
   }
 }
 
