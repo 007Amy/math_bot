@@ -222,7 +222,7 @@ export default {
 
       api.activateFunction({tokenId: this.token.token_id, stagedIndex: index, activeIndex: evt.newIndex}, lambdas => {
         // console.log('NEW LAMBDAS ~ ', lambdas)
-        this.$store.dispatch('updateLambdas', {lambdas: lambdas})
+        this.$store.dispatch('updateLambdas', lambdas)
       })
     },
     moveSwiper (direction) {

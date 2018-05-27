@@ -22,6 +22,11 @@ object PolyfillActor {
 
   final case class PolyfillsApplied(playerToken: PlayerToken)
 
+  def dedup(lambdas: Lambdas): Lambdas = {
+    // Find duplicates in
+    lambdas
+  }
+
   def props(system: ActorSystem, logger: MathBotLogger, environment: Environment) =
     Props(new PolyfillActor()(system, logger, environment))
 }
@@ -52,11 +57,16 @@ class PolyfillActor()(system: ActorSystem, logger: MathBotLogger, environment: E
         updatedLambdas = Some(lambdas.copy(cmds = DefaultCommands.cmds))
       } yield
         Future { playerToken.copy(lambdas = updatedLambdas) }
+          .map { DedupFunctions.apply }
+          .pipeTo(self)(sender)
+    case DedupFunctions(playerToken) => // ensures user only has one instance of pre-built active or assigned staged?
+      for {
+        lambdas <- playerToken.lambdas
+        deduped = dedup(lambdas)
+      } yield
+        Future { playerToken.copy(lambdas = Some(deduped)) }
           .map { PolyfillsApplied.apply }
           .pipeTo(self)(sender)
-
-    case DedupFunctions(playerToken) => // ensures user only has one instance of pre-built active or assigned staged
-      ???
 
     case PolyfillsApplied(playerToken) =>
       sender ! UpdatePlayerToken(playerToken)

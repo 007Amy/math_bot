@@ -116,7 +116,6 @@ trait PlayerTokenModel extends MongoController with ReactiveMongoComponents with
   }
 
   def activateFunc(tokenId: String, stagedIndex: String, activeIndex: String): Future[Option[PlayerToken]] = {
-    val g = 0
     (for {
       playerTokenOpt <- getToken(tokenId)
     } yield

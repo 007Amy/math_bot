@@ -26,7 +26,7 @@ object PlayerActor {
 
   case class GatherLevel(playerToken: PlayerToken)
 
-  case class UpdateFunc(funcToken: FuncToken, playerToken: Option[PlayerToken], `override`: Boolean)
+  case class UpdateFunc(funcToken: FuncToken, playerToken: PlayerToken, `override`: Boolean)
 
   case class ActivateFunc(tokenId: String, stagedIndex: String, activeIndex: String)
 
@@ -78,8 +78,7 @@ object PlayerActor {
     }
 
     def makeStatsSame(baseStats: Stats, userStats: Stats): Stats = {
-
-      val updated = userStats.copy(
+      userStats.copy(
         level =
           if (baseStats.levels.isDefinedAt(userStats.level)) userStats.level
           else baseStats.level,
@@ -137,8 +136,6 @@ object PlayerActor {
             }
         }
       )
-
-      updated
     }
 
     def editStats(baseStats: Stats, userStats: Option[Stats]): Stats = userStats match {
@@ -238,81 +235,50 @@ class PlayerActor()(system: ActorSystem,
     case EditLambdas(jsValue) =>
       jsValue.validate[PrepareLambdas].asOpt match {
         case Some(prepareLambdas) =>
-          getToken(prepareLambdas.tokenId)
-            .map { playerToken =>
+          (getToken(prepareLambdas.tokenId) map {
+            case Some(playerToken) =>
               UpdateFunc(prepareLambdas.funcToken, playerToken, prepareLambdas.`override`.getOrElse(false))
-            }
-            .pipeTo(self)(sender)
+            case None => ActorFailed("Unable to find player token")
+          }).pipeTo(self)(sender)
         case None =>
           Future {}
             .map { _ =>
-              ActorFailed(s"Data structure not appropriate, $jsValue")
+              ActorFailed("Invalid JSON")
             }
             .pipeTo(self)(sender)
       }
-    case UpdateFunc(func, token, overrideBool) =>
-      token match {
-        case Some(playerToken) =>
-          playerToken.stats match {
-            case Some(stats) =>
-              playerToken.lambdas match {
-                case Some(lambdas) =>
-                  levelGenerator.getRawStepData(stats.level, stats.step) match {
-                    case Some(rsd) =>
-                      val rawStepData = rsd.copy(stagedQty = makeQtyUnlimited(rsd.stagedQty),
-                                                 activeQty = makeQtyUnlimited(rsd.activeQty),
-                                                 mainMax = makeQtyUnlimited(rsd.mainMax))
-                      func.`type` match {
-                        case Some("function") =>
-                          updateFunc(playerToken.token_id, func)
-                            .map {
-                              case Some(pToken) =>
-                                PreparedLambdasToken(
-                                  PreparedStepData
-                                    .prepareLambdas(pToken, rawStepData)
-                                    .copy(activeFuncs = pToken.lambdas.get.activeFuncs)
-                                )
-                              case None => ActorFailed("Something went wrong while updating func.")
-                            }
-                            .pipeTo(self)(sender)
-                        case Some("main-function") =>
-                          lambdas.main.func match {
-                            case Some(mainFunc) =>
-                              if (mainFunc.lengthCompare(rawStepData.mainMax) < 0 || overrideBool) {
-                                updateFunc(playerToken.token_id, func)
-                                  .map {
-                                    case Some(pToken) =>
-                                      PreparedLambdasToken(
-                                        PreparedStepData
-                                          .prepareLambdas(pToken, rawStepData)
-                                          .copy(activeFuncs = pToken.lambdas.get.activeFuncs)
-                                      )
-                                    case None => ActorFailed("Something went wrong while updating func.")
-                                  }
-                                  .pipeTo(self)(sender)
-                              } else {
-                                Future {
-                                  playerToken
-                                }.map { token =>
-                                    PreparedLambdasToken(
-                                      PreparedStepData
-                                        .prepareLambdas(token, rawStepData)
-                                        .copy(activeFuncs = token.lambdas.get.activeFuncs)
-                                    )
-                                  }
-                                  .pipeTo(self)(sender)
-                              }
-                            case None => sender ! ActorFailed("No func in main.")
-                          }
-                        case _ => sender ! ActorFailed("Not a valid command type.")
-                      }
-                    case None => sender ! ActorFailed(s"No step found for ${stats.level}/${stats.step}")
-                  }
-                case None => sender ! ActorFailed(s"No stats with player token.")
-              }
-            case None => sender ! ActorFailed("Player token has no lambdas.")
+    case UpdateFunc(funcToken, playerToken, overrideBool) =>
+      for {
+        stats <- playerToken.stats
+        lambdas <- playerToken.lambdas
+        rsd <- levelGenerator.getRawStepData(stats.level, stats.step)
+        rawStepData = rsd.copy(stagedQty = makeQtyUnlimited(rsd.stagedQty),
+                               activeQty = makeQtyUnlimited(rsd.activeQty),
+                               mainMax = makeQtyUnlimited(rsd.mainMax))
+      } yield {
+        val funcType = funcToken.`type`.getOrElse("Nothing")
+        val mainFunc = lambdas.main.func.getOrElse(List.empty[FuncToken])
+
+        val updatedPlayerToken =
+          if (funcType == "function" || (funcType == "main-function" && mainFunc.lengthCompare(rawStepData.mainMax) < 0) || overrideBool) {
+            for {
+              updatedPlayerToken <- updateFunc(playerToken.token_id, funcToken)
+            } yield updatedPlayerToken
+          } else {
+            Future { Some(playerToken) }
           }
-        case None => sender ! ActorFailed(s"Unable to find a player token.")
+
+        updatedPlayerToken
+          .map {
+            case Some(pToken) =>
+              PreparedLambdasToken(
+                PreparedStepData
+                  .prepareLambdas(pToken, rawStepData)
+                  .copy(activeFuncs = pToken.lambdas.get.activeFuncs)
+              )
+            case None => ActorFailed("Failed to update lambdas.")
+          }
+          .pipeTo(self)(sender)
       }
     case ActivateFunc(tokenId, stagedIndex, activeIndex) =>
       getToken(tokenId)
@@ -322,56 +288,29 @@ class PlayerActor()(system: ActorSystem,
         }
         .pipeTo(self)(sender)
     case MoveFunc(playerToken, stagedIndex, activeIndex) =>
-      playerToken.stats match {
-        case Some(stats) =>
-          levelGenerator.getRawStepData(stats.level, stats.step) match {
-            case Some(rsd) =>
-              val rawStepData =
-                rsd.copy(stagedQty = makeQtyUnlimited(rsd.stagedQty),
-                         activeQty = makeQtyUnlimited(rsd.activeQty),
-                         mainMax = makeQtyUnlimited(rsd.mainMax))
-              playerToken.lambdas match {
-                case Some(lambdas) =>
-                  if (rawStepData.activeEnabled && lambdas.activeFuncs.lengthCompare(
-                        LevelGenerationActor.makeQtyUnlimited(rawStepData.activeQty)
-                      ) <= 0) {
-                    activateFunc(playerToken.token_id, stagedIndex, activeIndex)
-                      .map {
-                        case Some(token) =>
-                          PreparedLambdasToken(
-                            PreparedStepData.prepareLambdas(token, rawStepData)
-                          )
-                        case None => ActorFailed("Unable to update lambdas.")
-                      }
-                      .pipeTo(self)(sender)
-                  } else {
-                    Future { playerToken }
-                      .map { token =>
-                        PreparedLambdasToken(PreparedStepData.prepareLambdas(token, rawStepData))
-                      }
-                      .pipeTo(self)(sender)
-                  }
-                case None =>
-                  Future {}
-                    .map { _ =>
-                      ActorFailed("Unable to move func.")
-                    }
-                    .pipeTo(self)(sender)
-              }
-            case None =>
-              Future {}
-                .map { _ =>
-                  ActorFailed("Unable to move func.")
-                }
-                .pipeTo(self)(sender)
-          }
-        case None =>
-          Future {}
-            .map { _ =>
-              ActorFailed("Unable to move func.")
+      for {
+        stats <- playerToken.stats
+        rsd <- levelGenerator.getRawStepData(stats.level, stats.step)
+        lambdas <- playerToken.lambdas
+        rawStepData = rsd.copy(stagedQty = makeQtyUnlimited(rsd.stagedQty),
+                               activeQty = makeQtyUnlimited(rsd.activeQty),
+                               mainMax = makeQtyUnlimited(rsd.mainMax))
+      } yield
+        if (rawStepData.activeEnabled && lambdas.activeFuncs.lengthCompare(
+              makeQtyUnlimited(rawStepData.activeQty)
+            ) <= 0) {
+          activateFunc(playerToken.token_id, stagedIndex, activeIndex)
+            .map {
+              case Some(token) =>
+                PreparedLambdasToken(PreparedStepData.prepareLambdas(token, rawStepData))
+              case None => ActorFailed("Unable to update lambdas")
             }
             .pipeTo(self)(sender)
-      }
+        } else {
+          Future { PreparedStepData.prepareLambdas(playerToken, rawStepData) }
+            .map { PreparedLambdasToken.apply }
+            .pipeTo(self)(sender)
+        }
 
     case updatedLambdasToken: PreparedLambdasToken =>
       logger.LogDebug(className, "PreparedLambdasToken generated.")
