@@ -4,7 +4,7 @@ import java.net.URLDecoder
 import javax.inject.Inject
 
 import actors.messages.ActorFailed
-import actors.PlayerActor
+import actors.{PlayerActor, PolyfillActor}
 import actors.PlayerActor._
 import actors.messages.ResponsePlayerToken
 import akka.actor.ActorSystem
@@ -31,7 +31,10 @@ class PlayerController @Inject()(system: ActorSystem,
 
   implicit val timeout: Timeout = 5000.minutes
 
-  val playerActor = system.actorOf(PlayerActor.props(system, reactiveMongoApi, logger, environment), "player-actor")
+  val polyfillActor = system.actorOf(PolyfillActor.props(system, logger, environment), "polyfill-actor")
+
+  val playerActor =
+    system.actorOf(PlayerActor.props(system, reactiveMongoApi, polyfillActor, logger, environment), "player-actor")
 
   def addToken(): Action[JsValue] = Action.async(parse.json) { implicit request: Request[JsValue] =>
     (playerActor ? AddToken(request.body)).mapTo[Either[ResponsePlayerToken, ActorFailed]].map {

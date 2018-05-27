@@ -1,9 +1,12 @@
 package actors
 
 import actors.LevelGenerationActor.makeQtyUnlimited
-import actors.messages.{PreparedStepData, RawLevelData, ResponsePlayerToken, ActorFailed}
-import akka.actor.{Actor, ActorSystem, Props}
+import actors.PolyfillActor.ApplyPolyfills
+import actors.messages.{ActorFailed, PreparedStepData, RawLevelData, ResponsePlayerToken}
+import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.pattern.pipe
+import akka.pattern.ask
+import akka.util.Timeout
 import loggers.MathBotLogger
 import model.{DefaultCommands, PlayerTokenModel}
 import model.models._
@@ -11,6 +14,7 @@ import play.api.Environment
 import play.api.libs.json.{JsPath, JsValue, Json, Reads}
 import play.modules.reactivemongo.ReactiveMongoApi
 import play.api.libs.functional.syntax._
+import scala.concurrent.duration._
 
 import scala.concurrent.Future
 
@@ -31,6 +35,8 @@ object PlayerActor {
   case class AddDefaultFuncsField(playerToken: PlayerToken)
 
   case class AddNamesToCommands(playerToken: PlayerToken)
+
+  case class DedupFunctions(playerToken: PlayerToken)
 
   object MakeStats {
     def makeStats(levels: Map[String, RawLevelData]): Stats = {
@@ -168,12 +174,17 @@ object PlayerActor {
 
   case class PreparedLambdasToken(lambdas: Lambdas)
 
-  def props(system: ActorSystem, reactiveMongoApi: ReactiveMongoApi, logger: MathBotLogger, environment: Environment) =
-    Props(new PlayerActor()(system, reactiveMongoApi, logger, environment))
+  def props(system: ActorSystem,
+            reactiveMongoApi: ReactiveMongoApi,
+            polyfillActor: ActorRef,
+            logger: MathBotLogger,
+            environment: Environment) =
+    Props(new PlayerActor()(system, reactiveMongoApi, polyfillActor, logger, environment))
 }
 
 class PlayerActor()(system: ActorSystem,
                     val reactiveMongoApi: ReactiveMongoApi,
+                    val polyfillActor: ActorRef,
                     logger: MathBotLogger,
                     environment: Environment)
     extends Actor
@@ -181,6 +192,8 @@ class PlayerActor()(system: ActorSystem,
   import PlayerActor._
   import context.dispatcher
   val levelGenerator: LevelGenerator = new LevelGenerator(environment)
+
+  implicit val timeout: Timeout = 5000.minutes
 
   private val className = "PlayerActor"
 
@@ -209,51 +222,19 @@ class PlayerActor()(system: ActorSystem,
         .pipeTo(self)(sender)
     case updateStats: MakeStats =>
       Future { updateStats.playerToken }
-        .map { UpdatePlayerToken.apply }
+        .map { ApplyPolyfills.apply }
+        .pipeTo(self)(sender)
+    case applyPolyfills: ApplyPolyfills =>
+      (polyfillActor ? applyPolyfills)
+        .map {
+          case updatePlayerToken: UpdatePlayerToken => updatePlayerToken
+          case _ => ActorFailed("Failed to execute polyfill.")
+        }
         .pipeTo(self)(sender)
     case updatePlayerToken: UpdatePlayerToken =>
       updateToken(updatePlayerToken.playerToken)
-        .map { pt =>
-          pt.lambdas.get.defaultFuncs match {
-            case Some(_) => AddNamesToCommands(pt)
-            case None => AddDefaultFuncsField(pt)
-          }
-        }
+        .map { PreparedPlayerToken.apply }
         .pipeTo(self)(sender)
-    case AddDefaultFuncsField(playerToken) => // Polyfill to ensure field added to existing users
-      playerToken.lambdas match {
-        case Some(lambdas) =>
-          updateToken(
-            playerToken
-              .copy(
-                lambdas = Some(
-                  lambdas.copy(stagedFuncs = List.empty[FuncToken], defaultFuncs = Some(DefaultCommands.funcs))
-                )
-              )
-          ).map { AddNamesToCommands.apply }
-            .pipeTo(self)(sender)
-          logger.LogDebug(className, "Adding default tokens")
-        case None =>
-          Future {}
-            .map { _ =>
-              ActorFailed("Unable to locate lambdas at AddDefaultFuncsField")
-            }
-            .pipeTo(self)(sender)
-      }
-    case AddNamesToCommands(playerToken) => // Polyfill to ensure commands include names for existing users
-      playerToken.lambdas match {
-        case Some(lambdas) =>
-          updateToken(
-            playerToken.copy(lambdas = Some(lambdas.copy(cmds = DefaultCommands.cmds)))
-          ).map { PreparedPlayerToken.apply }
-            .pipeTo(self)(sender)
-        case None =>
-          Future {}
-            .map { _ =>
-              ActorFailed("Unable to locate lambdas at AddNamesToCommands")
-            }
-            .pipeTo(self)(sender)
-      }
     case EditLambdas(jsValue) =>
       jsValue.validate[PrepareLambdas].asOpt match {
         case Some(prepareLambdas) =>
