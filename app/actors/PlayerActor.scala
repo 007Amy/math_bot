@@ -1,9 +1,12 @@
 package actors
 
 import actors.LevelGenerationActor.makeQtyUnlimited
-import actors.messages.{PreparedStepData, RawLevelData, ResponsePlayerToken, ActorFailed}
-import akka.actor.{Actor, ActorSystem, Props}
+import actors.PolyfillActor.ApplyPolyfills
+import actors.messages.{ActorFailed, PreparedStepData, RawLevelData, ResponsePlayerToken}
+import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.pattern.pipe
+import akka.pattern.ask
+import akka.util.Timeout
 import loggers.MathBotLogger
 import model.{DefaultCommands, PlayerTokenModel}
 import model.models._
@@ -11,6 +14,7 @@ import play.api.Environment
 import play.api.libs.json.{JsPath, JsValue, Json, Reads}
 import play.modules.reactivemongo.ReactiveMongoApi
 import play.api.libs.functional.syntax._
+import scala.concurrent.duration._
 
 import scala.concurrent.Future
 
@@ -22,7 +26,7 @@ object PlayerActor {
 
   case class GatherLevel(playerToken: PlayerToken)
 
-  case class UpdateFunc(funcToken: FuncToken, playerToken: Option[PlayerToken], `override`: Boolean)
+  case class UpdateFunc(funcToken: FuncToken, playerToken: PlayerToken, `override`: Boolean)
 
   case class ActivateFunc(tokenId: String, stagedIndex: String, activeIndex: String)
 
@@ -31,6 +35,8 @@ object PlayerActor {
   case class AddDefaultFuncsField(playerToken: PlayerToken)
 
   case class AddNamesToCommands(playerToken: PlayerToken)
+
+  case class DedupFunctions(playerToken: PlayerToken)
 
   object MakeStats {
     def makeStats(levels: Map[String, RawLevelData]): Stats = {
@@ -72,8 +78,7 @@ object PlayerActor {
     }
 
     def makeStatsSame(baseStats: Stats, userStats: Stats): Stats = {
-
-      val updated = userStats.copy(
+      userStats.copy(
         level =
           if (baseStats.levels.isDefinedAt(userStats.level)) userStats.level
           else baseStats.level,
@@ -131,8 +136,6 @@ object PlayerActor {
             }
         }
       )
-
-      updated
     }
 
     def editStats(baseStats: Stats, userStats: Option[Stats]): Stats = userStats match {
@@ -168,12 +171,21 @@ object PlayerActor {
 
   case class PreparedLambdasToken(lambdas: Lambdas)
 
-  def props(system: ActorSystem, reactiveMongoApi: ReactiveMongoApi, logger: MathBotLogger, environment: Environment) =
-    Props(new PlayerActor()(system, reactiveMongoApi, logger, environment))
+  def indexFunctions(funcs: List[FuncToken]): List[FuncToken] =
+    funcs.zipWithIndex
+      .map(ft => ft._1.copy(index = Option(ft._2)))
+
+  def props(system: ActorSystem,
+            reactiveMongoApi: ReactiveMongoApi,
+            polyfillActor: ActorRef,
+            logger: MathBotLogger,
+            environment: Environment) =
+    Props(new PlayerActor()(system, reactiveMongoApi, polyfillActor, logger, environment))
 }
 
 class PlayerActor()(system: ActorSystem,
                     val reactiveMongoApi: ReactiveMongoApi,
+                    val polyfillActor: ActorRef,
                     logger: MathBotLogger,
                     environment: Environment)
     extends Actor
@@ -181,6 +193,8 @@ class PlayerActor()(system: ActorSystem,
   import PlayerActor._
   import context.dispatcher
   val levelGenerator: LevelGenerator = new LevelGenerator(environment)
+
+  implicit val timeout: Timeout = 5000.minutes
 
   private val className = "PlayerActor"
 
@@ -209,129 +223,75 @@ class PlayerActor()(system: ActorSystem,
         .pipeTo(self)(sender)
     case updateStats: MakeStats =>
       Future { updateStats.playerToken }
-        .map { UpdatePlayerToken.apply }
+        .map { ApplyPolyfills.apply }
+        .pipeTo(self)(sender)
+    case applyPolyfills: ApplyPolyfills =>
+      (polyfillActor ? applyPolyfills)
+        .map {
+          case updatePlayerToken: UpdatePlayerToken => updatePlayerToken
+          case _ => ActorFailed("Failed to execute polyfill.")
+        }
         .pipeTo(self)(sender)
     case updatePlayerToken: UpdatePlayerToken =>
       updateToken(updatePlayerToken.playerToken)
-        .map { pt =>
-          pt.lambdas.get.defaultFuncs match {
-            case Some(_) => AddNamesToCommands(pt)
-            case None => AddDefaultFuncsField(pt)
-          }
-        }
+        .map { PreparedPlayerToken.apply }
         .pipeTo(self)(sender)
-    case AddDefaultFuncsField(playerToken) => // Polyfill to ensure field added to existing users
-      playerToken.lambdas match {
-        case Some(lambdas) =>
-          updateToken(
-            playerToken
-              .copy(
-                lambdas = Some(
-                  lambdas.copy(stagedFuncs = List.empty[FuncToken], defaultFuncs = Some(DefaultCommands.funcs))
-                )
-              )
-          ).map { AddNamesToCommands.apply }
-            .pipeTo(self)(sender)
-          logger.LogDebug(className, "Adding default tokens")
-        case None =>
-          Future {}
-            .map { _ =>
-              ActorFailed("Unable to locate lambdas at AddDefaultFuncsField")
-            }
-            .pipeTo(self)(sender)
-      }
-    case AddNamesToCommands(playerToken) => // Polyfill to ensure commands include names for existing users
-      playerToken.lambdas match {
-        case Some(lambdas) =>
-          updateToken(
-            playerToken.copy(lambdas = Some(lambdas.copy(cmds = DefaultCommands.cmds)))
-          ).map { PreparedPlayerToken.apply }
-            .pipeTo(self)(sender)
-        case None =>
-          Future {}
-            .map { _ =>
-              ActorFailed("Unable to locate lambdas at AddNamesToCommands")
-            }
-            .pipeTo(self)(sender)
-      }
     case EditLambdas(jsValue) =>
       jsValue.validate[PrepareLambdas].asOpt match {
         case Some(prepareLambdas) =>
-          getToken(prepareLambdas.tokenId)
-            .map { playerToken =>
+          (getToken(prepareLambdas.tokenId) map {
+            case Some(playerToken) =>
               UpdateFunc(prepareLambdas.funcToken, playerToken, prepareLambdas.`override`.getOrElse(false))
-            }
-            .pipeTo(self)(sender)
+            case None => ActorFailed("Unable to find player token")
+          }).pipeTo(self)(sender)
         case None =>
           Future {}
             .map { _ =>
-              ActorFailed(s"Data structure not appropriate, $jsValue")
+              ActorFailed("Invalid JSON")
             }
             .pipeTo(self)(sender)
       }
-    case UpdateFunc(func, token, overrideBool) =>
-      token match {
-        case Some(playerToken) =>
-          playerToken.stats match {
-            case Some(stats) =>
-              playerToken.lambdas match {
-                case Some(lambdas) =>
-                  levelGenerator.getRawStepData(stats.level, stats.step) match {
-                    case Some(rsd) =>
-                      val rawStepData = rsd.copy(stagedQty = makeQtyUnlimited(rsd.stagedQty),
-                                                 activeQty = makeQtyUnlimited(rsd.activeQty),
-                                                 mainMax = makeQtyUnlimited(rsd.mainMax))
-                      func.`type` match {
-                        case Some("function") =>
-                          updateFunc(playerToken.token_id, func)
-                            .map {
-                              case Some(pToken) =>
-                                PreparedLambdasToken(
-                                  PreparedStepData
-                                    .prepareLambdas(pToken, rawStepData)
-                                    .copy(activeFuncs = pToken.lambdas.get.activeFuncs)
-                                )
-                              case None => ActorFailed("Something went wrong while updating func.")
-                            }
-                            .pipeTo(self)(sender)
-                        case Some("main-function") =>
-                          lambdas.main.func match {
-                            case Some(mainFunc) =>
-                              if (mainFunc.lengthCompare(rawStepData.mainMax) < 0 || overrideBool) {
-                                updateFunc(playerToken.token_id, func)
-                                  .map {
-                                    case Some(pToken) =>
-                                      PreparedLambdasToken(
-                                        PreparedStepData
-                                          .prepareLambdas(pToken, rawStepData)
-                                          .copy(activeFuncs = pToken.lambdas.get.activeFuncs)
-                                      )
-                                    case None => ActorFailed("Something went wrong while updating func.")
-                                  }
-                                  .pipeTo(self)(sender)
-                              } else {
-                                Future {
-                                  playerToken
-                                }.map { token =>
-                                    PreparedLambdasToken(
-                                      PreparedStepData
-                                        .prepareLambdas(token, rawStepData)
-                                        .copy(activeFuncs = token.lambdas.get.activeFuncs)
-                                    )
-                                  }
-                                  .pipeTo(self)(sender)
-                              }
-                            case None => sender ! ActorFailed("No func in main.")
-                          }
-                        case _ => sender ! ActorFailed("Not a valid command type.")
-                      }
-                    case None => sender ! ActorFailed(s"No step found for ${stats.level}/${stats.step}")
-                  }
-                case None => sender ! ActorFailed(s"No stats with player token.")
-              }
-            case None => sender ! ActorFailed("Player token has no lambdas.")
+    case UpdateFunc(funcToken, playerToken, overrideBool) =>
+      for {
+        stats <- playerToken.stats
+        lambdas <- playerToken.lambdas
+        rsd <- levelGenerator.getRawStepData(stats.level, stats.step)
+        rawStepData = rsd.copy(stagedQty = makeQtyUnlimited(rsd.stagedQty),
+                               activeQty = makeQtyUnlimited(rsd.activeQty),
+                               mainMax = makeQtyUnlimited(rsd.mainMax))
+      } yield {
+        val funcType = funcToken.`type`.getOrElse("Nothing")
+        val mainFunc = lambdas.main.func.getOrElse(List.empty[FuncToken])
+
+        val updatedPlayerToken =
+          if (funcType == "function" || (funcType == "main-function" && mainFunc.lengthCompare(rawStepData.mainMax) < 0) || overrideBool) {
+            val updatedLambdas = if (funcType == "function") {
+              lambdas.copy(
+                activeFuncs = indexFunctions(
+                  lambdas.activeFuncs.map(f => if (f.created_id == funcToken.created_id) funcToken else f)
+                )
+              )
+            } else {
+              lambdas.copy(
+                main = funcToken.copy(func = Some(indexFunctions(funcToken.func.getOrElse(List.empty[FuncToken]))))
+              )
+            }
+            for {
+              updatedPlayerToken <- updateToken(playerToken.copy(lambdas = Some(updatedLambdas)))
+            } yield updatedPlayerToken
+          } else {
+            Future { playerToken }
           }
-        case None => sender ! ActorFailed(s"Unable to find a player token.")
+
+        updatedPlayerToken
+          .map { pToken =>
+            PreparedLambdasToken(
+              PreparedStepData
+                .prepareLambdas(pToken, rawStepData)
+                .copy(activeFuncs = pToken.lambdas.get.activeFuncs)
+            )
+          }
+          .pipeTo(self)(sender)
       }
     case ActivateFunc(tokenId, stagedIndex, activeIndex) =>
       getToken(tokenId)
@@ -341,56 +301,46 @@ class PlayerActor()(system: ActorSystem,
         }
         .pipeTo(self)(sender)
     case MoveFunc(playerToken, stagedIndex, activeIndex) =>
-      playerToken.stats match {
-        case Some(stats) =>
-          levelGenerator.getRawStepData(stats.level, stats.step) match {
-            case Some(rsd) =>
-              val rawStepData =
-                rsd.copy(stagedQty = makeQtyUnlimited(rsd.stagedQty),
-                         activeQty = makeQtyUnlimited(rsd.activeQty),
-                         mainMax = makeQtyUnlimited(rsd.mainMax))
-              playerToken.lambdas match {
-                case Some(lambdas) =>
-                  if (rawStepData.activeEnabled && lambdas.activeFuncs.lengthCompare(
-                        LevelGenerationActor.makeQtyUnlimited(rawStepData.activeQty)
-                      ) <= 0) {
-                    activateFunc(playerToken.token_id, stagedIndex, activeIndex)
-                      .map {
-                        case Some(token) =>
-                          PreparedLambdasToken(
-                            PreparedStepData.prepareLambdas(token, rawStepData)
-                          )
-                        case None => ActorFailed("Unable to update lambdas.")
-                      }
-                      .pipeTo(self)(sender)
-                  } else {
-                    Future { playerToken }
-                      .map { token =>
-                        PreparedLambdasToken(PreparedStepData.prepareLambdas(token, rawStepData))
-                      }
-                      .pipeTo(self)(sender)
-                  }
-                case None =>
-                  Future {}
-                    .map { _ =>
-                      ActorFailed("Unable to move func.")
-                    }
-                    .pipeTo(self)(sender)
+      for {
+        stats <- playerToken.stats
+        rsd <- levelGenerator.getRawStepData(stats.level, stats.step)
+        lambdas <- playerToken.lambdas
+        rawStepData = rsd.copy(stagedQty = makeQtyUnlimited(rsd.stagedQty),
+                               activeQty = makeQtyUnlimited(rsd.activeQty),
+                               mainMax = makeQtyUnlimited(rsd.mainMax))
+      } yield
+        if (rawStepData.activeEnabled && lambdas.activeFuncs.lengthCompare(
+              makeQtyUnlimited(rawStepData.activeQty)
+            ) <= 0) {
+          for {
+            lambdas <- playerToken.lambdas
+            funcToMove <- lambdas.stagedFuncs.lift(stagedIndex.toInt)
+            updatedStagedFuncs = lambdas.stagedFuncs
+              .filterNot(_.index.contains(stagedIndex.toInt))
+
+            updatedActiveFuncs = lambdas.activeFuncs
+              .take(activeIndex.toInt) ++ List(funcToMove) ++ lambdas.activeFuncs
+              .drop(activeIndex.toInt)
+          } for {
+            updatedToken <- updateToken(
+              playerToken.copy(
+                lambdas = Some(
+                  lambdas.copy(stagedFuncs = indexFunctions(updatedStagedFuncs),
+                               activeFuncs = indexFunctions(updatedActiveFuncs))
+                )
+              )
+            )
+          } yield
+            Future { updatedToken }
+              .map { pToken =>
+                PreparedLambdasToken(PreparedStepData.prepareLambdas(pToken, rawStepData))
               }
-            case None =>
-              Future {}
-                .map { _ =>
-                  ActorFailed("Unable to move func.")
-                }
-                .pipeTo(self)(sender)
-          }
-        case None =>
-          Future {}
-            .map { _ =>
-              ActorFailed("Unable to move func.")
-            }
+              .pipeTo(self)(sender)
+        } else {
+          Future { PreparedStepData.prepareLambdas(playerToken, rawStepData) }
+            .map { PreparedLambdasToken.apply }
             .pipeTo(self)(sender)
-      }
+        }
 
     case updatedLambdasToken: PreparedLambdasToken =>
       logger.LogDebug(className, "PreparedLambdasToken generated.")

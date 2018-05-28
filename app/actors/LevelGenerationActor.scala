@@ -63,38 +63,29 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
 
   override def receive: Receive = {
     case GetGridMap(playerToken) =>
-      playerToken match {
-        case Some(token) =>
-          token.stats match {
-            case Some(stats) =>
-              levelGenerator.getRawStepData(stats.level, stats.step) match {
-                case Some(rawStepData) =>
-                  val preparedStepData =
-                    PreparedStepData(
-                      token,
-                      rawStepData.copy(activeQty = makeQtyUnlimited(rawStepData.activeQty),
-                                       stagedQty = makeQtyUnlimited(rawStepData.stagedQty),
-                                       mainMax = makeQtyUnlimited(rawStepData.mainMax))
-                    )
+      for {
+        token <- playerToken
+        stats <- token.stats
+        rawStepData <- levelGenerator.getRawStepData(stats.level, stats.step)
+      } yield {
+        val preparedStepData = PreparedStepData(
+          token,
+          rawStepData.copy(activeQty = makeQtyUnlimited(rawStepData.activeQty),
+                           stagedQty = makeQtyUnlimited(rawStepData.stagedQty),
+                           mainMax = makeQtyUnlimited(rawStepData.mainMax))
+        )
 
-                  Future { preparedStepData }
-                    .map { psd =>
-                      logger.LogDebug(className, "Successfully created GridMap")
-                      GridMap(
-                        gMap = psd.gridMap,
-                        robotOrientation = rawStepData.robotOrientation.toString,
-                        success = psd.stepControl.success,
-                        description = psd.description,
-                        problem = Problem(psd.problem.encryptedProblem)
-                      )
-                    }
-                    .pipeTo(self)(sender)
-
-                case None => sender ! Left(ActorFailed(s"No level: ${stats.level} or step: ${stats.step}"))
-              }
-            case None => sender ! Left(ActorFailed(s"No stats with token_id ${token.token_id}"))
-          }
-        case None => sender ! Left(ActorFailed("Hey that's not a PlayerToken!"))
+        Future {
+          GridMap(
+            gMap = preparedStepData.gridMap,
+            robotOrientation = rawStepData.robotOrientation.toString,
+            success = preparedStepData.stepControl.success,
+            description = preparedStepData.description,
+            problem = Problem(preparedStepData.problem.encryptedProblem),
+            evalEachFrame = rawStepData.evalEachFrame.getOrElse(false)
+          )
+        }.map(g => g)
+          .pipeTo(self)(sender)
       }
     case GetLevel(level, _) =>
       Future { levelGenerator.getJsonFromFile(s"app/assets/$level.json") }
@@ -190,7 +181,7 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
                 val name = s._1
                 val image = s._2
                 FuncToken(
-                  created_id = createdIdGen(name),
+                  created_id = createdIdGen(image),
                   func = Option(List.empty[FuncToken]),
                   set = Some(false),
                   name = Some(parseCamelCase(name)),

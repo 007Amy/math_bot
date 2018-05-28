@@ -2,7 +2,7 @@
   "level": "Recursion",
   "prevLevel": "Numbers",
   "nextLevel": "None",
-  "show": false,
+  "show": true,
   "steps": {
     "RecurForward": {
       "level": "Recursion",
@@ -33,6 +33,7 @@
       "problem": "0",
       "clearMain": false,
       "initFocus": [],
+      "evalEachFrame": true,
       "prevStep": "None",
       "nextStep": "None"
     }

@@ -3,6 +3,7 @@
     <splash-screen v-if="!auth.authenticated"></splash-screen>
     <div v-else class="profile" data-aos="fade-in">
       <div class="secretTools">
+        <button @click="mutateMe">MUTATE ME!</button>
         <button @click="unlock()">Unlock</button>
         <button @click="reset()">Reset</button>
       </div>
@@ -36,6 +37,13 @@ export default {
     }
   },
   methods: {
+    mutateMe () {
+      const mutatedJson = require('../services/mutated_token.json')
+      this.$http.post('/api/token/test', mutatedJson)
+        .then(res => res.body)
+        .then(console.log)
+        .catch(console.error)
+    },
     unlock () {
       const tokenId = this.$store.getters.getToken.token_id
       this.$http.get('/api/stats/unlock/' + tokenId)
