@@ -171,6 +171,10 @@ object PlayerActor {
 
   case class PreparedLambdasToken(lambdas: Lambdas)
 
+  def indexFunctions(funcs: List[FuncToken]): List[FuncToken] =
+    funcs.zipWithIndex
+      .map(ft => ft._1.copy(index = Option(ft._2)))
+
   def props(system: ActorSystem,
             reactiveMongoApi: ReactiveMongoApi,
             polyfillActor: ActorRef,
@@ -263,10 +267,14 @@ class PlayerActor()(system: ActorSystem,
           if (funcType == "function" || (funcType == "main-function" && mainFunc.lengthCompare(rawStepData.mainMax) < 0) || overrideBool) {
             val updatedLambdas = if (funcType == "function") {
               lambdas.copy(
-                activeFuncs = lambdas.activeFuncs.map(f => if (f.created_id == funcToken.created_id) funcToken else f)
+                activeFuncs = indexFunctions(
+                  lambdas.activeFuncs.map(f => if (f.created_id == funcToken.created_id) funcToken else f)
+                )
               )
             } else {
-              lambdas.copy(main = funcToken)
+              lambdas.copy(
+                main = funcToken.copy(func = Some(indexFunctions(funcToken.func.getOrElse(List.empty[FuncToken]))))
+              )
             }
             for {
               updatedPlayerToken <- updateToken(playerToken.copy(lambdas = Some(updatedLambdas)))
@@ -304,13 +312,30 @@ class PlayerActor()(system: ActorSystem,
         if (rawStepData.activeEnabled && lambdas.activeFuncs.lengthCompare(
               makeQtyUnlimited(rawStepData.activeQty)
             ) <= 0) {
-          activateFunc(playerToken.token_id, stagedIndex, activeIndex)
-            .map {
-              case Some(token) =>
-                PreparedLambdasToken(PreparedStepData.prepareLambdas(token, rawStepData))
-              case None => ActorFailed("Unable to update lambdas")
-            }
-            .pipeTo(self)(sender)
+          for {
+            lambdas <- playerToken.lambdas
+            funcToMove <- lambdas.stagedFuncs.lift(stagedIndex.toInt)
+            updatedStagedFuncs = lambdas.stagedFuncs
+              .filterNot(_.index.contains(stagedIndex.toInt))
+
+            updatedActiveFuncs = lambdas.activeFuncs
+              .take(activeIndex.toInt) ++ List(funcToMove) ++ lambdas.activeFuncs
+              .drop(activeIndex.toInt)
+          } for {
+            updatedToken <- updateToken(
+              playerToken.copy(
+                lambdas = Some(
+                  lambdas.copy(stagedFuncs = indexFunctions(updatedStagedFuncs),
+                               activeFuncs = indexFunctions(updatedActiveFuncs))
+                )
+              )
+            )
+          } yield
+            Future { updatedToken }
+              .map { pToken =>
+                PreparedLambdasToken(PreparedStepData.prepareLambdas(pToken, rawStepData))
+              }
+              .pipeTo(self)(sender)
         } else {
           Future { PreparedStepData.prepareLambdas(playerToken, rawStepData) }
             .map { PreparedLambdasToken.apply }

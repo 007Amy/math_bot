@@ -63,31 +63,4 @@ trait PlayerTokenModel extends MongoController with ReactiveMongoComponents with
       token
     }
   }
-
-  def activateFunc(tokenId: String, stagedIndex: String, activeIndex: String): Future[Option[PlayerToken]] = {
-    getToken(tokenId).flatMap {
-      case Some(playerToken) =>
-        val lambdas = playerToken.lambdas.get
-        val funcToMove = lambdas.stagedFuncs.lift(stagedIndex.toInt).get
-        val updatedStagedFuncs = lambdas.stagedFuncs
-          .filterNot(_.index.contains(stagedIndex.toInt))
-          .zipWithIndex
-          .map(ft => ft._1.copy(index = Option(ft._2)))
-
-        val updatedActiveFuncs = lambdas.activeFuncs
-          .take(activeIndex.toInt) ++ List(funcToMove) ++ lambdas.activeFuncs
-          .drop(activeIndex.toInt)
-          .zipWithIndex
-          .map(ft => ft._1.copy(index = Option(ft._2)))
-
-        for {
-          updatedToken <- updateToken(
-            playerToken.copy(
-              lambdas = Some(lambdas.copy(stagedFuncs = updatedStagedFuncs, activeFuncs = updatedActiveFuncs))
-            )
-          )
-        } yield Some(updatedToken)
-      case None => Future { None }
-    }
-  }
 }
