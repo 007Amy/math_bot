@@ -64,25 +64,6 @@ trait PlayerTokenModel extends MongoController with ReactiveMongoComponents with
     }
   }
 
-  def updateFunc(tokenId: String, func: FuncToken): Future[Option[PlayerToken]] = {
-    getToken(tokenId).flatMap {
-      case Some(playerToken) =>
-        val lambdas = playerToken.lambdas.get
-        val updatedLambdas = if (func.`type`.contains("function")) {
-          lambdas.copy(activeFuncs = lambdas.activeFuncs.map(f => if (f.created_id == func.created_id) func else f))
-        } else {
-          lambdas.copy(main = func)
-        }
-        for {
-          updatedPlayerToken <- updateToken(playerToken.copy(lambdas = Some(updatedLambdas)))
-        } yield Some(updatedPlayerToken)
-      case None =>
-        Future {
-          None
-        }
-    }
-  }
-
   def activateFunc(tokenId: String, stagedIndex: String, activeIndex: String): Future[Option[PlayerToken]] = {
     getToken(tokenId).flatMap {
       case Some(playerToken) =>

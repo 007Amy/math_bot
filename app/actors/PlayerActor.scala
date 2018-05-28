@@ -261,22 +261,27 @@ class PlayerActor()(system: ActorSystem,
 
         val updatedPlayerToken =
           if (funcType == "function" || (funcType == "main-function" && mainFunc.lengthCompare(rawStepData.mainMax) < 0) || overrideBool) {
+            val updatedLambdas = if (funcType == "function") {
+              lambdas.copy(
+                activeFuncs = lambdas.activeFuncs.map(f => if (f.created_id == funcToken.created_id) funcToken else f)
+              )
+            } else {
+              lambdas.copy(main = funcToken)
+            }
             for {
-              updatedPlayerToken <- updateFunc(playerToken.token_id, funcToken)
+              updatedPlayerToken <- updateToken(playerToken.copy(lambdas = Some(updatedLambdas)))
             } yield updatedPlayerToken
           } else {
-            Future { Some(playerToken) }
+            Future { playerToken }
           }
 
         updatedPlayerToken
-          .map {
-            case Some(pToken) =>
-              PreparedLambdasToken(
-                PreparedStepData
-                  .prepareLambdas(pToken, rawStepData)
-                  .copy(activeFuncs = pToken.lambdas.get.activeFuncs)
-              )
-            case None => ActorFailed("Failed to update lambdas.")
+          .map { pToken =>
+            PreparedLambdasToken(
+              PreparedStepData
+                .prepareLambdas(pToken, rawStepData)
+                .copy(activeFuncs = pToken.lambdas.get.activeFuncs)
+            )
           }
           .pipeTo(self)(sender)
       }
