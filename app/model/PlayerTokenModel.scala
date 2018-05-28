@@ -65,89 +65,48 @@ trait PlayerTokenModel extends MongoController with ReactiveMongoComponents with
   }
 
   def updateFunc(tokenId: String, func: FuncToken): Future[Option[PlayerToken]] = {
-    (for {
-      playerTokenOpt <- getToken(tokenId)
-    } yield
-      playerTokenOpt match {
-        case Some(playerToken) =>
-          playerToken.lambdas match {
-            case Some(lambdas) =>
-              playerToken.stats match {
-                case Some(stats) =>
-                  if (func.`type`.contains("function")) {
-                    for {
-                      updatedPlayerToken <- updateToken(
-                        playerToken.copy(
-                          lambdas = Some(
-                            lambdas.copy(
-                              activeFuncs = lambdas.activeFuncs
-                                .map(
-                                  f =>
-                                    if (f.created_id == func.created_id) {
-                                      func
-                                    } else f
-                                )
-                                .zipWithIndex
-                                .map(d => d._1.copy(index = Some(d._2)))
-                            )
-                          )
-                        )
-                      )
-                    } yield Some(updatedPlayerToken)
-                  } else if (func.`type`.contains("main-function")) {
-                    for {
-                      updatedPlayerToken <- updateToken(
-                        playerToken.copy(
-                          lambdas = Some(
-                            lambdas.copy(
-                              main = func
-                            )
-                          )
-                        )
-                      )
-                    } yield Some(updatedPlayerToken)
-                  } else Future { None }
-                case None => Future { None }
-              }
-            case None => Future { None }
-          }
-        case None => Future { None }
-      }).flatMap(t => t)
+    getToken(tokenId).flatMap {
+      case Some(playerToken) =>
+        val lambdas = playerToken.lambdas.get
+        val updatedLambdas = if (func.`type`.contains("function")) {
+          lambdas.copy(activeFuncs = lambdas.activeFuncs.map(f => if (f.created_id == func.created_id) func else f))
+        } else {
+          lambdas.copy(main = func)
+        }
+        for {
+          updatedPlayerToken <- updateToken(playerToken.copy(lambdas = Some(updatedLambdas)))
+        } yield Some(updatedPlayerToken)
+      case None =>
+        Future {
+          None
+        }
+    }
   }
 
   def activateFunc(tokenId: String, stagedIndex: String, activeIndex: String): Future[Option[PlayerToken]] = {
-    (for {
-      playerTokenOpt <- getToken(tokenId)
-    } yield
-      playerTokenOpt match {
-        case Some(playerToken) =>
-          playerToken.lambdas match {
-            case Some(lambdas) =>
-              lambdas.stagedFuncs.lift(stagedIndex.toInt) match {
-                case Some(funcToMove) =>
-                  val updatedStagedFuncs = lambdas.stagedFuncs
-                    .filterNot(_.index.contains(stagedIndex.toInt))
-                    .zipWithIndex
-                    .map(ft => ft._1.copy(index = Option(ft._2)))
+    getToken(tokenId).flatMap {
+      case Some(playerToken) =>
+        val lambdas = playerToken.lambdas.get
+        val funcToMove = lambdas.stagedFuncs.lift(stagedIndex.toInt).get
+        val updatedStagedFuncs = lambdas.stagedFuncs
+          .filterNot(_.index.contains(stagedIndex.toInt))
+          .zipWithIndex
+          .map(ft => ft._1.copy(index = Option(ft._2)))
 
-                  val updatedActiveFuncs = lambdas.activeFuncs
-                    .take(activeIndex.toInt) ++ List(funcToMove) ++ lambdas.activeFuncs
-                    .drop(activeIndex.toInt)
-                    .zipWithIndex
-                    .map(ft => ft._1.copy(index = Option(ft._2)))
+        val updatedActiveFuncs = lambdas.activeFuncs
+          .take(activeIndex.toInt) ++ List(funcToMove) ++ lambdas.activeFuncs
+          .drop(activeIndex.toInt)
+          .zipWithIndex
+          .map(ft => ft._1.copy(index = Option(ft._2)))
 
-                  for {
-                    updatedToken <- updateToken(
-                      playerToken.copy(
-                        lambdas = Some(lambdas.copy(stagedFuncs = updatedStagedFuncs, activeFuncs = updatedActiveFuncs))
-                      )
-                    )
-                  } yield Some(updatedToken)
-                case None => Future { None }
-              }
-            case None => Future { None }
-          }
-        case None => Future { None }
-      }).flatMap(t => t)
+        for {
+          updatedToken <- updateToken(
+            playerToken.copy(
+              lambdas = Some(lambdas.copy(stagedFuncs = updatedStagedFuncs, activeFuncs = updatedActiveFuncs))
+            )
+          )
+        } yield Some(updatedToken)
+      case None => Future { None }
+    }
   }
 }
