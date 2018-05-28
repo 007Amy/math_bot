@@ -190,7 +190,7 @@ class LevelGenerationActor()(val reactiveMongoApi: ReactiveMongoApi, logger: Mat
                 val name = s._1
                 val image = s._2
                 FuncToken(
-                  created_id = createdIdGen(name),
+                  created_id = createdIdGen(image),
                   func = Option(List.empty[FuncToken]),
                   set = Some(false),
                   name = Some(parseCamelCase(name)),

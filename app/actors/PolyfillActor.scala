@@ -8,6 +8,8 @@ import model.DefaultCommands
 import model.models._
 import play.api.Environment
 
+import actors.LevelGenerationActor.createdIdGen
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -23,8 +25,40 @@ object PolyfillActor {
   final case class PolyfillsApplied(playerToken: PlayerToken)
 
   def dedup(lambdas: Lambdas): Lambdas = {
-    // Find duplicates in
-    lambdas
+    // Dedup active functions, replace created id
+    def dedupActives(actives: List[FuncToken]): List[FuncToken] = actives match {
+      case Nil => Nil
+      case ft :: rest if rest.exists(_.image == ft.image) =>
+        ft.copy(created_id = createdIdGen(ft.image.get)) :: dedupActives(rest.filterNot(_.image == ft.image))
+      case ft :: rest => ft :: dedupActives(rest)
+    }
+
+    // Update created id for all instances of active functions
+    def updateCreatedIds(actives: List[FuncToken]): List[FuncToken] = {
+      actives.map { ft =>
+        val func = ft.func.getOrElse(List.empty[FuncToken])
+        val updatedFunc = func.map { t =>
+          actives.find(_.image == t.image) match {
+            case Some(activeToken) => t.copy(created_id = activeToken.created_id)
+            case None => t
+          }
+        }
+        ft.copy(func = Some(updatedFunc))
+      }
+    }
+
+    // Store updated active functions
+    val updatedActive = updateCreatedIds(dedupActives(lambdas.activeFuncs))
+
+    // Replace created ids for any deduped found in main
+    val updatedMain = lambdas.main.copy(func = Some(lambdas.main.func.getOrElse(List.empty[FuncToken]).map { ft =>
+      updatedActive.find(_.image == ft.image) match {
+        case Some(funcToken) => ft.copy(created_id = funcToken.created_id)
+        case None => ft
+      }
+    }))
+
+    lambdas.copy(activeFuncs = updatedActive, main = updatedMain)
   }
 
   def props(system: ActorSystem, logger: MathBotLogger, environment: Environment) =
