@@ -143,7 +143,7 @@ module.exports = {
     trashButton: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522342913/buttons/trashButton.png'
   },
   robotImages: {
-    robotUp: 'http://res.cloudinary.com/doohickey/image/upload/c_scale,w_100/v1527608921/robot_away_eane70.png',
+    robotUp: 'http://res.cloudinary.com/doohickey/image/upload/v1527608921/robot_away_eane70.png',
     // robotUp: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437134/robotDirections/RobotUp_nbpcu2.png',
     robotRight: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437145/robotDirections/PlayerRight_n39yyp.png',
     robotDown: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437155/robotDirections/PlayerDown_pjawwx.png',

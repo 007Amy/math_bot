@@ -19,6 +19,10 @@ import Arithmetic from './Arithmetic'
 import UserProfileControls from './User_profile_controls'
 
 export default {
+  mounted () {
+    this.$store.dispatch('updateStepData', {})
+    this.$store.dispatch('updateRobot', {})
+  },
   computed: {
     auth () {
       return this.$store.getters.getAuth
