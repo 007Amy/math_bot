@@ -13,10 +13,10 @@ object SocketRequestConvertFlow {
   def jsonToCompilerCommand(msg : JsValue) : Any = {
     //println(msg.toString())
     Json.fromJson[SocketRequest](msg).asOpt match {
-      case Some(SocketRequest(_, _, Some(true), _, _)) => CompilerHalt()
-      case Some(SocketRequest(Some(steps), Some(problem), _ ,None, exitOnSuccess)) => CompilerExecute(steps, Problem(encryptedProblem = problem), true)
-      case Some(SocketRequest(Some(steps), Some(problem), _, Some(true), exitOnSuccess)) => CompilerCreate(steps, Problem(encryptedProblem = problem), true)
-      case Some(SocketRequest(Some(steps), _, _, Some(false), _)) => CompilerContinue(steps)
+      case Some(SocketRequest(_, _, Some(true), _)) => CompilerHalt()
+      case Some(SocketRequest(Some(steps), Some(problem), _ ,None)) => CompilerExecute(steps, Problem(encryptedProblem = problem))
+      case Some(SocketRequest(Some(steps), Some(problem), _, Some(true))) => CompilerCreate(steps, Problem(encryptedProblem = problem))
+      case Some(SocketRequest(Some(steps), _, _, Some(false))) => CompilerContinue(steps)
       case _ => ActorFailed("Invalid socket request json.")
     }
   }
