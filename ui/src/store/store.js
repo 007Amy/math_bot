@@ -99,7 +99,8 @@ export default new Vuex.Store({
         })
         return stepData
       }
-      state.stepData = reverseTools(stepData)
+      const data = Object.keys(stepData).length ? reverseTools(stepData) : stepData
+      state.stepData = data
     },
     UPDATE_SPLASH_SCREEN_SHOWING (state, bool) {
       state.splashScreenShowing = bool
