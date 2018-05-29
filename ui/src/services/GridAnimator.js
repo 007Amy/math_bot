@@ -9,6 +9,21 @@ class GridAnimator {
   robotState = null
   toolList = null
   robotSpeed = null
+  animations = {
+    bumped: 'robot-shake'
+  }
+  $robot = null
+
+  _animate () {
+    const animation = this.animations[this.robotState.animation] || 'walk'
+    this.$robot.addClass(animation)
+  }
+
+  _removeAnimations () {
+    Object.keys(this.animations).forEach(key => {
+      this.$robot.removeClass(this.animations[key])
+    })
+  }
 
   _updateGrid () {
     this.robotState.grid.cells.forEach(cell => {
@@ -18,9 +33,13 @@ class GridAnimator {
 
   _moveRobot () {
     return new Promise(resolve => {
+      this._animate()
       this.robot.updateRobot(this.robotState)
       this._updateGrid()
-      setTimeout(resolve, this.robotSpeed.speed)
+      setTimeout(() => {
+        this._removeAnimations()
+        resolve()
+      }, this.robotSpeed.speed)
     })
   }
 
@@ -32,10 +51,13 @@ class GridAnimator {
     this.grid = this.$store.getters.getGrid
     this.toolList = this.$store.getters.getStepData.toolList
     this.robotSpeed = this.robot.robotSpeed
+    this.$robot = $('.robot')
 
     await this._moveRobot()
     await this._updateGrid()
-    return new Promise(resolve => resolve(done))
+    return new Promise(resolve => {
+      resolve(done)
+    })
   }
 }
 
