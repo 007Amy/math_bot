@@ -83,6 +83,11 @@ img {
   right: 0 !important;
 }
 
+.robot-shake {
+  animation: shake 0.5s;
+  animation-iteration-count: infinite;
+}
+
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {
 
 }
