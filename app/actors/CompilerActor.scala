@@ -119,10 +119,10 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
       // new programs in the request json
       currentCompiler match {
         case Some(_) => self ! CompilerContinue(steps)
-        case None => self ! CompilerCreate(steps, problem, exitOnSuccess)
+        case None => self ! CompilerCreate(steps, problem)
       }
 
-    case CompilerCreate(steps, problem, exitOnSuccess) =>
+    case CompilerCreate(steps, problem) =>
       logger.LogInfo(className, "Creating new compiler.")
 
       for {
@@ -143,7 +143,7 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
                          iterator = stream.iterator,
                          program = program,
                          grid = grid,
-                         exitOnSuccess = exitOnSuccess)
+                         exitOnSuccess = grid.evalEachFrame)
           )
           self ! CompilerContinue(steps)
         }
@@ -218,6 +218,8 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
           // This case does nothing, should never happen
         }
       }
+
+
 
     case _: CompilerHalt =>
       logger.LogInfo(className, "Compiler halted")
