@@ -10,17 +10,17 @@ import akka.util.Timeout
 import compiler.processor.{AnimationType, Frame}
 import compiler.{Cell, Point}
 import javax.inject.Inject
-
 import actors.messages.{ClientRobotState, PreparedStepData}
 import loggers.MathBotLogger
 import model.PlayerTokenModel
 import model.models._
-import play.api.Environment
+import play.api.{Configuration, Environment}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json._
 import play.api.libs.streams.ActorFlow
 import play.api.mvc._
 import play.modules.reactivemongo.ReactiveMongoApi
+import utils.CompilerConfiguration
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
@@ -83,7 +83,8 @@ object MathBotCompiler {
 class MathBotCompiler @Inject()(val reactiveMongoApi: ReactiveMongoApi)(implicit system: ActorSystem,
                                                                         mat: Materializer,
                                                                         mathBotLogger: MathBotLogger,
-                                                                        environment: Environment)
+                                                                        environment: Environment,
+                                                                        configuration: Configuration)
     extends Controller
     with PlayerTokenModel
     with utils.SameOriginCheck {
@@ -91,6 +92,10 @@ class MathBotCompiler @Inject()(val reactiveMongoApi: ReactiveMongoApi)(implicit
   val levelActor =
     system.actorOf(LevelGenerationActor.props(reactiveMongoApi, mathBotLogger, environment), "level-compiler-actor")
   val statsActor = system.actorOf(StatsActor.props(system, reactiveMongoApi, mathBotLogger), "stats-compiler-actor")
+
+  val compilerConfiguration = CompilerConfiguration(
+    maxProgramSteps = configuration.getInt("mathbot.maxProgramSteps").getOrElse(10000)
+  )
 
   def wsPath(tokenId: String): Action[AnyContent] = Action { implicit request: RequestHeader =>
     val url = routes.MathBotCompiler.compileWs(tokenId).webSocketURL()
@@ -111,7 +116,8 @@ class MathBotCompiler @Inject()(val reactiveMongoApi: ReactiveMongoApi)(implicit
                                     reactiveMongoApi,
                                     statsActor,
                                     levelActor,
-                                    mathBotLogger)
+                                    mathBotLogger,
+                                    compilerConfiguration)
             )
           )
           .via(
@@ -146,7 +152,8 @@ class MathBotCompiler @Inject()(val reactiveMongoApi: ReactiveMongoApi)(implicit
                               reactiveMongoApi,
                               statsActor,
                               levelActor,
-                              mathBotLogger)
+                              mathBotLogger,
+            compilerConfiguration)
         val compiler = system.actorOf(compilerProps)
 
         (compiler ? sr)

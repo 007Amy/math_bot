@@ -1,21 +1,21 @@
 package actors
 
-import actors.LevelGenerationActor.{GetGridMap, GetStep}
-import actors.StatsActor.{StatsDoneUpdating, UpdateStats}
+import actors.LevelGenerationActor.{ GetGridMap, GetStep }
+import actors.StatsActor.{ StatsDoneUpdating, UpdateStats }
 import actors.messages._
-import akka.actor.{Actor, ActorRef, Props}
+import akka.actor.{ Actor, ActorRef, Props }
 import akka.pattern.ask
 import akka.util.Timeout
-import compiler.processor.{Frame, Processor}
-import compiler.{Compiler, GridAndProgram}
+import compiler.processor.{ Frame, Processor }
+import compiler.{ Compiler, GridAndProgram }
 import controllers.MathBotCompiler
 import javax.inject.Inject
-
 import loggers.MathBotLogger
 import model.PlayerTokenModel
-import model.models.{GridMap, Stats}
+import model.models.{ GridMap, Stats }
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.modules.reactivemongo.ReactiveMongoApi
+import utils.CompilerConfiguration
 
 import scala.concurrent.duration._
 
@@ -23,20 +23,23 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
     val reactiveMongoApi: ReactiveMongoApi,
     statsActor: ActorRef,
     levelActor: ActorRef,
-    logger: MathBotLogger
+    logger: MathBotLogger,
+    config : CompilerConfiguration
 ) extends Actor
     with PlayerTokenModel {
 
   import MathBotCompiler._
 
-  case class ProgramState(stream: Stream[Frame],
-                          iterator: Iterator[Frame],
-                          grid: GridMap,
-                          program: GridAndProgram,
-                          clientFrames: List[ClientFrame] = List.empty[ClientFrame],
-                          previousSteps: Int = 0,
-                          leftoverFrame: Option[Frame] = None,
-                          exitOnSuccess: Boolean = false)
+  case class ProgramState(stream : Stream[Frame],
+                          iterator : Iterator[Frame],
+                          grid : GridMap,
+                          program : GridAndProgram,
+                          clientFrames : List[ClientFrame] = List.empty[ClientFrame],
+                          stepCount : Int = 0,
+                          leftoverFrame : Option[Frame] = None,
+                          exitOnSuccess : Boolean = false) {
+    def addSteps(steps : Int) = this.copy(stepCount = this.stepCount+steps)
+  }
 
   implicit val timeout: Timeout = 5000.minutes
 
@@ -143,6 +146,7 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
                          iterator = stream.iterator,
                          program = program,
                          grid = grid,
+              stepCount = 0,
                          exitOnSuccess = grid.evalEachFrame)
           )
           self ! CompilerContinue(steps)
@@ -155,14 +159,16 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
         programState <- currentCompiler
       } yield {
         // filter out non-robot frames (eg function calls and program start)
-        val robotFrames = programState.iterator.filter(f => f.robotLocation.isDefined).take(steps).toList
+        val maxStepsReached = config.maxProgramSteps < programState.stepCount + steps
+        val takeSteps = if (maxStepsReached) config.maxProgramSteps - programState.stepCount else steps
+        val robotFrames = programState.iterator.filter(f => f.robotLocation.isDefined).take(takeSteps).toList
 
         val executeSomeFrames = (if (programState.exitOnSuccess) {
                                    if (programState.leftoverFrame.exists(lf => checkForSuccess(programState, lf))) {
                                      Seq.empty[Frame] // When the leftover is the success frame, don't return addtional frames
                                    } else {
                                      // Generate a temporary index for the program frames and search for a success frame.
-                                     // Truncate the frames to the first successfult frame
+                                     // Truncate the frames to the first successful frame
                                      val frames = robotFrames.zipWithIndex
                                      frames
                                        .find(frame => checkForSuccess(programState, frame._1))
@@ -175,7 +181,7 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
                                  }).toList
 
         // if the compiler generated less frames than requested we assume the program completed
-        val programCompleted = executeSomeFrames.length < steps
+        val programCompleted = executeSomeFrames.length < takeSteps || maxStepsReached
 
         // This logic is done this way for now because the client has to query to get group of frames and will hang
         // if a query never responds with a frame. Eventually this gets replaced with an async stream of frames coming
@@ -189,7 +195,7 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
           case (None, leadingFrames :+ last) if !programCompleted =>
             // More than one frame, send the leading frames and save the last frame for the next request
             sendFrames(programState, createFrames(leadingFrames))
-            currentCompiler = currentCompiler.map(_.copy(leftoverFrame = Some(last)))
+            currentCompiler = currentCompiler.map(_.copy(leftoverFrame = Some(last)).addSteps(takeSteps))
           case (None, leadingFrames :+ last) if programCompleted =>
             // When short the requested frames, assume the program has finished and compute the last frame too **
             for {
@@ -198,7 +204,7 @@ class CompilerActor @Inject()(out: ActorRef, tokenId: String)(
           case (Some(leftover), leadingFrames :+ last) if !programCompleted =>
             // With a leftover, and last, this is executing somewhere in the middle of the program.
             sendFrames(programState, createFrames(leftover +: leadingFrames))
-            currentCompiler = currentCompiler.map(_.copy(leftoverFrame = Some(last)))
+            currentCompiler = currentCompiler.map(_.copy(leftoverFrame = Some(last)).addSteps(takeSteps))
           case (Some(leftover), leadingFrames :+ last) if programCompleted =>
             // With the program completed, we send all the remaining frames
             for {
@@ -243,6 +249,7 @@ object CompilerActor {
             reactiveMongoApi: ReactiveMongoApi,
             statsActor: ActorRef,
             levelActor: ActorRef,
-            logger: MathBotLogger) =
-    Props(new CompilerActor(out, tokenId)(reactiveMongoApi, statsActor, levelActor, logger))
+            logger: MathBotLogger,
+            config : CompilerConfiguration) =
+    Props(new CompilerActor(out, tokenId)(reactiveMongoApi, statsActor, levelActor, logger, config))
 }
