@@ -10,6 +10,7 @@ case class GridMap(
     robotOrientation: String,
     success: (Frame, Problem) => Boolean,
     problem: Problem,
+    evalEachFrame: Boolean,
     description: String,
     toolList: ToolList = ToolList()
 )

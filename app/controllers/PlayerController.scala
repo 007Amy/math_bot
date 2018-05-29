@@ -3,8 +3,8 @@ package controllers
 import java.net.URLDecoder
 import javax.inject.Inject
 
-import actors.LevelGenerationActor.ActorFailed
-import actors.PlayerActor
+import actors.messages.ActorFailed
+import actors.{PlayerActor, PolyfillActor}
 import actors.PlayerActor._
 import actors.messages.ResponsePlayerToken
 import akka.actor.ActorSystem
@@ -12,6 +12,7 @@ import akka.pattern.ask
 import akka.util.Timeout
 import loggers.MathBotLogger
 import model.PlayerTokenModel
+import model.models.PlayerToken
 import play.api.Environment
 import play.api.mvc._
 import play.api.libs.json._
@@ -30,7 +31,10 @@ class PlayerController @Inject()(system: ActorSystem,
 
   implicit val timeout: Timeout = 5000.minutes
 
-  val playerActor = system.actorOf(PlayerActor.props(system, reactiveMongoApi, logger, environment), "player-actor")
+  val polyfillActor = system.actorOf(PolyfillActor.props(system, logger, environment), "polyfill-actor")
+
+  val playerActor =
+    system.actorOf(PlayerActor.props(system, reactiveMongoApi, polyfillActor, logger, environment), "player-actor")
 
   def addToken(): Action[JsValue] = Action.async(parse.json) { implicit request: Request[JsValue] =>
     (playerActor ? AddToken(request.body)).mapTo[Either[ResponsePlayerToken, ActorFailed]].map {
@@ -56,4 +60,15 @@ class PlayerController @Inject()(system: ActorSystem,
           case Right(invalidJson) => BadRequest(invalidJson.msg)
         }
     }
+
+  def test() = Action.async(parse.json) { implicit request: Request[JsValue] =>
+    request.body.validate[PlayerToken].asOpt match {
+      case Some(playerToken) =>
+        for {
+          deleteToken <- delete(playerToken.token_id)
+          insertMutatedToken <- insert(playerToken)
+        } yield Ok(Json.toJson(insertMutatedToken))
+      case None => Future { BadRequest }
+    }
+  }
 }

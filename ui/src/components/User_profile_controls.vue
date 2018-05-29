@@ -18,6 +18,9 @@ import MathbotHeader from './Mathbot_header'
 export default {
   name: 'user_profile_controls',
   computed: {
+    auth () {
+      return this.$store.getters.getAuth
+    },
     windowWidth () {
       return window.innerWidth
     },
@@ -37,8 +40,8 @@ export default {
   components: {
     MathbotHeader
   },
-  props: ['auth', 'permanentImages']
+  props: ['permanentImages']
 }
 </script>
 
-<style scoped src="../css/scoped/userProfileControls.css"></style>
+<style scoped src="../css/scoped/userProfileControls.scss" lang="scss"></style>

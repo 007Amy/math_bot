@@ -1,144 +1,181 @@
-import { _ } from 'underscore'
 import api from './api'
-import Promise from 'bluebird'
+import Robot from './RobotState'
+import GridAnimator from './GridAnimator'
+import utils from './utils'
 
-class RunCompiled {
-  constructor ({context, frames}) {
-    if (context && frames) {
+class RunCompiled extends GridAnimator {
+  constructor (context) {
+    super()
+    if (context) {
       this.context = context
-      this.frames = frames
+      this.robotFrames = []
       this.$store = this.context.$store
       this.$router = this.context.$router
+      this.tokenId = this.$store.getters.getTokenId
+      this.stats = this.$store.getters.getStats
       this.robot = this.$store.getters.getRobot
-      this.stepData = this.$store.getters.getCurrentStepData
+      this.stepData = this.$store.getters.getStepData
       this.toolList = this.stepData.toolList
 
-      if (this.frames !== undefined && this.frames.length) this.processFrames()
-      else console.log('NO FRAMES')
+      this._askCompiler = this._askCompiler.bind(this)
+      this._processFrames = this._processFrames.bind(this)
+      this._initializeStep = this._initializeStep.bind(this)
+      this._showBridgeScreen = this._showBridgeScreen.bind(this)
+      this.start = this.start.bind(this)
+      this.pause = this.pause.bind(this)
+      this.stop = this.stop.bind(this)
+      this._resetStep = this._resetStep.bind(this)
     }
   }
 
-  clearRobot () {
-    this.stepData.gridMap = _.map(this.stepData.gridMap, (row) => {
-      return _.map(row, (square) => {
-        square.robotSpot = false
-        return square
-      })
-    })
+  start () {
+    const mainFunction = this.$store.getters.getMainFunction.func
+    if (!mainFunction.length) {
+      this._mainEmptyMessage()
+    } else if (this.robot.state !== 'paused') {
+      this.robot.setState('running')
+      this._askCompiler()
+      utils.watcher(() => !this.robotFrames.length, this._processFrames)
+    } else {
+      this.robot.setState('running')
+      this._processFrames()
+    }
   }
 
-  animate ({ele, animation}, cb) {
-    const $ele = $(ele)
-    const robot = this.robot
+  pause () {
+    this._pausedMessage()
+    this.robot.setState('paused')
+  }
 
-    const animationList = {
-      bumped ($ele) {
-        const orientation = robot.robotFacing
-        $ele.stop().effect('shake', {
-          distance: 5,
-          direction: orientation === '0' || orientation === '180' ? 'up' : 'left'
-        }, 200, cb)
-      }
+  stop () {
+    this._stopMessage()
+    this.robot.setState('stopped')
+  }
+
+  _stopMessage () {
+    const messageBuilder = {
+      type: 'warn',
+      msg: 'Program stopped'
     }
 
-    if (animation !== null) animationList[animation]($ele)
-    else cb()
+    this._addMessage(messageBuilder)
   }
 
-  moveRobot ({x, y, orientation}, animation) {
-    this.clearRobot()
-    this.animate({ele: '.robot', animation: animation}, () => {
-      this.robot.robotFacing = orientation
-      this.robot.whereIsRobot = [x, y]
-      this.stepData.gridMap[x][y].robotSpot = true
-    })
-    return 'moveRobot DONE!'
-  }
-
-  updateCells (grid) {
-    _.each(grid.cells, cell => {
-      const x = cell.location.x
-      const y = cell.location.y
-      if (y > 0) {
-        this.stepData.gridMap[x][y].tools = _.map(cell.items, item => {
-          return this.toolList[item]
-        }).reverse()
-      }
-    })
-  }
-
-  updateRobotHolding (holding) {
-    this.robot.robotCarrying = holding
-  }
-
-  win () {
-    api.getStats({tokenId: this.$store.getters.getTokenId}, stats => {
-      const stepToken = stats.levels[stats.level][stats.step]
-
-      this.$store.dispatch('updateStats', {stats,
-        cb: () => {
-          this.$store.dispatch('showCongrats')
-
-          setTimeout(() => {
-            if (this.stepData.step === stepToken.name) {
-              this.$router.push({path: 'profile'})
-            } else {
-              this.$store.dispatch('initNewGame', this.context)
-            }
-            this.$store.dispatch('hideCongrats')
-          }, 4000)
-        }
-      })
-    })
-  }
-
-  lost (showMessage) {
-    const time = showMessage ? 1000 : 100
-    setTimeout(() => {
-      if (showMessage) this.$store.dispatch('showTryAgain')
-      setTimeout(() => {
-        this.$store.dispatch('initNewGame', this.context)
-        this.robot.robotCarrying = []
-      }, time)
-    }, time)
-  }
-
-  updateRobotState (programState) {
-    this.robot.state = programState
-  }
-
-  processFrames () {
-    if (this.robot.state === 'paused') return
-    else if (this.robot.state === 'stop') {
-      this.frames = []
-      this.lost()
-      return
+  _pausedMessage () {
+    const messageBuilder = {
+      type: 'success',
+      msg: 'Program paused'
     }
 
-    const current = this.frames.shift()
-    const robotState = current.robotState
+    this._addMessage(messageBuilder)
+  }
 
-    // console.log('Step Data ', this.stepData);
-    // console.log('RobotState ', robotState);
+  _mainEmptyMessage () {
+    const messageBuilder = {
+      type: 'warn',
+      msg: 'Main is empty',
+      handlers () {
+        const $bar = $('.bar')
 
-    new Promise(resolve => resolve())
-      .then(_ => new Promise(resolve => resolve(this.updateRobotState(current.programState))))
-      .then(_ => new Promise(resolve => resolve(this.updateCells(robotState.grid))))
-      .then(_ => new Promise(resolve => resolve(this.moveRobot(Object.assign(robotState.location, {orientation: robotState.orientation}), robotState.animation))))
-      .then(_ => new Promise(resolve => resolve(this.updateRobotHolding(robotState.holding))))
-      .done(_ => {
-        if (!this.frames.length) {
-          if (current.programState === 'success') {
-            this.win()
-          } else {
-            this.lost(true)
+        return {
+          runBeforeAppend () {
+            $bar.addClass('red-bar')
+          },
+          runOnDelete () {
+            $bar.removeClass('red-bar')
           }
-          this.robot.state = 'home'
-          this.$store.dispatch('deactivateRobot')
-          return
         }
-        setTimeout(() => this.processFrames(), this.robot.getSpeed().speed)
-      })
+      }
+    }
+
+    this._addMessage(messageBuilder)
+  }
+
+  _addMessage (messageBuilder) {
+    this.$store.dispatch('addMessage', messageBuilder)
+  }
+
+  _initializeStep (stepData) {
+    this.$store.dispatch('updateStepData', stepData)
+    this.$store.dispatch('updateLambdas', stepData.lambdas)
+    stepData.initialRobotState.context = this.context
+    this.$store.dispatch('updateRobot', new Robot(stepData.initialRobotState))
+    this.constructor(this.context)
+  }
+
+  _updateStats (stats) {
+    this.$store.dispatch('updateStats', stats)
+  }
+
+  _initializeOnLastFrame (frame) {
+    this._updateStats(frame.stats)
+    this._initializeStep(frame.stepData)
+  }
+
+  _resetStep (res) {
+    api.getStep({tokenId: this.tokenId, level: this.stats.level, step: this.stats.step}, stepData => {
+      this._initializeStep(stepData)
+    })
+  }
+
+  _stopRobot () {
+    api.compilerWebSocket.haltProgram(this._resetStep)
+  }
+
+  _toggleBridge = (which, bool) => this.$store.dispatch(`toggle${which}`, bool)
+
+  _showBridgeScreen (frame) {
+    return new Promise(resolve => {
+      if (frame.programState === 'failure') this._toggleBridge('TryAgain', true)
+      else this._toggleBridge('Congrats', true)
+      setTimeout(() => {
+        this._toggleBridge('Congrats', false)
+        this._toggleBridge('TryAgain', false)
+        resolve()
+      }, 3000)
+    })
+  }
+
+  _success (frame) {
+    return this.initializeAnimation(this.$store, frame, async () => {
+      await this._showBridgeScreen(frame)
+      this._initializeOnLastFrame(frame)
+    })
+  }
+
+  _failure (frame) {
+    return this.initializeAnimation(this.$store, frame, async () => {
+      await this._showBridgeScreen(frame)
+      this._initializeOnLastFrame(frame)
+    })
+  }
+
+  _running (frame) {
+    return this.initializeAnimation(this.$store, frame, () => {
+      if (this.robot.state === 'running') {
+        this._processFrames()
+      } else if (this.robot.state === 'stopped') {
+        this._stopRobot()
+      }
+    })
+  }
+
+  async _processFrames (_) {
+    const current = this.robotFrames.shift()
+    const last = this.robotFrames[this.robotFrames.length - 1]
+
+    if (this.robotFrames.length && last.programState === 'running') {
+      this._askCompiler()
+    }
+
+    const run = await this[`_${current.programState}`](current)
+    run(current)
+  }
+
+  _askCompiler () {
+    api.compilerWebSocket.compileWs({context: this, problem: this.stepData.problem.encryptedProblem}, (compiled) => {
+      this.robotFrames = this.robotFrames.concat(compiled.frames)
+    })
   }
 }
 

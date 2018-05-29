@@ -29,7 +29,7 @@ export default {
       return new Array(this.stepData.mainMax)
     },
     stepData () {
-      return this.$store.getters.getCurrentStepData
+      return this.$store.getters.getStepData
     }
   },
   watch: {
@@ -81,4 +81,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/mainPlaceholder.css"></style>
+<style scoped src="../css/scoped/mainPlaceholder.scss" lang="scss"></style>

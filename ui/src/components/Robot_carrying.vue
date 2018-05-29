@@ -64,4 +64,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/robotCarrying.css"></style>
+<style scoped src="../css/scoped/robotCarrying.scss" lang="scss"></style>

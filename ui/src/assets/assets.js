@@ -143,7 +143,8 @@ module.exports = {
     trashButton: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522342913/buttons/trashButton.png'
   },
   robotImages: {
-    robotUp: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437134/robotDirections/RobotUp_nbpcu2.png',
+    robotUp: 'http://res.cloudinary.com/doohickey/image/upload/v1527608921/robot_away_eane70.png',
+    // robotUp: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437134/robotDirections/RobotUp_nbpcu2.png',
     robotRight: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437145/robotDirections/PlayerRight_n39yyp.png',
     robotDown: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437155/robotDirections/PlayerDown_pjawwx.png',
     robotLeft: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522437164/robotDirections/RobotLeft_uf8xym.png'
@@ -153,7 +154,7 @@ module.exports = {
   gridSpace: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522346735/misc/Space_background.jpg',
   profileSpace: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522347137/misc/profileSpace.png',
   blackHole: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522343594/misc/Portal.svg',
-  returnToProfile: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522347515/misc/NavToOverview_y7ov4y.svg',
+  returnToProfile: 'http://res.cloudinary.com/doohickey/image/upload/v1527001471/NavToOverview_y7ov4y_q0w2jd.svg',
   instructionsRobot: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522347656/misc/instructionsRobot_bg7561.svg',
   speechBubble: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522347745/misc/speechBubble.png',
   gridMesh: 'https://res.cloudinary.com/deqjemwcu/image/upload/v1522345998/misc/grid-mesh_auu3wh.svg',

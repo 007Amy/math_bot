@@ -53,7 +53,7 @@
     <img
       id="open-staged"
       class="dialog-button"
-      v-if="this.currentStepData.stagedEnabled"
+      v-if="this.stepData.stagedEnabled"
       :class="functionAreaShowing === 'addFunction' ? 'rotate-to-x' : 'rotate-to-plus'"
       @click="toggleFunctionAdd"
       :src="permanentImages.buttons.plusButton"
@@ -78,8 +78,14 @@ export default {
     })
   },
   computed: {
+    mainFunctionFunc () {
+      return this.$store.getters.getMainFunction.func
+    },
+    stepData () {
+      return this.$store.getters.getStepData
+    },
     currentStepData () {
-      return this.$store.getters.getCurrentStepData
+      return this.$store.getters.getStepData
     },
     token () {
       return this.$store.getters.getToken
@@ -196,6 +202,14 @@ export default {
     start () {
       if (this.functionAreaShowing === 'editMain') {
         this.$store.dispatch('toggleShowMesh', true)
+        // If main is full apply message letting the user know
+        if (this.mainFunctionFunc.length >= this.stepData.mainMax) {
+          const messageBuilder = {
+            type: 'warn',
+            msg: `Main full`
+          }
+          this.$store.dispatch('addMessage', messageBuilder)
+        }
       }
     },
     end () {
@@ -208,7 +222,7 @@ export default {
 
       api.activateFunction({tokenId: this.token.token_id, stagedIndex: index, activeIndex: evt.newIndex}, lambdas => {
         // console.log('NEW LAMBDAS ~ ', lambdas)
-        this.$store.dispatch('updateLambdas', {lambdas: lambdas})
+        this.$store.dispatch('updateLambdas', lambdas)
       })
     },
     moveSwiper (direction) {
@@ -247,4 +261,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/commands.css"></style>
+<style scoped src="../css/scoped/commands.scss" lang="scss"></style>

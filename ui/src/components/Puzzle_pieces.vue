@@ -70,7 +70,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
   :root {
     --puzzle-piece-border-color: #FFFFFF;
   }

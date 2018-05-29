@@ -21,5 +21,5 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/congrats.css">
+<style scoped src="../css/scoped/congrats.scss" lang="scss">
 </style>

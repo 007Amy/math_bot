@@ -30,7 +30,7 @@ export default {
       return this.$store.getters.getCongratsShowing
     },
     currentStepData () {
-      return this.$store.getters.getCurrentStepData
+      return this.$store.getters.getStepData
     },
     permanentImages () {
       return this.$store.getters.getPermanentImages
@@ -59,4 +59,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/controlPanel.css"></style>
+<style scoped src="../css/scoped/controlPanel.scss" lang="scss"></style>

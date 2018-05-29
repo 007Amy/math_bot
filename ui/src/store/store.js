@@ -1,12 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import _ from 'underscore'
-import api from '../services/api'
 import VueDefaultValue from 'vue-default-value/dist/vue-default-value'
-import Robot from '../services/Robot'
 import permanentImages from '../assets/assets'
 import Message from '../services/Message'
-import InitFocus from '../services/InitFocus'
+import AuthService from '../services/AuthService'
 
 Vue.use(Vuex)
 Vue.use(VueDefaultValue)
@@ -60,17 +58,6 @@ const colors = {
     next: 'default'
   }
 }
-const emptyToken = {
-  token_id: '',
-  u_id: '',
-  randomImages: null,
-  lambdas: {
-    main: null,
-    stagedFuncs: null,
-    cmds: null,
-    activeFuncs: null
-  }
-}
 
 export default new Vuex.Store({
   state: {
@@ -85,9 +72,8 @@ export default new Vuex.Store({
     showCongrats: false,
     tryAgainShowing: false,
     compiledDone: false,
-    currentStepData: {},
+    stepData: {},
     robot: {},
-    disToken: emptyToken,
     profileView: 'Arithmetic',
     functionGroupsCalc: null,
     functionGroups: [],
@@ -98,11 +84,24 @@ export default new Vuex.Store({
     activeFunctionGroups: null,
     swiperSlide: 0,
     messageList: [],
-    auth: null,
+    auth: new AuthService(),
     showMesh: false,
     splashScreenShowing: false
   },
   mutations: {
+    UPDATE_STEP_DATA (state, stepData) {
+      function reverseTools (stepData) {
+        stepData.gridMap = stepData.gridMap.map(row => {
+          return row.map(cell => {
+            cell.tools = cell.tools.reverse()
+            return cell
+          })
+        })
+        return stepData
+      }
+      const data = Object.keys(stepData).length ? reverseTools(stepData) : stepData
+      state.stepData = data
+    },
     UPDATE_SPLASH_SCREEN_SHOWING (state, bool) {
       state.splashScreenShowing = bool
     },
@@ -118,86 +117,34 @@ export default new Vuex.Store({
     CLEAR_CURRENT_FUNCTION (state) {
       const currentFunction = state.currentFunction
       if (currentFunction === 'main') {
-        state.disToken.lambdas.main.func = []
+        state.auth.userToken.lambdas.main.func = []
       } else {
-        state.disToken.lambdas.activeFuncs[currentFunction].func = []
+        state.auth.userToken.lambdas.activeFuncs[currentFunction].func = []
       }
     },
     DEACTIVATE_ROBOT (state) {
       state.robotDeactivated = !state.robotDeactivated
     },
-    SHOW_CONGRATS (state) {
-      state.showCongrats = true
+    TOGGLE_CONGRATS (state, bool) {
+      state.showCongrats = bool
     },
-    HIDE_CONGRATS (state) {
-      state.showCongrats = false
+    TOGGLE_TRY_AGAIN (state, bool) {
+      state.tryAgainShowing = bool
     },
-    SHOW_TRY_AGAIN (state) {
-      state.tryAgainShowing = true
+    UPDATE_ROBOT (state, robot) {
+      state.robot = robot
     },
-    INIT_NEW_GAME (state, context) {
-      const tokenId = state.disToken.token_id
-      const level = state.disToken.stats.level
-      const step = state.disToken.stats.step
-
-      api.getStep({tokenId: tokenId, level: level, step: step}, res => {
-        // All data require for this step
-        const stepData = res.body
-        // console.log(`${level}/${step}:\n`, stepData)
-
-        // Reverses tools for rendering
-        const reverseTools = (gridMap) => {
-          return gridMap.map(row => {
-            return row.map(cell => {
-              cell.tools = cell.tools.reverse()
-              return cell
-            })
-          })
-        }
-
-        reverseTools(stepData.gridMap)
-
-        state.currentStepData = stepData
-
-        state.showCongrats = false
-        state.tryAgainShowing = false
-        state.robot = new Robot({robotFacing: stepData.robotOrientation})
-
-        // update lambdas to step specific lambdas
-        context.$store.dispatch('updateLambdas', {lambdas: stepData.lambdas})
-
-        // Since we are going to robot, set level and step state in localstorage
-        localStorage.setItem('LEVEL_STEP', JSON.stringify({level: level, step: step}))
-        context.$router.push({path: 'robot'})
-
-        const initFocus = new InitFocus(state, stepData)
-        initFocus.init()
-      })
+    UPDATE_LAMBDAS (state, lambdas) {
+      state.auth.userToken.lambdas = lambdas
     },
-    UPDATE_LAMBDAS (state, {lambdas}) {
-      state.disToken.lambdas = lambdas
-    },
-    UPDATE_TOKEN (state, args) {
-      const token = args[0]
-      const cb = args[1]
-
-      state.disToken = token
-
-      // console.log('TOKEN ~>', state.disToken)
-
-      if (cb !== undefined) {
-        cb(state.disToken.stats.level, state.disToken.stats.currentEquation)
-      }
-    },
-    UPDATE_STATS (state, {stats, cb}) {
-      state.disToken.stats = stats
-      if (cb) cb()
+    UPDATE_STATS (state, stats) {
+      state.auth.userToken.stats = stats
     },
     CREATE_LOCK (state) {
 
     },
     PUSH_RANDOM_IMAGE (state, image) {
-      state.disToken.randomImages.push(image)
+      state.auth.userToken.randomImages.push(image)
     },
     CHANGE_CURRENT_FUNCTION (state, args) {
       const type = args[0]
@@ -209,14 +156,14 @@ export default new Vuex.Store({
       }
     },
     ADD_NEW_FUNCTION (state, func) {
-      state.disToken.oldVersion.funcs.push(func)
+      state.auth.userToken.oldVersion.funcs.push(func)
     },
     DELETE_FUNCTION (state, ind, context) {
       const currentFunction = state.currentFunction
       if (currentFunction === 'main') {
-        state.disToken.lambdas.main.func.splice(ind, 1)
+        state.auth.userToken.lambdas.main.func.splice(ind, 1)
       } else {
-        state.disToken.lambdas.activeFuncs[currentFunction].func.splice(ind, 1)
+        state.auth.userToken.lambdas.activeFuncs[currentFunction].func.splice(ind, 1)
       }
     },
     PUT_IMAGE_BACK (state, img, context) {
@@ -230,8 +177,8 @@ export default new Vuex.Store({
     },
     ADD_CURRENT_USER (state, userData) {
       state.currentUser = userData
-      state.disToken.token_id = userData.token_id
-      state.disToken.u_id = userData._id
+      state.auth.userToken.token_id = userData.token_id
+      state.auth.userToken.u_id = userData._id
     },
     CHANGE_ROBOT_SPEED (state) {
       state.robot.adjustSpeed()
@@ -243,14 +190,14 @@ export default new Vuex.Store({
       const ind = args[0]
       const copy = args[1]
       const currentFunc = state.currentFunction
-      const funcToUpdate = currentFunc === 'main' ? state.disToken.lambdas.main.func : state.disToken.lambdas.activeFuncs[currentFunc].func
+      const funcToUpdate = currentFunc === 'main' ? state.auth.userToken.lambdas.main.func : state.auth.userToken.lambdas.activeFuncs[currentFunc].func
       funcToUpdate.splice(ind, 1)
       funcToUpdate.splice(ind, 0, copy)
     },
     PUSH_CURRENT (state, c) {
       const copy = c
       const currentFunc = state.currentFunction
-      const funcToUpdate = currentFunc === 'main' ? state.disToken.lambdas.main.func : state.disToken.lambdas.activeFuncs[currentFunc].func
+      const funcToUpdate = currentFunc === 'main' ? state.auth.userToken.lambdas.main.func : state.auth.userToken.lambdas.activeFuncs[currentFunc].func
 
       funcToUpdate.push(copy)
     },
@@ -258,7 +205,7 @@ export default new Vuex.Store({
       const ind = args[0]
       const copy = args[1]
       const currentFunc = state.currentFunction
-      const funcToUpdate = currentFunc === 'main' ? state.disToken.lambdas.main.func : state.disToken.lambdas.activeFuncs[currentFunc].func
+      const funcToUpdate = currentFunc === 'main' ? state.auth.userToken.lambdas.main.func : state.auth.userToken.lambdas.activeFuncs[currentFunc].func
 
       funcToUpdate[state.currentFunction].splice(ind, 0, copy)
     },
@@ -292,6 +239,12 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    updateStepData ({commit}, stepData) {
+      commit('UPDATE_STEP_DATA', stepData)
+    },
+    updateRobot ({commit}, robot) {
+      commit('UPDATE_ROBOT', robot)
+    },
     updateSplashScreenShowing ({commit}, bool) {
       commit('UPDATE_SPLASH_SCREEN_SHOWING', bool)
     },
@@ -307,8 +260,8 @@ export default new Vuex.Store({
     updateFunctionGroups ({commit}) {
       commit('UPDATE_FUNCTION_GROUPS')
     },
-    updateStats ({commit}, {stats, cb}) {
-      commit('UPDATE_STATS', {stats, cb})
+    updateStats ({commit}, stats) {
+      commit('UPDATE_STATS', stats)
     },
     clearCurrentFunction ({commit}) {
       commit('CLEAR_CURRENT_FUNCTION')
@@ -316,17 +269,11 @@ export default new Vuex.Store({
     deactivateRobot ({commit}) {
       commit('DEACTIVATE_ROBOT')
     },
-    showCongrats ({commit}) {
-      commit('SHOW_CONGRATS')
+    toggleCongrats ({commit}, bool) {
+      commit('TOGGLE_CONGRATS', bool)
     },
-    hideCongrats ({commit}) {
-      commit('HIDE_CONGRATS')
-    },
-    showTryAgain ({commit}) {
-      commit('SHOW_TRY_AGAIN')
-    },
-    initNewGame ({commit}, context) {
-      commit('INIT_NEW_GAME', context)
+    toggleTryAgain ({commit}, bool) {
+      commit('TOGGLE_TRY_AGAIN', bool)
     },
     pushRandomImage ({commit}, image) {
       commit('PUSH_RANDOM_IMAGE', image)
@@ -364,11 +311,8 @@ export default new Vuex.Store({
     changeFullscreen ({commit}) {
       commit('CHANGE_FULLSCREEN')
     },
-    updateLambdas ({commit}, {lambdas}) {
-      commit('UPDATE_LAMBDAS', {lambdas})
-    },
-    updateToken ({commit}, args) {
-      commit('UPDATE_TOKEN', args)
+    updateLambdas ({commit}, lambdas) {
+      commit('UPDATE_LAMBDAS', lambdas)
     },
     createLock ({commit}) {
       commit('CREATE_LOCK')
@@ -414,44 +358,42 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    getStepData: state => state.stepData,
     getSplashScreenShowing: state => state.splashScreenShowing,
     getPointerPosition: state => state.pointerPosition,
     getShowMesh: state => state.showMesh,
     getAuth: state => state.auth,
-    getTokenId: state => state.disToken.token_id,
-    getCurrentStepData: state => state.currentStepData,
+    getTokenId: state => state.auth.userToken.token_id,
     getTrashVisible: state => state.trashVisible,
     // getFunctionGroups: state => state.functionGroups,
-    getGrid: state => state.currentStepData.grid,
-    getRobotDeactivated: state => state.robotDeactivated,
-    getCurrentEquation: state => state.disToken.stats.currentEquation,
+    getGrid: state => state.stepData.gridMap,
+    getRobotDeactivated: state => state.robot.robotDeactivated,
+    getCurrentEquation: state => state.auth.userToken.stats.currentEquation,
     getCongratsShowing: state => state.showCongrats,
     getTryAgainShowing: state => state.tryAgainShowing,
     getGame: state => state.game,
     getRobot: state => state.robot,
-    getLevel: state => state.disToken.stats.level,
+    getLevel: state => state.auth.userToken.stats.level,
     getRobotCarrying: state => state.robot.robotCarrying,
     getPermanentImages: state => state.permanentImages,
-    getRandomImages: state => state.disToken.randomImages,
-    getCommands: state => state.disToken.lambdas.cmds, // <-- Array
-    getStagedFunctions: state => state.disToken.lambdas.stagedFuncs, // <-- Array
-    getActiveFunctions: state => state.disToken.lambdas.activeFuncs, // <-- Array
-    getMainFunction: state => state.disToken.lambdas.main, // <-- Object
-    getLambdas: state => state.disToken.lambdas,
+    getRandomImages: state => state.auth.userToken.randomImages,
+    getCommands: state => state.auth.userToken.lambdas.cmds, // <-- Array
+    getStagedFunctions: state => state.auth.userToken.lambdas.stagedFuncs, // <-- Array
+    getActiveFunctions: state => state.auth.userToken.lambdas.activeFuncs, // <-- Array
+    getMainFunction: state => state.auth.userToken.lambdas.main, // <-- Object
+    getLambdas: state => state.auth.userToken.lambdas,
     getCurrentFunction: state => state.currentFunction,
     getProgramPanelShowing: state => state.programPanelShowing,
     getEditFunctionShowing: state => state.editFunctionShowing,
-    getAuthStatus: state => state.authStatus,
-    getAuthShowing: state => state.authShowing,
     getRememberUser: state => state.rememberUser,
-    getToken: state => state.disToken,
+    getToken: state => state.auth.userToken,
     getShowDupAlert: state => state.showDupAlert,
     getFullscreen: state => state.fullscreen,
     getSignupLoading: state => state.signupLoading,
     getLock: state => state.lock,
     getSocket: state => state.socket,
     getLevels: state => {
-      const levels = state.disToken.stats.levels
+      const levels = state.auth.userToken.stats.levels
       const assembleLevels = _.chain(levels)
         .map((l, k) => {
           return [k, {
@@ -466,9 +408,9 @@ export default new Vuex.Store({
 
       return orderEm(assembleLevels)
     },
-    getStats: state => state.disToken.stats,
-    getStep: state => state.disToken.stats.step,
-    getSteps: state => orderEm(state.disToken.stats.levels[state.disToken.stats.level]),
+    getStats: state => state.auth.userToken.stats,
+    getStep: state => state.auth.userToken.stats.step,
+    getSteps: state => orderEm(state.auth.userToken.stats.levels[state.auth.userToken.stats.level]),
     getStars: state => state.stars,
     getProfileView: state => state.profileView,
     getCourses: state => state.courses,

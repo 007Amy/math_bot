@@ -1,13 +1,14 @@
 <template>
   <div class="profile-container">
-    <div class="profile" data-aos="fade-in">
+    <splash-screen v-if="!auth.authenticated"></splash-screen>
+    <div v-else class="profile" data-aos="fade-in">
       <div class="secretTools">
+        <!--<button @click="mutateMe">MUTATE ME!</button>-->
         <button @click="unlock()">Unlock</button>
         <button @click="reset()">Reset</button>
       </div>
-      <splash-screen v-if="splashScreenShowing"></splash-screen>
-      <arithmetic v-else-if="!splashScreenShowing && profileView === 'Arithmetic' && stats !== undefined"></arithmetic>
-      <user-profile-controls :auth="auth" :permanent-images="permanentImages"></user-profile-controls>
+      <arithmetic></arithmetic>
+      <user-profile-controls :permanent-images="permanentImages"></user-profile-controls>
     </div>
   </div>
 </template>
@@ -15,21 +16,17 @@
 <script>
 import SplashScreen from './Splash_screen'
 import Arithmetic from './Arithmetic'
-import AuthService from '../services/AuthService'
 import UserProfileControls from './User_profile_controls'
 
 export default {
   mounted () {
-    this.auth = new AuthService(this)
-    this.auth.createLock()
-    this.auth.init()
-  },
-  data () {
-    return {
-      auth: null
-    }
+    this.$store.dispatch('updateStepData', {})
+    this.$store.dispatch('updateRobot', {})
   },
   computed: {
+    auth () {
+      return this.$store.getters.getAuth
+    },
     splashScreenShowing () {
       return this.$store.getters.getSplashScreenShowing
     },
@@ -44,11 +41,18 @@ export default {
     }
   },
   methods: {
+    mutateMe () {
+      const mutatedJson = require('../services/mutated_token.json')
+      this.$http.post('/api/token/test', mutatedJson)
+        .then(res => res.body)
+        .then(console.log)
+        .catch(console.error)
+    },
     unlock () {
       const tokenId = this.$store.getters.getToken.token_id
       this.$http.get('/api/stats/unlock/' + tokenId)
         .then(res => {
-          this.$store.dispatch('updateStats', {stats: res.body})
+          this.$store.dispatch('updateStats', res.body)
         })
         .catch(err => console.error(err.message))
     },
@@ -56,7 +60,7 @@ export default {
       const tokenId = this.$store.getters.getToken.token_id
       this.$http.get('/api/stats/reset/' + tokenId)
         .then(res => {
-          this.$store.dispatch('updateStats', {stats: res.body})
+          this.$store.dispatch('updateStats', res.body)
         })
         .catch(err => console.error(err.message))
     }
@@ -69,4 +73,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/profile.css"></style>
+<style scoped src="../css/scoped/profile.scss" lang="scss"></style>

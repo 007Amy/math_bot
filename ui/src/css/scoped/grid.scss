@@ -8,9 +8,6 @@ img {
   height: 100%;
 }
 
-.grid-instructions {
-}
-
 .grid {
   display: table;
   margin: 0 auto;
@@ -21,25 +18,37 @@ img {
   display: table-row;
 }
 
-.grid-opacity {
-  opacity: 0.5;
-}
-
 .grid-space {
   position: relative;
   display: table-cell;
   height: 100px;
   width: 100px;
   padding: 0;
-  background-size: 100% 100%;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
   text-align: center;
   vertical-align: middle;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.grid-space-empty-space {
+}
+
+.grid-space-wall {
+  height: 100px;
+  width: 100px;
+  box-shadow: 0 0 30px 0 rgba(0,0,0,0.5);
+  background: repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.3),
+      rgba(0, 0, 0, 0.3) 21px,
+      rgba(74, 74, 74, 0.5) 21px,
+      rgba(74, 74, 74, 0.5) 24px
+  )
 }
 
 .grid-row:nth-child(5n+0) .grid-space {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .grid-space:nth-child(1) {
@@ -49,10 +58,6 @@ img {
 .problem {
   z-index: 120;
   font-size: 22px;
-}
-
-.single-digit-problem {
-
 }
 
 .grid-space > img {
@@ -67,96 +72,6 @@ img {
   z-index: 100;
 }
 
-.grid-space > .wall {
-  border: none;
-  left: -30%;
-  height: 160px;
-  width: 160px;
-  z-index: 1011;
-}
-
-.grid-space > .drop-point {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 80%;
-  width: 75%;
-}
-
-.active-force-field {
-  /*animation: activeglow 3s infinite alternate;*/
-  background: rgb(255, 35, 95);
-  border: 1px solid rgb(255, 35, 95);
-}
-
-.grow {
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  height: 200%;
-  width: 200%;
-}
-
-.glyphicon {
-  font-size: 2vw;
-}
-
-.speechImage {
-  height: 20px;
-  width: 20px;
-}
-
-.grid-wall {
-  opacity: 0.8;
-}
-
-@keyframes activeglow{
-  to{
-    box-shadow:
-      0px 0px 5px 5px rgb(255, 35, 95);
-  }
-}
-.inactive-force-field {
-  /*animation: inactiveglow 3s infinite alternate;*/
-  background: rgb(71, 150, 59);
-  border: 1px solid rgb(71, 150, 59);
-}
-@keyframes inactiveglow{
-  to{
-    box-shadow:
-      0px 0px 5px 5px rgb(71, 150, 59);
-  }
-}
-.hold-button {
-  background: rgb(71, 150, 59);
-  color: rgb(230, 230, 230);
-}
-.final-answer {
-  animation: Fglow 3s infinite alternate;
-  background: rgb(230, 230, 230);
-}
-@keyframes Fglow{
-  to{
-    box-shadow: inset 0 0 60px rgb(71, 150, 59);
-    color: gold;
-  }
-}
-@keyframes bounce {
-  from {
-    transform: translateY(200%);
-  }
-  to {
-    transform: translateY(-200px);
-  }
-}
-@-webkit-keyframes bounce {
-  from {
-    transform: translateY(200%);
-  }
-  to {
-    transform: translateY(-200px);
-  }
-}
 .robot {
   z-index: 1010;
   height: 160% !important;
@@ -168,8 +83,9 @@ img {
   right: 0 !important;
 }
 
-.drop-point {
-  top: 0;
+.robot-shake {
+  animation: shake 0.5s;
+  animation-iteration-count: infinite;
 }
 
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape) {

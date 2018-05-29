@@ -1,5 +1,6 @@
 <template>
   <div class="arithmetic">
+    <!--<button @click="addMutatedData">Add Mutated bs</button>-->
     <space :levels="levels" :is-level-active="isLevelActive" :permanent-images="permanentImages" :select-level="selectLevel" :selected-level="selectedLevel" :first-step="firstStep"></space>
     <steps :level="level" :steps="steps" :permanent-images="permanentImages" :go-to-robot="goToRobot"></steps>
   </div>
@@ -58,6 +59,9 @@ export default {
   },
   methods: {
     parseCamelCase: utils.parseCamelCase,
+    addMutatedData () {
+      api.insertTokenForTesting()
+    },
     isLevelActive (l) {
       const level = l.level
       return Object.keys(level).reduce((bool, step) => {
@@ -72,7 +76,7 @@ export default {
     },
     selectLevel (level, step) {
       api.switchLevel({tokenId: this.tokenId, level: level, step: step}, (res) => {
-        this.$store.dispatch('updateStats', {stats: res.body})
+        this.$store.dispatch('updateStats', res.body)
         this.selectedLevel = level
       })
     },
@@ -81,10 +85,8 @@ export default {
     },
     goToRobot (level, step) {
       api.switchLevel({tokenId: this.tokenId, level: level, step: step}, (res) => {
-        this.$store.dispatch('updateStats', {stats: res.body,
-          cb: () => {
-            this.$router.push({path: '/robot'})
-          }})
+        this.$store.dispatch('updateStats', res.body)
+        this.$router.push({path: '/robot'})
       })
     }
   },
@@ -95,4 +97,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/arithmetic.css"></style>
+<style scoped src="../css/scoped/arithmetic.scss" lang="scss"></style>

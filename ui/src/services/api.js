@@ -2,52 +2,30 @@ import Vue from 'vue'
 import vueResource from 'vue-resource'
 import urlEncode from 'urlencode'
 
+import CompilerWebSocket from './CompilerSocket'
+
 Vue.use(vueResource)
 
 export default {
 
-  compilerWs: null,
-
-  checkWsCapable (cb) {
-    if ('WebSocket' in window) {
-      // console.log("WebSocket is supported by your Browser!");
-      cb()
-    } else {
-      console.log('WebSocket NOT supported by your Browser!')
-    }
-  },
-
-  getWsPath (tokenId, cb) {
-    Vue.http.get('/api/wsPath/' + urlEncode(tokenId))
-      .then(res => cb(res.data))
-      .catch(console.error)
-  },
-
-  openCompilerWs ({tokenId}, cb) {
-    this.checkWsCapable(() => {
-      this.getWsPath(urlEncode(tokenId), path => {
-        const COMPILER_SOCKET = path
-        this.compilerWs = new WebSocket(COMPILER_SOCKET)
-        // console.log(path)
-        // console.log(this.compilerWs)
-        this.compilerWs.onopen = () => {
-          console.log('COMPILER WS OPEN')
-          if (cb) cb()
-        }
-        this.compilerWs.onerror = (err) => { console.error('COMPILER WS FAILED', err) }
-        this.compilerWs.onclose = () => { console.log('COMPILER WS CLOSED') }
-      })
-    })
-  },
+  compilerWebSocket: null,
 
   getUserToken ({tokenId}, cb) {
     Vue.http.post('/api/token', JSON.stringify({token_id: tokenId}))
       .then(res => res.body)
       .then(token => {
-        // console.log('GET TOKEN ~ ', token)
-        this.openCompilerWs({tokenId: token.token_id})
+        // console.log('GET TOKEN ~ ', token);
+        this.compilerWebSocket = new CompilerWebSocket()
         cb(token)
       })
+      .catch(console.error)
+  },
+
+  insertTokenForTesting () {
+    const mToken = require('./mutated_token.json')
+    Vue.http.post('/api/token/test', mToken)
+      .then(res => res.body)
+      .then(console.log)
       .catch(console.error)
   },
 
@@ -117,33 +95,6 @@ export default {
       .catch(console.error)
   },
 
-  wsOnMessage (cb) {
-    this.compilerWs.onmessage = (msg) => {
-      const compiled = JSON.parse(msg.data)
-      // console.log('compiled ~>', JSON.stringify(compiled, null, 4));
-      if (compiled === 'Socket connections must be of the same origin!') { console.error(compiled) } else { cb(compiled) }
-    }
-  },
-
-  compileWs ({context, problem}, cb) {
-    const tokenId = context.$store.getters.getToken.token_id
-    // console.log('problem ~>', problem);
-    // console.log('tokenId ~>', tokenId);
-    if (this.compilerWs.readyState !== 1) {
-      this.openCompilerWs({tokenId: tokenId}, () => {
-        this.wsOnMessage(cb)
-        this.compilerWs.send(JSON.stringify({steps: 600, program: {problem: problem}, halt: false}))
-      })
-    } else {
-      this.wsOnMessage(cb)
-      this.compilerWs.send(JSON.stringify({steps: 600, program: {problem: problem}, halt: false}))
-    }
-  },
-
-  stopProgram ({context}) {
-    this.compilerWs.send(JSON.stringify({steps: 0, program: {problem: ''}, halt: true}))
-  },
-
   /*
   * getStep gets game logic for a step
   * @param level = level
@@ -152,7 +103,8 @@ export default {
   * */
   getStep ({tokenId, level, step}, cb) {
     Vue.http.get('/api/levels/getStep/' + level + '/' + step, {params: {tokenId: tokenId}})
-      .then(res => cb(res))
+      .then(res => res.body)
+      .then(stepData => cb(stepData))
       .catch(console.error)
   }
 }

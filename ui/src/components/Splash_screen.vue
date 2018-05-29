@@ -15,4 +15,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/splashScreen.css"></style>
+<style scoped src="../css/scoped/splashScreen.scss" lang="scss"></style>

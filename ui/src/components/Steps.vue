@@ -36,7 +36,8 @@ export default {
       const planets = {
         BasicProgramming: 'Planet 1',
         Counting: 'Planet 2',
-        Numbers: 'Planet 3'
+        Numbers: 'Planet 3',
+        Recursion: 'Planet 4'
       }
       return planets[this.level]
     }
@@ -48,4 +49,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/steps.css"></style>
+<style scoped src="../css/scoped/steps.scss" lang="scss"></style>

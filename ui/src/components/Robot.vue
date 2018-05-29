@@ -1,7 +1,7 @@
 <template>
   <div class="robot-container" data-aos="fade-in">
-    <splash-screen v-if="splashScreenShowing"></splash-screen>
-    <div id="robot" class="row animated" v-else>
+    <splash-screen v-if="!Object.keys(stepData).length"></splash-screen>
+    <div  v-else id="robot" class="row animated">
 
       <div id="control-panel-box">
         <control-panel></control-panel>
@@ -39,17 +39,29 @@ import Editmain from './Edit_main'
 import Editfunction from './Edit_function'
 import Trash from './Trash'
 import Messages from './Messages'
-import AuthService from '../services/AuthService'
 import ControlPanel from './Control_panel'
 import SplashScreen from './Splash_screen'
+import api from '../services/api'
+import utils from '../services/utils'
+import Robot from '../services/RobotState'
 
 export default {
   mounted () {
-    const auth = new AuthService(this)
-    auth.createLock()
-    auth.init()
+    this.initializeRobot()
   },
   computed: {
+    tokenId () {
+      return this.$store.getters.getTokenId
+    },
+    stats () {
+      return this.$store.getters.getStats
+    },
+    stepData () {
+      return this.$store.getters.getStepData
+    },
+    auth () {
+      return this.$store.getters.getAuth
+    },
     splashScreenShowing () {
       return this.$store.getters.getSplashScreenShowing
     },
@@ -111,10 +123,20 @@ export default {
       return this.$store.getters.getActiveFunctionGroups
     },
     currentStepData () {
-      return this.$store.getters.getCurrentStepData
+      return this.$store.getters.getStepData
     }
   },
   methods: {
+    initializeRobot () {
+      utils.watcher(() => !this.auth.authenticated, () => {
+        api.getStep({tokenId: this.tokenId, level: this.stats.level, step: this.stats.step}, stepData => {
+          this.$store.dispatch('updateStepData', stepData)
+          this.$store.dispatch('updateLambdas', stepData.lambdas)
+          stepData.initialRobotState.context = this
+          this.$store.dispatch('updateRobot', new Robot(stepData.initialRobotState))
+        })
+      })
+    },
     showProgramPanel () {
       this.$store.dispatch('controlProgramPanelShowing')
     },
@@ -135,4 +157,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/robot.css"></style>
+<style scoped src="../css/scoped/robot.scss" lang="scss"></style>

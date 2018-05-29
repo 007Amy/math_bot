@@ -10,31 +10,30 @@
       <div v-else-if="gridMap" class="grid">
         <div
           class="grid-row animated"
-          :class="messageShowing ? 'grid-opacity' : ''"
           v-for="(row, rInd) in gridMap"
           :key="'row:' + rInd"
         >
           <div
             class="grid-space animated"
             v-for="(space, sInd) in row"
-            :class="'grid-' + space.name"
+            :class="'grid-space-' + space.name.replace(/ /g, '-')"
             :key="'space:' + rInd + ':' + sInd"
-            :style="{'background-image': 'url(' + permanentImages[convertToImgName(space.name)] + ')'}"
           >
             <span v-if="space.name === 'final answer'"
                   class="problem single-digit-problem">{{singleDigitProblem(problem)}}</span>
             <img
               v-if="space.name === 'final answer'"
-              class="drop-point glyphicon"
+              class="portal glyphicon"
               :src="permanentImages.blackHole" />
             <img
+              v-if="space.tools.length"
               class="tool animated zoomIn"
               v-for="(tool, tInd) in space.tools"
               :key="'tool:' + tInd + ':' + rInd + ':' + sInd"
               :src="toolImages[tool.image]" />
             <img
               class="robot animated"
-              v-if="space.robotSpot"
+              v-if="robot.robotLocation.x === rInd && robot.robotLocation.y === sInd"
               :key="'ROBOT'"
               :src="robot._robotDirections[robotOrientation]" />
           </div>
@@ -57,7 +56,7 @@ export default {
       return this.currentStepData.problem.problem
     },
     currentStepData () {
-      return this.$store.getters.getCurrentStepData
+      return this.$store.getters.getStepData
     },
     level () {
       return this.currentStepData.level
@@ -101,7 +100,7 @@ export default {
       return this.$store.getters.getMode
     },
     stepData () {
-      return this.$store.getters.getCurrentStepData
+      return this.$store.getters.getStepData
     }
   },
   data () {
@@ -137,4 +136,4 @@ export default {
 }
 </script>
 
-<style scoped src="../css/scoped/grid.css"></style>
+<style scoped src="../css/scoped/grid.scss" lang="scss"></style>
