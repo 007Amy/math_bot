@@ -36,7 +36,8 @@ export default {
       const planets = {
         BasicProgramming: 'Planet 1',
         Counting: 'Planet 2',
-        Numbers: 'Planet 3'
+        Numbers: 'Planet 3',
+        Recursion: 'Planet 4'
       }
       return planets[this.level]
     }
