@@ -3,7 +3,7 @@
     <splash-screen v-if="!auth.authenticated"></splash-screen>
     <div v-else class="profile" data-aos="fade-in">
       <div class="secretTools">
-        <button @click="mutateMe">MUTATE ME!</button>
+        <!--<button @click="mutateMe">MUTATE ME!</button>-->
         <button @click="unlock()">Unlock</button>
         <button @click="reset()">Reset</button>
       </div>
